@@ -1,0 +1,156 @@
+<div [@pageTransition] class="main shadow-2xl flex justify-center items-center pt-24">
+    <div class="card p-5 w-10/12 xl:w-1/2 grid grid-cols-1 md:grid-cols-2">
+        <div class="relative flex flex-col p-1 md:p-8">
+            
+            <form #marchandForm="ngForm" class="" (ngSubmit)="submitMarchandForm(marchandForm)">
+                
+                    <div class="relative">
+                        <input type="text" id="username" name="username" class="form-control w-full ps-10" placeholder="* Nom entité (entreprise ou auto-entrepreneur)" required>
+                        <span class="absolute top-2 left-0 ps-3 text-gray-400">
+                            <i class="bi bi-shop"></i>
+                        </span>
+                    </div>
+                
+                    <div class="my-5"></div>
+                
+                    <div class="relative">
+                        <select id="juridique" name="juridique" class="form-select w-full ps-10" [class.text-gray-400]="selectedOption === ''" [class.text-black]="selectedOption !== ''" (change)="handleChange($event)">
+                            <option value="">* Forme juridique</option>
+                            <option value="entreprise">Entreprise</option>
+                            <option value="auto-entrepreneur">Auto-Entrepreneur</option>
+                            <option value="association">Association</option>
+                        </select>
+                        <span class="absolute top-2 left-0 ps-3 text-gray-400">
+                            <i class="bi bi-bank2"></i>
+                        </span>
+                    </div>
+                    
+
+                    <div class="my-5"></div>
+
+                    <div class="relative">
+                        <input type="text" id="c_capital" class="form-control w-full ps-10"
+                            placeholder="* RC ou IF (A.E.)">
+                        <span class="absolute top-2 left-0 ps-3 text-gray-400">
+                            <i class="bi bi-pencil-square"></i>
+                        </span>
+                    </div>
+
+                    <div class="my-5"></div>
+
+                    <div class="relative">
+                        <input type="text" id="c_address" class="form-control w-full ps-10"
+                            placeholder="* Addresse du siège social">
+                        <span class="absolute top-2 left-0 ps-3 text-gray-400">
+                            <i class="bi bi-geo-alt"></i>
+                        </span>
+                    </div>
+
+                    <div class="my-5"></div>
+
+                    <div class="relative">
+                        <input type="text" id="c_dg" class="form-control w-full ps-10"
+                            placeholder="* Nom du DG ou gérant">
+                        <span class="absolute top-2 left-0 ps-3 text-gray-400">
+                            <i class="bi bi-person-circle"></i>
+                        </span>
+                    </div>
+
+                    <div class="my-5"></div>
+
+                    <div class="relative">
+                        <input type="text" id="c_field" class="form-control w-full ps-10"
+                            placeholder="* Type de l'activité">
+                        <span class="absolute top-2 left-0 ps-3 text-gray-400">
+                            <i class="bi bi-ui-checks-grid"></i>
+                        </span>
+                    </div>
+
+                    <div class="my-5"></div>
+
+                    <div class="relative">
+                        <input type="text" id="c_web" class="form-control w-full ps-10"
+                            placeholder="* Addresse site web">
+                        <span class="absolute top-2 left-0 ps-3 text-gray-400">
+                            <i class="bi bi-pc-display"></i>
+                        </span>
+                    </div>
+
+                    <div class="my-5"></div>
+                
+                    <div class="relative">
+                        <input type="text" id="email" class="form-control w-full ps-10"
+                            placeholder="* Addresse e-mail">
+                        <span class="absolute top-2 left-0 ps-3 text-gray-400">
+                            <i class="bi bi-envelope-at"></i>
+                        </span>
+                    </div>
+                
+                    <div class="my-5"></div>
+
+                    <div class="relative">
+                        <input type="text" id="phone" class="form-control w-full ps-10"
+                            placeholder="* Téléphone">
+                        <span class="absolute top-2 left-0 ps-3 text-gray-400">
+                            <i class="bi bi-telephone"></i>
+                        </span>
+                    </div>
+                
+                    <div class="my-5"></div>
+                
+                    <div class="relative">
+                        <select id="c_fieldyears" name="c_fieldyears" class="form-select w-full ps-10" [class.text-gray-400]="selectedOption === ''" [class.text-black]="selectedOption !== ''" (change)="handleChange($event)">
+                            <option value="">* Années d'activité</option>
+                            <option value="-1">Moins &lt; 1 an</option>
+                            <option value="1-5">1 an à 5 ans</option>
+                            <option value="+5">Plus &gt; 5 ans</option>
+                        </select>
+                        <span class="absolute top-2 left-0 ps-3 text-gray-400">
+                            <i class="bi bi-calendar3"></i>
+                        </span>
+                    </div>
+
+                    <div class="my-5"></div>
+
+                    <div class="relative">
+                        <textarea name="c_products" id="comment" data-email="required" class="form-control w-full ps-10 text-gray-400" placeholder="* Description des produits ou services vendus"></textarea>
+                        <span class="absolute top-2 left-0 ps-3 text-gray-400">
+                            <i class="bi bi-body-text"></i>
+                        </span>
+                    </div>
+
+            </form>
+        </div>
+
+
+        <div class="md:block hidden text-white bg-emerald-600 rounded-lg p-4 xl:p-12">
+
+            <h2 class="text-lg xl:text-2xl pb-1">Ouvrir un compte marchand</h2>
+
+            <p class="text-xs pb-1">La manière la plus simple de<br>gérer vos paiements</p>
+
+            <div class="py-3 pt-10">
+                <img src={{signupbannerImage}} alt="login page image"
+                    class="border rounded-lg border-emerald-600 shadow">
+            </div>
+
+            <!-- Move the button here -->
+            <!-- The button for the second div -->
+            <button type="button" class="btn w-full bg-emerald-50 text-emerald-700  rounded-lg  hover:bg-emerald-100 focus:ring-4 focus:ring-emerald-300 dark:bg-emerald-600 dark:hover:bg-emerald-600 dark:focus:ring-emerald-700" 
+            (click)="submitMarchandForm(marchandForm)">
+                ENVOYER MA DEMANDE
+            </button>
+
+            <div class="text-sm text-gray-300 pt-1">
+                <p>
+                    Déjà inscrit ? 
+                    <a [routerLink]="commonService.prepareRoute(publicRoutes.Signin)" class="text-white">
+                        Connectez-vous 
+                    </a>
+                    plutôt.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
