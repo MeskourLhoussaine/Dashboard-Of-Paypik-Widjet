@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Transaction } from '../../models/transaction.model';
+import { Component, OnInit } from '@angular/core';
 import { TransactionService } from '../../services/transaction.service';
+import { Transaction } from '../../models/transaction.model';
 
 @Component({
   selector: 'app-transaction',
@@ -8,17 +8,16 @@ import { TransactionService } from '../../services/transaction.service';
   styleUrls: ['./transaction.component.css']
 })
 export class TransactionComponent implements OnInit {
-  transactions: Transaction[] = [];
-  filteredTransactions: Transaction[] = [];
-
-  @ViewChild('dateInput') dateInput!: ElementRef;
+  transactions: any[] = []; // Suppose you have some transactions data here
+  filteredTransactions: any[] = [];
 
   constructor(private transactionService: TransactionService) {}
 
   ngOnInit(): void {
+    // Initialize transactions data, if needed
+    this.filteredTransactions = this.transactions;
     this.retrieveTransactions();
   }
-
   retrieveTransactions(): void {
     this.transactionService.getAll().subscribe({
       next: (data: Transaction[]) => {
@@ -29,28 +28,32 @@ export class TransactionComponent implements OnInit {
     });
   }
 
-  refreshList(): void {
-    this.retrieveTransactions();
-  }
 
   filterByDate(date: string): void {
-    const filtered = this.transactions.filter(transaction => {
-      if (transaction.timestamp) {
-        const transactionDate = new Date(transaction.timestamp);
-        const selectedDate = new Date(date);
-        return transactionDate.toDateString() === selectedDate.toDateString();
-      }
-      return false;
+    // Implement your filter by date logic here
+    // Assuming transactions have a timestamp property
+    this.filteredTransactions = this.transactions.filter(transaction => {
+      const transactionDate = new Date(transaction.timestamp);
+      const inputDate = new Date(date);
+      return transactionDate.toDateString() === inputDate.toDateString();
     });
-    this.filteredTransactions = [...filtered];
+  }
+
+  filterByStatus(status: string): void {
+    // Implement your filter by status logic here
+    this.filteredTransactions = this.transactions.filter(transaction =>
+      transaction.status.toLowerCase() === status.toLowerCase()
+    );
+  }
+
+  onSearch(date: string, status: string): void {
+    // Call both filter functions
+    this.filterByDate(date);
+    this.filterByStatus(status);
   }
 
   resetFilters(): void {
-    this.filteredTransactions = [...this.transactions];
-  }
-  
-  onSearchByDate(): void {
-    const selectedDate = this.dateInput.nativeElement.value;
-    this.filterByDate(selectedDate);
+    // Reset filters to show all transactions
+    this.filteredTransactions = this.transactions;
   }
 }
