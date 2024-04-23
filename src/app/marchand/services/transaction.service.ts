@@ -19,6 +19,14 @@ export class TransactionService {
     );
   }
 
+  getTransactionsByPaymentMethodName(name: string): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(`${this.API_URL}/BypymentMethothodName/${name}`);
+  }
+
+//###########
+
+
+
   getTerrainById(id: number): Observable<Transaction> {
     return this.http.get<Transaction>(`${this.API_URL}/findById/${id}`).pipe(
       catchError(this.handleError)

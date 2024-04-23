@@ -82,10 +82,14 @@ filterByPaymentMethod(paymentMethod: string): void {
     return;
   }
   
-  this.filteredTransactions = this.transactions.filter(transaction =>
-    transaction.paymentMethod.toLowerCase() === paymentMethod.toLowerCase()
-  );
+  this.transactionService.getTransactionsByPaymentMethodName(paymentMethod).subscribe({
+    next: (data: Transaction[]) => {
+      this.filteredTransactions = data;
+    },
+    error: (error) => console.error(error)
+  });
 }
+
 
 onSearch(date: string, status: string, clientName: string, paymentMethod: string): void {
   this.filteredTransactions = [...this.transactions];
