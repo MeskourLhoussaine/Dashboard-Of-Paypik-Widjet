@@ -105,6 +105,7 @@ onSearch(date: string, status: string, clientName: string, paymentMethod: string
   if (paymentMethod) {
     this.filterByPaymentMethod(paymentMethod);
   }
+  
 }
   resetFilters(): void {
     // Reset filters to show all transactions
@@ -122,5 +123,44 @@ onSearch(date: string, status: string, clientName: string, paymentMethod: string
       }
     );
   }
+//status style 
+getStatusStyles(status: string): any {
+  switch (status.toLowerCase()) {
+    case 'completed':
+      return { color: 'green' };
+    case 'pending':
+      return { color: 'yellow' };
+    case 'cancelled':
+      return { color: 'red' };
+    default:
+      return {};
+  }
+}
+
+getStatusBadgeStyles(status: string): any {
+  switch (status.toLowerCase()) {
+    case 'completed':
+      return { backgroundColor: 'rgba(46, 204, 113, 0.6)' }; // Green color with alpha
+    case 'pending':
+      return { backgroundColor: 'rgba(241, 196, 15, 0.6)' }; // Yellow color with alpha
+    case 'cancelled':
+      return { backgroundColor: 'rgba(231, 76, 60, 0.6)' }; // Red color with alpha
+    default:
+      return {};
+  }
+}
+
+getStatusIconStyles(status: string): any {
+  switch (status.toLowerCase()) {
+    case 'completed':
+      return { stroke: 'green' };
+    case 'pending':
+      return { stroke: 'yellow' };
+    case 'cancelled':
+      return { stroke: 'red' };
+    default:
+      return {};
+  }
+}
 
 }
