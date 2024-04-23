@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TransactionService } from '../../services/transaction.service';
 import { Transaction } from '../../models/transaction.model';
+import { PaymentMethod } from '../../models/payment-method.model';
+import { PaymentMethodService } from '../../services/payment-method.service';
 
 @Component({
   selector: 'app-transaction',
@@ -9,14 +11,21 @@ import { Transaction } from '../../models/transaction.model';
 })
 export class TransactionComponent implements OnInit {
   transactions: any[] = []; // Suppose you have some transactions data here
+  paymentMethods: PaymentMethod[] | undefined;
   filteredTransactions: any[] = [];
+  selectedPaymentMethod: string = '';
 
-  constructor(private transactionService: TransactionService) {}
+
+  constructor(private transactionService: TransactionService,
+    private paymentMethodService:PaymentMethodService,
+    
+  ) {}
 
   ngOnInit(): void {
     // Initialize transactions data, if needed
     this.filteredTransactions = this.transactions;
     this.retrieveTransactions();
+    this.loadPymentMethods();
   }
   retrieveTransactions(): void {
     this.transactionService.getAll().subscribe({
@@ -66,9 +75,19 @@ filterByClientName(name: string): void {
     transaction.clientName.toLowerCase().includes(name.toLowerCase())
   );
 }
+//filtrer par PaymentMethode 
+filterByPaymentMethod(paymentMethod: string): void {
+  if (!paymentMethod) {
+    this.filteredTransactions = [...this.transactions];
+    return;
+  }
+  
+  this.filteredTransactions = this.transactions.filter(transaction =>
+    transaction.paymentMethod.toLowerCase() === paymentMethod.toLowerCase()
+  );
+}
 
-
-onSearch(date: string, status: string, clientName: string): void {
+onSearch(date: string, status: string, clientName: string, paymentMethod: string): void {
   this.filteredTransactions = [...this.transactions];
 
   if (date) {
@@ -82,9 +101,26 @@ onSearch(date: string, status: string, clientName: string): void {
   if (clientName) {
     this.filterByClientName(clientName);
   }
+
+  if (paymentMethod) {
+    this.filterByPaymentMethod(paymentMethod);
+  }
 }
   resetFilters(): void {
     // Reset filters to show all transactions
     this.filteredTransactions = this.transactions;
   }
+
+  //load methode payment 
+  loadPymentMethods(): void {
+    this.paymentMethodService.getAll().subscribe(
+      (data) => {
+        this.paymentMethods = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
 }
