@@ -13,6 +13,7 @@ import { EventsComponent } from './views/events/events.component';
 import { SettingsModule } from './views/settings/settings.module';
 import { ScrollToTopComponent } from './views/scroll-to-top/scroll-to-top.component';
 import { TransactionComponent } from '../marchand/views/transaction/transaction.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ imports: [
     LayoutsModule,
     SettingsModule,
     ScrollToTopComponent,
+    FormsModule,
 ]
 })
 export class MarchandModule { }

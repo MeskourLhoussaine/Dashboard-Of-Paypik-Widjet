@@ -27,7 +27,7 @@ export class TransactionComponent implements OnInit {
       error: (error) => console.error(error)
     });
   }
-
+//filtrer par date 
 
   filterByDate(date: string): void {
     // Implement your filter by date logic here
@@ -38,7 +38,7 @@ export class TransactionComponent implements OnInit {
       return transactionDate.toDateString() === inputDate.toDateString();
     });
   }
-
+//filter par status
   filterByStatus(status: string): void {
     // Implement your filter by status logic here
     this.filteredTransactions = this.transactions.filter(transaction =>
@@ -46,12 +46,22 @@ export class TransactionComponent implements OnInit {
     );
   }
 
-  onSearch(date: string, status: string): void {
-    // Call both filter functions
-    this.filterByDate(date);
-    this.filterByStatus(status);
-  }
+//filtrer par name client 
 
+filterByClientName(name: string): void {
+  // Implement your filter by client name logic here
+  this.filteredTransactions = this.transactions.filter(transaction =>
+    transaction.clientName.toLowerCase().includes(name.toLowerCase())
+  );
+}
+
+
+onSearch(date: string, status: string, clientName: string): void {
+  // Call all filter functions
+  this.filterByDate(date);
+  this.filterByStatus(status);
+  this.filterByClientName(clientName);
+}
   resetFilters(): void {
     // Reset filters to show all transactions
     this.filteredTransactions = this.transactions;
