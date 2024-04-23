@@ -29,22 +29,34 @@ export class TransactionComponent implements OnInit {
   }
 //filtrer par date 
 
-  filterByDate(date: string): void {
-    // Implement your filter by date logic here
-    // Assuming transactions have a timestamp property
-    this.filteredTransactions = this.transactions.filter(transaction => {
-      const transactionDate = new Date(transaction.timestamp);
-      const inputDate = new Date(date);
-      return transactionDate.toDateString() === inputDate.toDateString();
-    });
+  
+filterByDate(date: string): void {
+  if (!date) {
+    this.filteredTransactions = [...this.transactions];
+    return;
   }
-//filter par status
-  filterByStatus(status: string): void {
-    // Implement your filter by status logic here
-    this.filteredTransactions = this.transactions.filter(transaction =>
-      transaction.status.toLowerCase() === status.toLowerCase()
+  
+  const inputDate = new Date(date);
+  this.filteredTransactions = this.transactions.filter(transaction => {
+    const transactionDate = new Date(transaction.timestamp);
+    return (
+      transactionDate.getFullYear() === inputDate.getFullYear() &&
+      transactionDate.getMonth() === inputDate.getMonth() &&
+      transactionDate.getDate() === inputDate.getDate()
     );
+  });
+}
+
+filterByStatus(status: string): void {
+  if (!status) {
+    this.filteredTransactions = [...this.transactions];
+    return;
   }
+  
+  this.filteredTransactions = this.transactions.filter(transaction =>
+    transaction.status.toLowerCase() === status.toLowerCase()
+  );
+}
 
 //filtrer par name client 
 
@@ -57,10 +69,19 @@ filterByClientName(name: string): void {
 
 
 onSearch(date: string, status: string, clientName: string): void {
-  // Call all filter functions
-  this.filterByDate(date);
-  this.filterByStatus(status);
-  this.filterByClientName(clientName);
+  this.filteredTransactions = [...this.transactions];
+
+  if (date) {
+    this.filterByDate(date);
+  }
+
+  if (status) {
+    this.filterByStatus(status);
+  }
+
+  if (clientName) {
+    this.filterByClientName(clientName);
+  }
 }
   resetFilters(): void {
     // Reset filters to show all transactions
