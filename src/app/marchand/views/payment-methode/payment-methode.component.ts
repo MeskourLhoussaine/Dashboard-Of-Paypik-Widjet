@@ -14,7 +14,7 @@ import { PaymentMethodService } from '../../services/payment-method.service';
 export class PaymentMethodeComponent  implements OnInit {
   paymentMethods: any[] = []; // Suppose you have some transactions data here
  // filteredTransactions: any[] = [];
-
+ merchantId: number = 0;
   constructor(private paymentMethodService: PaymentMethodService,
     
   ) {}
@@ -25,7 +25,7 @@ export class PaymentMethodeComponent  implements OnInit {
     this.retrievePaymentMethods();
   }
   retrievePaymentMethods(): void {
-    this.paymentMethodService.getAll().subscribe({
+    this.paymentMethodService.getPaimentMethodeBymerchanId(this.merchantId).subscribe({
       next: (data: PaymentMethod[]) => {
         this.paymentMethods = data;
        

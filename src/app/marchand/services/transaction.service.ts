@@ -19,6 +19,12 @@ export class TransactionService {
     );
   }
 
+  getTransactionsByMerchantId(merchantId: number): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(`${this.API_URL}/findByMerchantId/${merchantId}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   getTransactionsByPaymentMethodName(name: string): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(`${this.API_URL}/BypymentMethothodName/${name}`);
   }

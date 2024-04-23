@@ -17,6 +17,13 @@ export class PaymentMethodService {
     );
   }
 
+
+  getPaimentMethodeBymerchanId(merchantId: number): Observable<PaymentMethod[]> {
+    return this.http.get<PaymentMethod[]>(`${this.API_URL}/pymentMethodeBymerchanId/${merchantId}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);

@@ -57,4 +57,6 @@ export class DashboardComponent implements OnInit {
         this.detailedDescription.nativeElement.scrollIntoView({ behavior: 'smooth' });
       }
     }
+
+    //###########logic calculat transaction
 }
