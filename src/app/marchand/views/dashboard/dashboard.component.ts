@@ -17,7 +17,7 @@ Chart.register(...registerables);
 export class DashboardComponent implements OnInit {
   totalTransactions: number = 0;
   transactions: Transaction[] = [];
-  merchantId: number = 4;
+  merchantId!:number ;
   constructor(
     private route: ActivatedRoute,
     private transactionService: TransactionService,
@@ -26,7 +26,10 @@ export class DashboardComponent implements OnInit {
   eventDate: any = formatDate(new Date(), 'MMM dd, yyyy', 'en');
 
   ngOnInit(): void {
-    this.retrieveTransactions();
+    this.route.params.subscribe(params => {
+      this.merchantId = +params['id']; // '+' convertit la chaîne en nombre
+      this.retrieveTransactions(); // Appel à retrieveTransactions après avoir obtenu l'ID
+    });
     var myChart = new Chart("areaWiseSale", {
       type: 'doughnut',
       data: {

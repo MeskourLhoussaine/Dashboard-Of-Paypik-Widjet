@@ -1,5 +1,7 @@
+import { TransactionComponent } from "./views/transaction/transaction.component";
+
 export enum MarchandRoutes {
-    Dashboard = 'dashboard/:id',
+    Dashboard = 'dashboard/:id', 
     More = 'transaction',
     Support = 'support',
     Settings = 'settings',

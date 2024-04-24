@@ -15,9 +15,9 @@ export class TransactionComponent implements OnInit {
   paymentMethods: PaymentMethod[] | undefined;
   filteredTransactions: any[] = [];
   selectedPaymentMethod: string = '';
-  merchantId: number = 4;
+  merchantId!: number ;
   /*les variables de pagination */
-  itemsPerPage: number = 6;
+  itemsPerPage: number = 4;
   currentPage: number = 1;
   pagedTransactions: any[] = [];
   pages: number[] = [];
@@ -37,8 +37,12 @@ export class TransactionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.retrieveTransactions();
-    this.loadPymentMethods();
+    this.route.params.subscribe(params => {
+      this.merchantId = +params['id']; // '+' convertit la chaîne en nombre
+      this.retrieveTransactions(); // Appel à retrieveTransactions après avoir obtenu l'ID
+      this.loadPymentMethods();
+    });
+    
   }
 
   retrieveTransactions(): void {
