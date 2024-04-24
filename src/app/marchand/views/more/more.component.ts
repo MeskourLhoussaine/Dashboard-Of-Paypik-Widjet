@@ -1,60 +1,44 @@
-import { Component ,OnInit,ViewChild, ElementRef } from '@angular/core';
-import { formatDate } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import { MerchantService } from '../../services/merchant.service';
+import { Merchant } from '../../models/merchant.model';
 import { pageTransition } from 'src/app/shared/utils/animations';
+import { ActivatedRoute } from '@angular/router';
+
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-more',
   templateUrl: './more.component.html',
-  styleUrl: './more.component.css',
+  styleUrls: ['./more.component.css'],
   animations: [pageTransition]
 })
-export class MoreComponent implements OnInit{
-  eventDate: any = formatDate(new Date(), 'MMM dd, yyyy', 'en');
+export class MoreComponent implements OnInit {
+
+  merchants: Merchant[] = [];
+  merchantId: number = 4; // You need to assign a value to merchantId
+
+  constructor(
+    // Uncomment if you intend to use them later
+    // private route: ActivatedRoute,
+    // private transactionService: TransactionService,
+    // private paymentMethodService: PaymentMethodService
+    private route: ActivatedRoute,
+    private merchantService: MerchantService
+  ) {}
 
   ngOnInit(): void {
-    var myChart = new Chart("areaWiseSale", {
-      type: 'doughnut',
-      data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green'],
-        datasets: [{
-          label: '# of Votes',
-          data: [12, 19, 3, 5],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-          ],
-        }]
+    this.retrieveMerchantById();
+  }
+
+  retrieveMerchantById(): void {
+    this.merchantService.getMerchantById(this.merchantId).subscribe({
+      next: (data: Merchant) => {
+        console.log('Données du marchand :', data); // Affichage des données du marchand dans la console
+        this.merchants.push(data);
       },
-      options: {
-        scales: {
-          x: {
-            display: false
-          },
-          y: {
-            display: false
-          },
-        },
-        plugins: {
-          legend: {
-            position: 'right',
-            align: 'center',
-          },
-        },
-      },
+      error: (error) => console.error(error)
     });
   }
 
-  ////////////Scroll to section //////////////
-
-  @ViewChild('detailedDescription') detailedDescription!: ElementRef;
-
-  scrollToSection() {
-    if (this.detailedDescription && this.detailedDescription.nativeElement) {
-      this.detailedDescription.nativeElement.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
 }
