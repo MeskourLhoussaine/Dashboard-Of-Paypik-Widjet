@@ -109,31 +109,65 @@ export class TransactionComponent implements OnInit {
     });
   }
 
-  onSearch(date: string, status: string, clientName: string, paymentMethod: string): void {
-    this.filteredTransactions = [...this.transactions];
-
+  applyFilters(): void {
+    let filteredTransactions = [...this.transactions]; // Utilisation de la copie pour ne pas modifier les données originales
+   
+    /*
+    
+    ;*/
+    // Filtrer par date si une date est spécifiée
+    const date = this.dateInput.nativeElement.value;
     if (date) {
-      this.filterByDate(date);
+      filteredTransactions = filteredTransactions.filter(transaction => {
+        const transactionDate = new Date(transaction.timestamp);
+        const inputDate = new Date(date);
+        return transactionDate.toDateString() === inputDate.toDateString();
+       
+      });
+      this.dateInput.nativeElement.value = '';
     }
 
+    // Filtrer par statut si un statut est spécifié
+    const status = this.statusInput.nativeElement.value;
     if (status) {
-      this.filterByStatus(status);
+      filteredTransactions = filteredTransactions.filter(transaction =>
+        transaction.status.toLowerCase() === status.toLowerCase()
+      );
+      this.statusInput.nativeElement.value = '';
     }
 
+    // Filtrer par nom de client si un nom est spécifié
+    const clientName = this.clientNameInput.nativeElement.value;
     if (clientName) {
-      this.filterByClientName(clientName);
+      filteredTransactions = filteredTransactions.filter(transaction =>
+        transaction.clientName.toLowerCase().includes(clientName.toLowerCase())
+      );
+      this.clientNameInput.nativeElement.value = '';
     }
 
+    // Filtrer par méthode de paiement si une méthode est spécifiée
+    const paymentMethod = this.paymentMethodInput.nativeElement.value;
     if (paymentMethod) {
-      this.filterByPaymentMethod(paymentMethod);
+      this.transactionService.getTransactionsByPaymentMethodName(paymentMethod).subscribe({
+        next: (data: Transaction[]) => {
+          filteredTransactions = data;
+          this.filteredTransactions = filteredTransactions;
+          this.calculatePages();
+          this.setPage(1);
+        },
+        error: (error) => console.error(error)
+      });
+      this.paymentMethodInput.nativeElement.selectedIndex = 0;
+      return; // Sortir de la fonction pour éviter les actions supplémentaires sur les transactions filtrées
+    
+      
     }
 
-    // Après avoir appliqué les filtres, réinitialisez les valeurs des paramètres de recherche
-    this.dateInput.nativeElement.value = '';
-    this.statusInput.nativeElement.value = '';
-    this.clientNameInput.nativeElement.value = '';
-    this.paymentMethodInput.nativeElement.selectedIndex = 0;
-}
+    // Appliquer les filtres
+    this.filteredTransactions = filteredTransactions;
+    this.calculatePages();
+    this.setPage(1);
+  }
 
   resetFilters(): void {
     this.filteredTransactions = this.transactions;
