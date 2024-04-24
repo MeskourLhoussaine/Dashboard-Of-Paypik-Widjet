@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TransactionService } from '../../services/transaction.service';
 import { Transaction } from '../../models/transaction.model';
 import { PaymentMethod } from '../../models/payment-method.model';
@@ -22,6 +22,13 @@ export class TransactionComponent implements OnInit {
   pagedTransactions: any[] = [];
   pages: number[] = [];
   totalPages: number = 0;
+  /*pour vider les champs*/
+
+  @ViewChild('dateInput') dateInput!: ElementRef;
+  @ViewChild('statusInput') statusInput!: ElementRef;
+  @ViewChild('clientNameInput') clientNameInput!: ElementRef;
+  @ViewChild('paymentMethodInput') paymentMethodInput!: ElementRef;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -120,12 +127,22 @@ export class TransactionComponent implements OnInit {
     if (paymentMethod) {
       this.filterByPaymentMethod(paymentMethod);
     }
-  }
+
+    // Après avoir appliqué les filtres, réinitialisez les valeurs des paramètres de recherche
+    this.dateInput.nativeElement.value = '';
+    this.statusInput.nativeElement.value = '';
+    this.clientNameInput.nativeElement.value = '';
+    this.paymentMethodInput.nativeElement.selectedIndex = 0;
+}
 
   resetFilters(): void {
     this.filteredTransactions = this.transactions;
     this.calculatePages();
     this.setPage(1);
+    this.dateInput.nativeElement.value = '';
+    this.statusInput.nativeElement.value = '';
+    this.clientNameInput.nativeElement.value = '';
+    this.paymentMethodInput.nativeElement.selectedIndex = 0;
   }
 
   loadPymentMethods(): void {

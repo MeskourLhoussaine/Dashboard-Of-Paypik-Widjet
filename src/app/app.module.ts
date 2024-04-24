@@ -12,6 +12,7 @@ import {httpInterceptorProviders} from './_core/interceptors/interceptors.provid
 import {StrategyProviders} from "./_core/strategies/strategy.providers";
 import {UtilsProviders} from "./shared/utils/utils.providers";
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     PublicModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    NgxPaginationModule 
+    NgxPaginationModule , /*utiliser pour la pagination*/
+    FormsModule  /*utiliser pour vider les champs de filtrage */
   ],
   providers: [
     httpInterceptorProviders,
