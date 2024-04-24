@@ -72,79 +72,79 @@
                 </th>
               </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-              <tr *ngFor="let transaction of filteredTransactions">
-                <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
-                  <div class="inline-flex items-center gap-x-3">
-                    <span>{{ transaction.transactionId }}</span>
-                  </div>
-                </td>
-                <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{{ transaction.timestamp }}</td>
-               <td class="px-4 py-4 text-sm font-medium whitespace-nowrap" [ngStyle]="getStatusStyles(transaction.status)">
-  <div class="inline-flex items-center px-3 py-1 rounded-full gap-x-2" [ngStyle]="getStatusBadgeStyles(transaction.status)">
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M10 3L4.5 8.5L2 6" [ngStyle]="getStatusIconStyles(transaction.status)" />
-    </svg>
-    <h2 class="text-sm font-normal">{{ transaction.status }}</h2>
-  </div>
-</td>
-                <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-                  <div class="flex items-center gap-x-2">
-                    <div>
-                      <h2 class="text-sm font-medium text-gray-800 dark:text-white ">{{ transaction.clientName }}</h2>
-                      <p class="text-xs font-normal text-gray-600 dark:text-gray-400">{{ transaction.clientEmail }}</p>
-                    </div>
-                  </div>
-                </td>
-                <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">Monthly subscription</td>
-                <td class="px-4 py-4 text-sm whitespace-nowrap">
-                  <div class="flex items-center gap-x-6">
-                    <button class="text-gray-500 transition-colors duration-200 dark:hover:text-indigo-500 dark:text-gray-300 hover:text-indigo-500 focus:outline-none">
-                      Archive
-                    </button>
-                    <button class="text-blue-500 transition-colors duration-200 hover:text-indigo-500 focus:outline-none">
-                      Download
-                    </button>
-                  </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                  <div class="inline-block">
-                    <a href="/marchand/dashboard/transaction" class="inline-block px-6 py-3 font-sans text-xs font-bold text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none hover:bg-gray-900/10 active:bg-gray-900/20">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"></path>
-                      </svg>
-                    </a>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
+          <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+  <ng-container *ngFor="let transaction of pagedTransactions">
+    <tr>
+      <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
+        <div class="inline-flex items-center gap-x-3">
+          <span>{{ transaction.transactionId }}</span>
+        </div>
+      </td>
+      <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{{ transaction.timestamp }}</td>
+      <td class="px-4 py-4 text-sm font-medium whitespace-nowrap" [ngStyle]="getStatusStyles(transaction.status)">
+        <div class="inline-flex items-center px-3 py-1 rounded-full gap-x-2" [ngStyle]="getStatusBadgeStyles(transaction.status)">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 3L4.5 8.5L2 6" [ngStyle]="getStatusIconStyles(transaction.status)" />
+          </svg>
+          <h2 class="text-sm font-normal">{{ transaction.status }}</h2>
+        </div>
+      </td>
+      <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+        <div class="flex items-center gap-x-2">
+          <div>
+            <h2 class="text-sm font-medium text-gray-800 dark:text-white ">{{ transaction.clientName }}</h2>
+            <p class="text-xs font-normal text-gray-600 dark:text-gray-400">{{ transaction.clientEmail }}</p>
+          </div>
+        </div>
+      </td>
+      <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">Monthly subscription</td>
+      <td class="px-4 py-4 text-sm whitespace-nowrap">
+        <div class="flex items-center gap-x-6">
+          <button class="text-gray-500 transition-colors duration-200 dark:hover:text-indigo-500 dark:text-gray-300 hover:text-indigo-500 focus:outline-none">
+            Archive
+          </button>
+          <button class="text-blue-500 transition-colors duration-200 hover:text-indigo-500 focus:outline-none">
+            Download
+          </button>
+        </div>
+      </td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+        <div class="inline-block">
+          <a href="/marchand/dashboard/transaction" class="inline-block px-6 py-3 font-sans text-xs font-bold text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none hover:bg-gray-900/10 active:bg-gray-900/20">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"></path>
+            </svg>
+          </a>
+        </div>
+      </td>
+    </tr>
+  </ng-container>
+</tbody>
+
           </table>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="flex items-center justify-between mt-6">
-    <a href="#" class="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
+   <div class="flex items-center justify-between mt-6">
+    <a  class="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800" (click)="onPageChange(currentPage - 1)">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
         <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
       </svg>
       <span>Previous</span>
     </a>
     <div class="items-center hidden md:flex gap-x-3">
-      <a href="#" class="px-2 py-1 text-sm text-blue-500 rounded-md dark:bg-gray-800 bg-blue-100/60">1</a>
-      <a href="#" class="px-2 py-1 text-sm text-gray-500 rounded-md dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">2</a>
-      <a href="#" class="px-2 py-1 text-sm text-gray-500 rounded-md dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">3</a>
-      <a href="#" class="px-2 py-1 text-sm text-gray-500 rounded-md dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">...</a>
-      <a href="#" class="px-2 py-1 text-sm text-gray-500 rounded-md dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">12</a>
-      <a href="#" class="px-2 py-1 text-sm text-gray-500 rounded-md dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">13</a>
-      <a href="#" class="px-2 py-1 text-sm text-gray-500 rounded-md dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100">14</a>
+      <ng-container *ngFor="let page of pages">
+        <a class="px-2 py-1 text-sm text-green-500 rounded-md dark:bg-green-800 bg-green-100/60" (click)="onPageChange(page)">{{ page }}</a>
+      </ng-container>
     </div>
-    <a href="#" class="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
+    <a  class="flex items-center px-5 py-2 text-sm text-green-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 dark:bg-green-900 dark:text-green-200 dark:border-green-700 dark:hover:bg-green-800" (click)="onPageChange(currentPage + 1)">
       <span>Next</span>
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
         <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
       </svg>
     </a>
   </div>
+
 </section>

@@ -11,25 +11,27 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./transaction.component.css']
 })
 export class TransactionComponent implements OnInit {
-  transactions: any[] = []; // Suppose you have some transactions data here
+  transactions: any[] = [];
   paymentMethods: PaymentMethod[] | undefined;
   filteredTransactions: any[] = [];
   selectedPaymentMethod: string = '';
-  merchantId: number = 5;
+  merchantId: number = 4;
+  /*les variables de pagination */
+  itemsPerPage: number = 4;
+  currentPage: number = 1;
+  pagedTransactions: any[] = [];
+  pages: number[] = [];
+  totalPages: number = 0;
 
-
-  constructor(  private route: ActivatedRoute,private transactionService: TransactionService,
-    private paymentMethodService:PaymentMethodService, 
-    
+  constructor(
+    private route: ActivatedRoute,
+    private transactionService: TransactionService,
+    private paymentMethodService: PaymentMethodService
   ) {}
 
   ngOnInit(): void {
-  //  this.route.paramMap.subscribe(params => {
-     // this.merchantId = Number(params.get('merchantId'));
-      this.retrieveTransactions();
-      this.merchantId ;
-     this.loadPymentMethods();
-   // });
+    this.retrieveTransactions();
+    this.loadPymentMethods();
   }
 
   retrieveTransactions(): void {
@@ -37,90 +39,95 @@ export class TransactionComponent implements OnInit {
       next: (data: Transaction[]) => {
         this.transactions = data;
         this.filteredTransactions = data;
+        this.calculatePages();
+        this.setPage(this.currentPage);
+      },
+      error: (error) => console.error(error)
+    });
+  }
+                                 /*la fonction pour filtrer par date */
+  filterByDate(date: string): void {
+    if (!date) {
+      this.filteredTransactions = [...this.transactions];
+      return;
+    }
+
+    const inputDate = new Date(date);
+    this.filteredTransactions = this.transactions.filter(transaction => {
+      const transactionDate = new Date(transaction.timestamp);
+      return (
+        transactionDate.getFullYear() === inputDate.getFullYear() &&
+        transactionDate.getMonth() === inputDate.getMonth() &&
+        transactionDate.getDate() === inputDate.getDate()
+      );
+    });
+    this.calculatePages();
+    this.setPage(1);
+  }
+                         /*la fonction pour filtrer par status */
+  filterByStatus(status: string): void {
+    if (!status) {
+      this.filteredTransactions = [...this.transactions];
+      return;
+    }
+
+    this.filteredTransactions = this.transactions.filter(transaction =>
+      transaction.status.toLowerCase() === status.toLowerCase()
+    );
+    this.calculatePages();
+    this.setPage(1);
+  }
+                          /*la fonction pour filtrer par clinet Name  */
+  filterByClientName(name: string): void {
+    this.filteredTransactions = this.transactions.filter(transaction =>
+      transaction.clientName.toLowerCase().includes(name.toLowerCase())
+    );
+    this.calculatePages();
+    this.setPage(1);
+  }
+                      /*la fonction pour filtrer par PaymentMethode */
+  filterByPaymentMethod(paymentMethod: string): void {
+    if (!paymentMethod) {
+      this.filteredTransactions = [...this.transactions];
+      return;
+    }
+              
+    this.transactionService.getTransactionsByPaymentMethodName(paymentMethod).subscribe({
+      next: (data: Transaction[]) => {
+        this.filteredTransactions = data;
+        this.calculatePages();
+        this.setPage(1);
       },
       error: (error) => console.error(error)
     });
   }
 
-  
-filterByDate(date: string): void {
-  if (!date) {
+  onSearch(date: string, status: string, clientName: string, paymentMethod: string): void {
     this.filteredTransactions = [...this.transactions];
-    return;
-  }
-  
-  const inputDate = new Date(date);
-  this.filteredTransactions = this.transactions.filter(transaction => {
-    const transactionDate = new Date(transaction.timestamp);
-    return (
-      transactionDate.getFullYear() === inputDate.getFullYear() &&
-      transactionDate.getMonth() === inputDate.getMonth() &&
-      transactionDate.getDate() === inputDate.getDate()
-    );
-  });
-}
 
-filterByStatus(status: string): void {
-  if (!status) {
-    this.filteredTransactions = [...this.transactions];
-    return;
-  }
-  
-  this.filteredTransactions = this.transactions.filter(transaction =>
-    transaction.status.toLowerCase() === status.toLowerCase()
-  );
-}
+    if (date) {
+      this.filterByDate(date);
+    }
 
-//filtrer par name client 
+    if (status) {
+      this.filterByStatus(status);
+    }
 
-filterByClientName(name: string): void {
-  // Implement your filter by client name logic here
-  this.filteredTransactions = this.transactions.filter(transaction =>
-    transaction.clientName.toLowerCase().includes(name.toLowerCase())
-  );
-}
-//filtrer par PaymentMethode 
-filterByPaymentMethod(paymentMethod: string): void {
-  if (!paymentMethod) {
-    this.filteredTransactions = [...this.transactions];
-    return;
-  }
-  
-  this.transactionService.getTransactionsByPaymentMethodName(paymentMethod).subscribe({
-    next: (data: Transaction[]) => {
-      this.filteredTransactions = data;
-    },
-    error: (error) => console.error(error)
-  });
-}
+    if (clientName) {
+      this.filterByClientName(clientName);
+    }
 
-
-onSearch(date: string, status: string, clientName: string, paymentMethod: string): void {
-  this.filteredTransactions = [...this.transactions];
-
-  if (date) {
-    this.filterByDate(date);
+    if (paymentMethod) {
+      this.filterByPaymentMethod(paymentMethod);
+    }
   }
 
-  if (status) {
-    this.filterByStatus(status);
-  }
-
-  if (clientName) {
-    this.filterByClientName(clientName);
-  }
-
-  if (paymentMethod) {
-    this.filterByPaymentMethod(paymentMethod);
-  }
-  
-}
   resetFilters(): void {
-    // Reset filters to show all transactions
     this.filteredTransactions = this.transactions;
+    this.calculatePages();
+    this.setPage(1);
   }
 
-  //##################load methode payment #################
   loadPymentMethods(): void {
     this.paymentMethodService.getAll().subscribe(
       (data) => {
@@ -132,50 +139,85 @@ onSearch(date: string, status: string, clientName: string, paymentMethod: string
     );
   }
 
-//s########################status style###################### 
-getStatusStyles(status: string): any {
-  switch (status.toLowerCase()) {
-    case 'completed':
-      return { color: 'green' };
-    case 'pending':
-      return { color: 'yellow' };
-    case 'cancelled':
-      return { color: 'red' };
-    default:
-      return {};
+  getStatusStyles(status: string): any {
+    switch (status.toLowerCase()) {
+      case 'completed':
+        return { color: 'green' };
+      case 'pending':
+        return { color: 'yellow' };
+      case 'cancelled':
+        return { color: 'red' };
+      default:
+        return {};
+    }
   }
-}
 
-getStatusBadgeStyles(status: string): any {
-  switch (status.toLowerCase()) {
-    case 'completed':
-      return { backgroundColor: 'rgba(46, 204, 113, 0.6)' }; // Green color with alpha
-    case 'pending':
-      return { backgroundColor: 'rgba(241, 196, 15, 0.6)' }; // Yellow color with alpha
-    case 'cancelled':
-      return { backgroundColor: 'rgba(231, 76, 60, 0.6)' }; // Red color with alpha
-    default:
-      return {};
+  getStatusBadgeStyles(status: string): any {
+    switch (status.toLowerCase()) {
+      case 'completed':
+        return { backgroundColor: 'rgba(46, 204, 113, 0.6)', };
+      case 'pending':
+        return { backgroundColor: 'rgba(241, 196, 15, 0.6)' };
+      case 'cancelled':
+        return { backgroundColor: 'rgba(231, 76, 60, 0.6)' };
+      default:
+        return {};
+    }
   }
-}
 
-getStatusIconStyles(status: string): any {
-  switch (status.toLowerCase()) {
-    case 'completed':
-      return { stroke: 'green' };
-    case 'pending':
-      return { stroke: 'yellow' };
-    case 'cancelled':
-      return { stroke: 'red' };
-    default:
-      return {};
+  getStatusIconStyles(status: string): any {
+    switch (status.toLowerCase()) {
+      case 'completed':
+        return { stroke: 'green' };
+      case 'pending':
+        return { stroke: 'yellow' };
+      case 'cancelled':
+        return { stroke: 'red' };
+      default:
+        return {};
+    }
   }
-}
-//#################################### End style ##########################################
 
-/*----------------- nombre transaction par merchant --------------------*/
+  calculatePages(): void {
+    this.totalPages = Math.ceil(this.filteredTransactions.length / this.itemsPerPage);
+    this.pages = Array(this.totalPages).fill(0).map((_, i) => i + 1);
+  }
 
-calculateMerchantTransactions(): number {
-  return this.filteredTransactions.filter(transaction => transaction.merchantId === this.merchantId).length;
-}
+  onPageChange(page: number): void {
+    this.setPage(page);
+  }
+  setPage(page: number): void {
+    this.currentPage = page;
+    const startIndex = (page - 1) * this.itemsPerPage;
+    const endIndex = Math.min(startIndex + this.itemsPerPage, this.filteredTransactions.length);
+    this.pagedTransactions = this.filteredTransactions.slice(startIndex, endIndex);
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.setPage(page);
+    }
+  }
+
+  goToPreviousPage(): void {
+    if (this.currentPage > 1) {
+      this.goToPage(this.currentPage - 1);
+    }
+  }
+
+  goToNextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.goToPage(this.currentPage + 1);
+    }
+  }
+
+  paginateTransactions(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = Math.min(startIndex + this.itemsPerPage, this.filteredTransactions.length);
+    this.pagedTransactions = this.filteredTransactions.slice(startIndex, endIndex);
+  }
+  calculateMerchantTransactions(): number {
+    return this.filteredTransactions.filter(transaction => transaction.merchantId === this.merchantId).length;
+  }
 }
