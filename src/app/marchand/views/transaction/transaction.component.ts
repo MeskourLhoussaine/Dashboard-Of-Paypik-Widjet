@@ -17,7 +17,7 @@ export class TransactionComponent implements OnInit {
   selectedPaymentMethod: string = '';
   merchantId: number = 4;
   /*les variables de pagination */
-  itemsPerPage: number = 4;
+  itemsPerPage: number = 6;
   currentPage: number = 1;
   pagedTransactions: any[] = [];
   pages: number[] = [];
@@ -270,5 +270,15 @@ export class TransactionComponent implements OnInit {
   }
   calculateMerchantTransactions(): number {
     return this.filteredTransactions.filter(transaction => transaction.merchantId === this.merchantId).length;
+  }
+
+  ////////////Scroll to section //////////////
+
+  @ViewChild('detailedDescription') detailedDescription!: ElementRef;
+
+  scrollToSection() {
+    if (this.detailedDescription && this.detailedDescription.nativeElement) {
+      this.detailedDescription.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 }

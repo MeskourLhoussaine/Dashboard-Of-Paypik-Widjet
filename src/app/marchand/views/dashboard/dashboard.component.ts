@@ -2,6 +2,10 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit,ViewChild, ElementRef} from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import { pageTransition } from 'src/app/shared/utils/animations';
+import { TransactionService } from '../../services/transaction.service';
+import { PaymentMethodService } from '../../services/payment-method.service';
+import { ActivatedRoute } from '@angular/router';
+import { Transaction } from '../../models/transaction.model';
 Chart.register(...registerables);
 
 @Component({
@@ -11,9 +15,18 @@ Chart.register(...registerables);
   animations: [pageTransition]
 })
 export class DashboardComponent implements OnInit {
+  totalTransactions: number = 0;
+  transactions: Transaction[] = [];
+  merchantId: number = 4;
+  constructor(
+    private route: ActivatedRoute,
+    private transactionService: TransactionService,
+    private paymentMethodService: PaymentMethodService
+  ) {}
   eventDate: any = formatDate(new Date(), 'MMM dd, yyyy', 'en');
 
   ngOnInit(): void {
+    this.retrieveTransactions();
     var myChart = new Chart("areaWiseSale", {
       type: 'doughnut',
       data: {
@@ -59,4 +72,20 @@ export class DashboardComponent implements OnInit {
     }
 
     //###########logic calculat transaction
+    retrieveTransactions(): void {
+      this.transactionService.getTransactionsByMerchantId(this.merchantId).subscribe({
+        next: (data: Transaction[]) => {
+          this.transactions = data;
+          // Appelez cette méthode pour calculer le nombre total de transactions
+        },
+        error: (error) => console.error(error)
+        
+      });
+    }
+  
+    get calculateTotalTransactions() {
+      return this.transactions.length;
+    }
+  
+   
 }
