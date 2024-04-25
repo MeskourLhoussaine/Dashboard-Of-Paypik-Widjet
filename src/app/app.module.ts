@@ -13,6 +13,7 @@ import {StrategyProviders} from "./_core/strategies/strategy.providers";
 import {UtilsProviders} from "./shared/utils/utils.providers";
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
+import { ChartModule } from 'primeng/chart';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { FormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     HttpClientModule,
     NgxPaginationModule , /*utiliser pour la pagination*/
-    FormsModule  /*utiliser pour vider les champs de filtrage */
+    FormsModule, /*utiliser pour vider les champs de filtrage */
+    ChartModule
   ],
   providers: [
     httpInterceptorProviders,

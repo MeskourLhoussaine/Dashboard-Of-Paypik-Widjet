@@ -16,6 +16,12 @@ export class PaymentMethodService {
       catchError(this.handleError)
     );
   }
+/*utiliser pour Frant details transaction */
+  getPymentMethodeById(id: number): Observable<PaymentMethod> {
+    return this.http.get<PaymentMethod>(`${this.API_URL}/findById/${id}`).pipe(
+      catchError(this.handleError)
+    );
+  }
 
 
   getPaimentMethodeBymerchanId(merchantId: number): Observable<PaymentMethod[]> {

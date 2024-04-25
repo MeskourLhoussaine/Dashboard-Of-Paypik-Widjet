@@ -33,8 +33,8 @@ export class TransactionService {
 
 
 
-  getTerrainById(id: number): Observable<Transaction> {
-    return this.http.get<Transaction>(`${this.API_URL}/findById/${id}`).pipe(
+  getTransactionById(id: number): Observable<Transaction> {
+    return this.http.get<Transaction>(`${this.API_URL}/${id}`).pipe(
       catchError(this.handleError)
     );
   }

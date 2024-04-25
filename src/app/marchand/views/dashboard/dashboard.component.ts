@@ -62,6 +62,8 @@ export class DashboardComponent implements OnInit {
         },
       },
     });
+
+    /****** */
   }
 
     ////////////Scroll to section //////////////
@@ -90,5 +92,9 @@ export class DashboardComponent implements OnInit {
       return this.transactions.length;
     }
   
-   
-}
+   /*chart*/
+   data: any;
+
+   options: any;
+
+  }

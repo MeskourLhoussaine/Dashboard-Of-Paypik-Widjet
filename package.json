@@ -21,6 +21,7 @@
     "chart.js": "^4.4.2",
     "ngx-pagination": "^6.0.3",
     "notyf": "^3.10.0",
+    "primeng": "^17.14.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"

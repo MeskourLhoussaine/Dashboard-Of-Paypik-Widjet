@@ -1,4 +1,4 @@
-<nav class="flex items-center justify-between pb-4" aria-label="Pagination">
+<nav class="flex items-center justify-between pb-2" aria-label="Pagination">
     <a class="relative inline-flex items-center rounded-md border border-emerald-700 bg-transparent px-4 py-2 text-sm font-medium text-emerald-700 hover:bg-emerald-50"
         rel="prev" href="/admin/dashboard"><svg stroke="currentColor" fill="currentColor" stroke-width="0"
             viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
@@ -8,9 +8,6 @@
         </svg> &nbsp; Previous
     </a>
 </nav>
-
-
-
 <div [@pageTransition]>
     <section class="grid grid-cols-1 my-4 xl:grid-cols-1 2xl:grid-cols-1 gap-5">
         <!-- component -->
@@ -31,17 +28,17 @@
                                    
                                 </div>
                                 <div class="flex-auto sm:ml-5 justify-evenly">
-                                    <div class="flex items-center justify-between sm:mt-2">
+                                    <div class="flex items-center justify-between sm:mt-2" *ngFor= "let marchand of merchants">
                                         <div class="flex items-center">
                                             <div class="flex flex-col">
                                                 <div
                                                     class="w-full flex-none text-lg text-gray-200 font-bold leading-none">
-                                                    {{merchants[0]?.merchantName}}</div>
+                                                    {{marchand.merchantName}}</div>
                                                 <div class="flex-auto text-gray-400 my-1">
-                                                    <span class="mr-3 "> {{merchants[0]?.merchantHost}}</span>
+                                                    <span class="mr-3 "> {{marchand.merchantHost}}</span>
                                                 </div>
                                                  <div class="flex-auto text-gray-400 my-1">
-                                                    <span class="mr-3 "> {{merchants[0]?.merchantDescrip}}</span>
+                                                    <span class="mr-3 "> {{marchand.merchantDescrip}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -121,8 +118,8 @@
                                 <div class="flex justify-between items-center ">
                                     <i class="fab fa-behance text-xl text-gray-400"></i>
                                 </div>
-                                <div class="text-2xl text-gray-100 font-medium leading-8 mt-5">20</div>
-                                <div class="text-sm text-gray-500">Components</div>
+                                <div class="text-2xl text-gray-100 font-medium leading-8 mt-5">{{transactions.length}}</div>
+                                <div class="text-sm text-gray-500">N°Transaction-client </div>
                             </div>
                         </div>
                         <div class="hover:scale-105 duration-700 col-span-12 sm:col-span-4">
@@ -162,10 +159,10 @@
                         <!--confirm modal-->
                         
                         <!--elements-->
-                        <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+                        <div class="grid gap-4 grid-cols-1 md:grid-cols-2"  *ngFor="let transaction of transactions">
                             <!-- elements 1 -->
                             <div
-                                class="flex flex-col p-4 bg-white border-gray-800 shadow-md hover:shodow-lg rounded-2xl cursor-pointer transition ease-in duration-500  transform hover:scale-105">
+                                class="flex flex-col p-4 bg-white border border-gray-800 shadow-md hover:text-green-500 text-gray-400 hover:shodow-lg rounded-2xl transition ease-in duration-500  transform hover:scale-105 cursor-pointer">
 
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center mr-auto">
@@ -178,113 +175,105 @@
                                         </div>
 
                                         <div class="flex flex-col ml-3">
-                                            <div class="font-medium leading-none text-gray-100">client Name</div>
-                                            <p class="text-sm text-gray-500 leading-none mt-1">Email</p>
+                                        <p class="underline">Client info</p>
+                                            <div class="font-medium leading-none text-gras-100"> Nom Clien :{{transaction.clientName}}</div>
+                                            <p class="text-sm text-gray-500 leading-none mt-1">{{transaction.clientEmail}}</p>
                                         </div>
                                     </div>
-                                    <a href="#"
-                                        class="flex-no-shrink text-xs  font-medium tracking-wider  text-gray-400 hover:text-green-400 transition ease-in duration-300 mr-2"><svg
-                                            xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                            fill="currentColor">
-                                            <path fill-rule="evenodd"
-                                                d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z"
-                                                clip-rule="evenodd"></path>
-                                        </svg></a>
-                                    <a hrf="#"
-                                        class="flex-no-shrink text-xs  font-medium tracking-wider  text-gray-400 hover:text-green-400 transition ease-in duration-300 ml-2"><svg
-                                            xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                            fill="currentColor">
-                                            <path fill-rule="evenodd"
-                                                d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z"
-                                                clip-rule="evenodd"></path>
-                                        </svg></a>
+                                    
+                                   
                                 </div>
                             </div>
                             <!--elements 2-->
                             <div
-                                class="flex flex-col p-4 bg-white border-gray-800 shadow-md hover:shodow-lg rounded-2xl cursor-pointer transition ease-in duration-500  transform hover:scale-105">
+                                class="flex flex-col p-4 bg-white border border-gray-800 shadow-md hover:text-green-500 text-gray-400 hover:shodow-lg rounded-2xl transition ease-in duration-500  transform hover:scale-105 cursor-pointer">
 
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center mr-auto">
 
-                                        <div class="inline-flex w-12 h-12"><img
-                                                src="https://tailwindcomponents.com/storage/avatars/njkIbPhyZCftc4g9XbMWwVsa7aGVPajYLRXhEeoo.jpg"
-                                                alt="aji" class=" relative p-1 w-12 h-12 object-cover rounded-2xl"><span
-                                                class="absolute w-12 h-12 inline-flex border-2 rounded-2xl border-green-400 opacity-75"></span>
+                                        <div class="inline-flex w-12 h-12">
+                                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                                </svg>
+
                                             <span></span>
                                         </div>
 
                                         <div class="flex flex-col ml-3 min-w-0">
-                                            <div class="font-medium leading-none text-gray-100">Groupname</div>
-                                            <p class="text-sm text-gray-500 leading-none mt-1 truncate">Beautiful
-                                                hand-crafted SVG icons</p>
+                                          <p class="underline">Commande details</p>
+
+                                            <div class="font-medium leading-none text-gras-100">N°:  {{transactions[0]?.orderId}}</div>
+                                            <p class="text-sm text-gray-500 leading-none mt-1 truncate">Montant:{{transactions[0]?.amount}} {{transactions[0]?.currency}}</p>
+                                             <p class="text-sm leading-none mt-1 truncate text-gray-500">{{transactions[0]?.timestamp}} </p>
                                         </div>
                                     </div>
                                     <div class="flex flex-col ml-3 min-w-0">
-                                        <span class="text-xs text-gray-500 text-right mb-1">9:02pm</span>
-                                        <div class="flex">
-                                            <a
-                                                class="flex-no-shrink text-xs  font-medium tracking-wider  text-gray-400 hover:text-green-400 transition ease-in duration-300 mr-2"><svg
-                                                    xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
-                                                    viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fill-rule="evenodd"
-                                                        d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM12.293 7.293a1 1 0 011.414 0L15 8.586l1.293-1.293a1 1 0 111.414 1.414L16.414 10l1.293 1.293a1 1 0 01-1.414 1.414L15 11.414l-1.293 1.293a1 1 0 01-1.414-1.414L13.586 10l-1.293-1.293a1 1 0 010-1.414z"
-                                                        clip-rule="evenodd" />
-                                                </svg></a>
-                                            <span
-                                                class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-green-100 bg-green-400 rounded-full ml-2">99</span>
-                                        </div>
+                                        <!--vous pouvais ajouter ici -->
+                                       
                                     </div>
                                 </div>
                             </div>
                             <!--elements 2-->
                             <div
-                                class="flex flex-col p-4 bg-white border-gray-800 shadow-md hover:shodow-lg rounded-2xl cursor-pointer transition ease-in duration-500  transform hover:scale-105">
+                                class="flex flex-col p-4 bg-white border border-gray-800 shadow-md hover:text-green-500 text-gray-400 hover:shodow-lg rounded-2xl transition ease-in duration-500  transform hover:scale-105 cursor-pointer">
                                 <div class="flex items-center justify-between">
-                                    <div class="flex items-center mr-auto">
-                                        <div class="inline-flex w-12 h-12"><img
-                                                src="https://tailwindcomponents.com/storage/avatars/njkIbPhyZCftc4g9XbMWwVsa7aGVPajYLRXhEeoo.jpg"
-                                                alt="aji" class=" relative p-1 w-12 h-12 object-cover rounded-2xl"><span
-                                                class="absolute w-12 h-12 inline-flex border-2 rounded-2xl border-gray-600 opacity-75"></span>
-                                            <span></span>
-                                        </div>
+                                 <div class="flex items-center mr-auto">
+    <div class="flex flex-col ml-3 min-w-0">
+     <p class="underline">Etat De transaction</p>
+        <div class="flex items-center">
+           
+            <ng-container *ngIf="transaction.status === 'completed'">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-400 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clip-rule="evenodd"/>
+                </svg>
+            </ng-container>
+            <ng-container *ngIf="transaction.status === 'Cancelled'">
+                 <svg class="animate-ping h-10 w-10 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M14.293 5.293l-9 9a1 1 0 0 0 1.414 1.414l9-9a1 1 0 0 0-1.414-1.414zM5.293 5.293l9 9a1 1 0 1 0 1.414-1.414l-9-9a1 1 0 0 0-1.414 1.414z" clip-rule="evenodd"/>
+    </svg>
+     
+            </ng-container>
+<ng-container *ngIf=" transactions[0]?.status === 'Pending'">
+ <svg class="animate-spin h-8 w-8 text-orange-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A8.001 8.001 0 0112 4v8h8c0 4.418-3.582 8-8 8v-4.586L6 17.291z"></path>
+    </svg>
+</ng-container>
 
-                                        <div class="flex flex-col ml-3 min-w-0">
-                                            <div class="font-medium leading-none text-gray-100">Status</div>
-                                            <p class="text-sm text-gray-500 leading-none mt-1 truncate">Jul 066, 2021,
-                                                8.25 PM</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex flex-col ml-3 min-w-0">
-                                        <div class="flex">
-                                            <h5 class="flex items-center font-medium text-gray-300 mr-2">
-                                               
-                                            </h5>
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-400 ml-2"
-                                                viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd"
-                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </div>
-                                    </div>
+             <div class="font-medium leading-none ml-1 " [ngClass]="{
+                'text-green-500': transactions[0]?.status === 'completed',
+                'text-red-500': transactions[0]?.status === 'Cancelled',
+                'text-yellow-400': transactions[0]?.status === 'Pending' ,
+            }">
+               {{ transaction.status }}
+            </div>
+        </div>
+        
+ 
+
+        <p class="text-sm leading-none mt-1 truncate text-gray-500"><!--Ajouter --></p>
+    </div>
+</div>
+
+                                   
                                 </div>
                             </div>
                             <div
                                 class="flex flex-col p-4 bg-white border border-gray-800 shadow-md hover:text-green-500 text-gray-400 hover:shodow-lg rounded-2xl transition ease-in duration-500  transform hover:scale-105 cursor-pointer">
                                 <div class="flex items-center justify-between">
-                                    <div class="flex items-center mr-auto">
+                                    <div class="flex items-center mr-auto" *ngFor="let method of paymentMethods">
                                         <div class="-space-x-5 flex ">
-                                            <img src="https://tailwindcomponents.com/storage/avatars/njkIbPhyZCftc4g9XbMWwVsa7aGVPajYLRXhEeoo.jpg"
-                                                alt="aji"
-                                                class=" relative p-1 w-12 h-12 object-cover rounded-2xl border-2 border-gray-600 bg-white">
-                                            <img src="https://tailwindcomponents.com/storage/avatars/njkIbPhyZCftc4g9XbMWwVsa7aGVPajYLRXhEeoo.jpg"
+                                            
+                                            <img src="{{method.iconUrl}}"
                                                 alt="aji"
                                                 class=" relative p-1 w-12 h-12 object-cover rounded-2xl border-2 border-gray-600 bg-white shadow">
                                         </div>
 
-                                        <div class="flex flex-col ml-3 min-w-0">
-                                            <div class="font-medium leading-none text-gray-100">Pending Request </div>
+                                        <div class="flex flex-col ml-3 min-w-0" >
+                                        <p class="underline">Payment Methode </p>
+                                            <div class="font-medium leading-none text-gras-100">{{method.name}} </div>
                                             <p class="text-sm text-gray-500 leading-none mt-1 truncate">Jul 066, 2021,
                                                 8.25 PM</p>
                                         </div>
