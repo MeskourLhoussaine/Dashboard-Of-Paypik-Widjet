@@ -1,46 +1,47 @@
-
-
 <div [@pageTransition]>
-    <section class="grid grid-cols-1 mb-4 xl:grid-cols-2 gap-5">
-        <div class="card p-8">
-            <div class="card-title flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold leading-none">most used methods</h3>
-            </div>
-            <div id="chart" class="w-2/5 mx-auto">
-                <div class="flex justify-center items-center">
-                    <canvas id="areaWiseSale"></canvas>
-                </div>
-            </div>    
+  <section class="grid grid-cols-1 mb-4 xl:grid-cols-2 gap-5">
+   <div class="card p-8 bg-white rounded-lg shadow-md">
+    <div class="card-title mb-4">
+        <h3 class="text-xl font-bold leading-none text-gray-300" [ngClass]="{ 'invisible': !showTitle }">Méthodes les plus utilisées</h3>
+    </div>
+    <div id="chart" class="w-3/6 mx-auto relative" (mouseenter)="showTitle = true" (mouseleave)="showTitle = false">
+        <div class="flex justify-center items-center">
+            <canvas id="areaWiseSale" class="w-full h-64"></canvas>
         </div>
-        <div class="card p-8 bg-emerald-600 text-gray-50">
-            <h3 class="text-2xl">
-                Description Détaillée
-            </h3>
-            <h2 class="my-5 text-emerald-100 hover:text-white hover:underline" (click)="scrollToSection()">
-                <span class="text-4xl font-bold">
-                   {{calculateTotalTransactions}}
-                </span> 
-                Transactions
-            </h2>
-            
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Neque molestiae incidunt officiis veritatis,
-                architecto nam soluta, exercitationem minima laudantium harum qui.
-            </p>
-            <div class="my-5"></div>
-        </div>
-    </section>
-    
-    <div class="my-5"></div>
-    
-    <section #detailedDescription>
-        <div class="card p-5 mt-5">
-            <div class="card-title flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold leading-none">Details des transactions</h3>
-            </div>
-            <app-transaction></app-transaction>
-        </div>
-    </section>
+    </div>
+</div>
+
+    <div class="card p-8 bg-emerald-600 text-gray-50">
+      <h3 class="text-2xl">Description Détaillée</h3>
+      <h2
+        class="my-5 text-emerald-100 hover:text-white hover:underline"
+        (click)="scrollToSection()"
+      >
+        <span class="text-4xl font-bold">
+          {{ calculateTotalTransactions }}
+        </span>
+        Transactions
+      </h2>
+
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Neque
+        molestiae incidunt officiis veritatis, architecto nam soluta,
+        exercitationem minima laudantium harum qui.
+      </p>
+      <div class="my-5"></div>
+    </div>
+  </section>
+
+  <div class="my-5"></div>
+
+  <section #detailedDescription>
+    <div class="card p-5 mt-5">
+      <div class="card-title flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold leading-none">Details des transactions</h3>
+      </div>
+      <app-transaction></app-transaction>
+    </div>
+  </section>
 </div>
 
 <!-- ///////////// Scroll To Top ////////////////// -->
