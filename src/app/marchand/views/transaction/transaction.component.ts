@@ -15,22 +15,17 @@ export class TransactionComponent implements OnInit {
   paymentMethods: PaymentMethod[] | undefined;
   filteredTransactions: any[] = [];
   selectedPaymentMethod: string = '';
-  /*recuperer les id*/
-  merchantId!: number ;
-  transactionId!:number;
-  /*les variables de pagination */
+  merchantId!: number;
+  transactionId!: number;
   itemsPerPage: number = 4;
   currentPage: number = 1;
   pagedTransactions: any[] = [];
   pages: number[] = [];
   totalPages: number = 0;
-  /*pour vider les champs*/
-
   @ViewChild('dateInput') dateInput!: ElementRef;
   @ViewChild('statusInput') statusInput!: ElementRef;
   @ViewChild('clientNameInput') clientNameInput!: ElementRef;
   @ViewChild('paymentMethodInput') paymentMethodInput!: ElementRef;
-
 
   constructor(
     private route: ActivatedRoute,
@@ -42,13 +37,9 @@ export class TransactionComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.merchantId = +params['id'];
       this.transactionId = +params['transaId'];
-      console.log('Merchant ID:', this.merchantId);
-      console.log('Transaction ID:', this.transactionId);
-       // '+' convertit la chaîne en nombre
-      this.retrieveTransactions(); // Appel à retrieveTransactions après avoir obtenu l'ID
+      this.retrieveTransactions();
       this.loadPymentMethods();
     });
-    
   }
 
   retrieveTransactions(): void {
@@ -62,13 +53,12 @@ export class TransactionComponent implements OnInit {
       error: (error) => console.error(error)
     });
   }
-                                 /*la fonction pour filtrer par date */
+
   filterByDate(date: string): void {
     if (!date) {
       this.filteredTransactions = [...this.transactions];
       return;
     }
-
     const inputDate = new Date(date);
     this.filteredTransactions = this.transactions.filter(transaction => {
       const transactionDate = new Date(transaction.timestamp);
@@ -81,20 +71,19 @@ export class TransactionComponent implements OnInit {
     this.calculatePages();
     this.setPage(1);
   }
-                         /*la fonction pour filtrer par status */
+
   filterByStatus(status: string): void {
     if (!status) {
       this.filteredTransactions = [...this.transactions];
       return;
     }
-
     this.filteredTransactions = this.transactions.filter(transaction =>
       transaction.status.toLowerCase() === status.toLowerCase()
     );
     this.calculatePages();
     this.setPage(1);
   }
-                          /*la fonction pour filtrer par clinet Name  */
+
   filterByClientName(name: string): void {
     this.filteredTransactions = this.transactions.filter(transaction =>
       transaction.clientName.toLowerCase().includes(name.toLowerCase())
@@ -102,13 +91,12 @@ export class TransactionComponent implements OnInit {
     this.calculatePages();
     this.setPage(1);
   }
-                      /*la fonction pour filtrer par PaymentMethode */
+
   filterByPaymentMethod(paymentMethod: string): void {
     if (!paymentMethod) {
       this.filteredTransactions = [...this.transactions];
       return;
     }
-              
     this.transactionService.getTransactionsByPaymentMethodName(paymentMethod).subscribe({
       next: (data: Transaction[]) => {
         this.filteredTransactions = data;
@@ -120,24 +108,16 @@ export class TransactionComponent implements OnInit {
   }
 
   applyFilters(): void {
-    let filteredTransactions = [...this.transactions]; // Utilisation de la copie pour ne pas modifier les données originales
-   
-    /*
-    
-    ;*/
-    // Filtrer par date si une date est spécifiée
+    let filteredTransactions = [...this.transactions];
     const date = this.dateInput.nativeElement.value;
     if (date) {
       filteredTransactions = filteredTransactions.filter(transaction => {
         const transactionDate = new Date(transaction.timestamp);
         const inputDate = new Date(date);
         return transactionDate.toDateString() === inputDate.toDateString();
-       
       });
       this.dateInput.nativeElement.value = '';
     }
-
-    // Filtrer par statut si un statut est spécifié
     const status = this.statusInput.nativeElement.value;
     if (status) {
       filteredTransactions = filteredTransactions.filter(transaction =>
@@ -145,8 +125,6 @@ export class TransactionComponent implements OnInit {
       );
       this.statusInput.nativeElement.value = '';
     }
-
-    // Filtrer par nom de client si un nom est spécifié
     const clientName = this.clientNameInput.nativeElement.value;
     if (clientName) {
       filteredTransactions = filteredTransactions.filter(transaction =>
@@ -154,8 +132,6 @@ export class TransactionComponent implements OnInit {
       );
       this.clientNameInput.nativeElement.value = '';
     }
-
-    // Filtrer par méthode de paiement si une méthode est spécifiée
     const paymentMethod = this.paymentMethodInput.nativeElement.value;
     if (paymentMethod) {
       this.transactionService.getTransactionsByPaymentMethodName(paymentMethod).subscribe({
@@ -168,12 +144,8 @@ export class TransactionComponent implements OnInit {
         error: (error) => console.error(error)
       });
       this.paymentMethodInput.nativeElement.selectedIndex = 0;
-      return; // Sortir de la fonction pour éviter les actions supplémentaires sur les transactions filtrées
-    
-      
+      return;
     }
-
-    // Appliquer les filtres
     this.filteredTransactions = filteredTransactions;
     this.calculatePages();
     this.setPage(1);
@@ -247,6 +219,7 @@ export class TransactionComponent implements OnInit {
   onPageChange(page: number): void {
     this.setPage(page);
   }
+
   setPage(page: number): void {
     this.currentPage = page;
     const startIndex = (page - 1) * this.itemsPerPage;
@@ -278,11 +251,10 @@ export class TransactionComponent implements OnInit {
     const endIndex = Math.min(startIndex + this.itemsPerPage, this.filteredTransactions.length);
     this.pagedTransactions = this.filteredTransactions.slice(startIndex, endIndex);
   }
+
   calculateMerchantTransactions(): number {
     return this.filteredTransactions.filter(transaction => transaction.merchantId === this.merchantId).length;
   }
-
-  ////////////Scroll to section //////////////
 
   @ViewChild('detailedDescription') detailedDescription!: ElementRef;
 
