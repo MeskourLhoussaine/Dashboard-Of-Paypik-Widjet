@@ -54,6 +54,7 @@ export class TransactionComponent implements OnInit {
     });
   }
 
+  // Filter transactions by date
   filterByDate(date: string): void {
     if (!date) {
       this.filteredTransactions = [...this.transactions];
@@ -72,6 +73,7 @@ export class TransactionComponent implements OnInit {
     this.setPage(1);
   }
 
+  // Filter transactions by status
   filterByStatus(status: string): void {
     if (!status) {
       this.filteredTransactions = [...this.transactions];
@@ -84,6 +86,7 @@ export class TransactionComponent implements OnInit {
     this.setPage(1);
   }
 
+  // Filter transactions by client name
   filterByClientName(name: string): void {
     this.filteredTransactions = this.transactions.filter(transaction =>
       transaction.clientName.toLowerCase().includes(name.toLowerCase())
@@ -92,6 +95,7 @@ export class TransactionComponent implements OnInit {
     this.setPage(1);
   }
 
+  // Filter transactions by payment method
   filterByPaymentMethod(paymentMethod: string): void {
     if (!paymentMethod) {
       this.filteredTransactions = [...this.transactions];
@@ -107,6 +111,7 @@ export class TransactionComponent implements OnInit {
     });
   }
 
+  // Apply all active filters
   applyFilters(): void {
     let filteredTransactions = [...this.transactions];
     const date = this.dateInput.nativeElement.value;
@@ -151,6 +156,7 @@ export class TransactionComponent implements OnInit {
     this.setPage(1);
   }
 
+  // Reset all filters to default
   resetFilters(): void {
     this.filteredTransactions = this.transactions;
     this.calculatePages();
@@ -161,6 +167,7 @@ export class TransactionComponent implements OnInit {
     this.paymentMethodInput.nativeElement.selectedIndex = 0;
   }
 
+  // Load all payment methods
   loadPymentMethods(): void {
     this.paymentMethodService.getAll().subscribe(
       (data) => {
@@ -172,6 +179,7 @@ export class TransactionComponent implements OnInit {
     );
   }
 
+  // Get status styles for rendering
   getStatusStyles(status: string): any {
     switch (status.toLowerCase()) {
       case 'completed':
@@ -185,6 +193,7 @@ export class TransactionComponent implements OnInit {
     }
   }
 
+  // Get status badge styles for rendering
   getStatusBadgeStyles(status: string): any {
     switch (status.toLowerCase()) {
       case 'completed':
@@ -198,6 +207,7 @@ export class TransactionComponent implements OnInit {
     }
   }
 
+  // Get status icon styles for rendering
   getStatusIconStyles(status: string): any {
     switch (status.toLowerCase()) {
       case 'completed':
@@ -211,15 +221,18 @@ export class TransactionComponent implements OnInit {
     }
   }
 
+  // Calculate total number of pages
   calculatePages(): void {
     this.totalPages = Math.ceil(this.filteredTransactions.length / this.itemsPerPage);
     this.pages = Array(this.totalPages).fill(0).map((_, i) => i + 1);
   }
 
+  // Handle page change event
   onPageChange(page: number): void {
     this.setPage(page);
   }
 
+  // Set current page and update paged transactions
   setPage(page: number): void {
     this.currentPage = page;
     const startIndex = (page - 1) * this.itemsPerPage;
@@ -227,6 +240,7 @@ export class TransactionComponent implements OnInit {
     this.pagedTransactions = this.filteredTransactions.slice(startIndex, endIndex);
   }
 
+  // Navigate to specific page
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
@@ -234,27 +248,33 @@ export class TransactionComponent implements OnInit {
     }
   }
 
+  // Navigate to previous page
   goToPreviousPage(): void {
     if (this.currentPage > 1) {
       this.goToPage(this.currentPage - 1);
     }
   }
 
+  // Navigate to next page
   goToNextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.goToPage(this.currentPage + 1);
     }
   }
 
+  // Paginate transactions based on current page
   paginateTransactions(): void {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = Math.min(startIndex + this.itemsPerPage, this.filteredTransactions.length);
     this.pagedTransactions = this.filteredTransactions.slice(startIndex, endIndex);
   }
 
+  // Calculate the number of transactions for the current merchant
   calculateMerchantTransactions(): number {
     return this.filteredTransactions.filter(transaction => transaction.merchantId === this.merchantId).length;
   }
+
+  //////////// Scroll to section //////////////
 
   @ViewChild('detailedDescription') detailedDescription!: ElementRef;
 
