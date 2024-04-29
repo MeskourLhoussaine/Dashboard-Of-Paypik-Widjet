@@ -28,7 +28,9 @@ import { ChartModule } from 'primeng/chart';
     HttpClientModule,
     NgxPaginationModule , /*utiliser pour la pagination*/
     FormsModule, /*utiliser pour vider les champs de filtrage */
-    ChartModule
+    ChartModule,
+    HttpClientModule
+    
   ],
   providers: [
     httpInterceptorProviders,

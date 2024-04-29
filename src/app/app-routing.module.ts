@@ -6,6 +6,7 @@ import {AppRoutes} from './app.routes';
 import {PageNotFoundComponent} from './public/page-not-found/page-not-found.component';
 import { PublicComponent } from './public/public.component';
 import { MarchandComponent } from './marchand/marchand.component';
+import { CommercialComponent } from './commercial/commercial.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,7 @@ const routes: Routes = [
     component: AdminComponent,
     loadChildren: () => import('./admin/admin.module').then((m) => m.AdminModule),
   },
+ 
   {
     path: AppRoutes.Marchand,
     component: MarchandComponent,

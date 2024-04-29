@@ -18,6 +18,8 @@ import { TransactionComponent } from './views/transaction/transaction.component'
 import { MoreComponent } from './views/more/more.component';
 import { AddmarchandformComponent } from './views/addmarchandform/addmarchandform.component';
 import { SingletransactionComponent } from './views/singletransaction/singletransaction.component';
+import { EditmarchandformComponent } from './views/editmarchandform/editmarchandform.component';
+
 
 
 const routes: Routes = [
@@ -44,16 +46,16 @@ const routes: Routes = [
         component: SingletransactionComponent,
       },
       {
-        path: AdminRoutes.Add,
-        component: AddmarchandformComponent,
+        path: AdminRoutes.Edit,
+        component: EditmarchandformComponent,
       },
     ],
   },
 
 
   {
-    title: 'Events',
-    path: AdminRoutes.Events,
+    title: 'Validation',
+    path: AdminRoutes.Validation,
     component: EventsComponent,
     children: [
       {

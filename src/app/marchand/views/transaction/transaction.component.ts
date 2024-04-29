@@ -17,11 +17,12 @@ export class TransactionComponent implements OnInit {
   selectedPaymentMethod: string = '';
   merchantId!: number;
   transactionId!: number;
-  itemsPerPage: number = 4;
+  itemsPerPage: number = 6;
   currentPage: number = 1;
   pagedTransactions: any[] = [];
   pages: number[] = [];
   totalPages: number = 0;
+
   @ViewChild('dateInput') dateInput!: ElementRef;
   @ViewChild('statusInput') statusInput!: ElementRef;
   @ViewChild('clientNameInput') clientNameInput!: ElementRef;
@@ -183,11 +184,11 @@ export class TransactionComponent implements OnInit {
   getStatusStyles(status: string): any {
     switch (status.toLowerCase()) {
       case 'completed':
-        return { color: 'green' };
+        return { color: '#166534 ' };
       case 'pending':
-        return { color: 'yellow' };
+        return { color: '#854d0e ' };
       case 'cancelled':
-        return { color: 'red' };
+        return { color: '#991b1b ' };
       default:
         return {};
     }
@@ -197,11 +198,11 @@ export class TransactionComponent implements OnInit {
   getStatusBadgeStyles(status: string): any {
     switch (status.toLowerCase()) {
       case 'completed':
-        return { backgroundColor: 'rgba(46, 204, 113, 0.6)', };
+        return { backgroundColor: '#dcfce7' };
       case 'pending':
-        return { backgroundColor: 'rgba(241, 196, 15, 0.6)' };
+        return { backgroundColor: '#fef9c3' };
       case 'cancelled':
-        return { backgroundColor: 'rgba(231, 76, 60, 0.6)' };
+        return { backgroundColor: '#fee2e2' };
       default:
         return {};
     }
@@ -251,16 +252,18 @@ export class TransactionComponent implements OnInit {
   // Navigate to previous page
   goToPreviousPage(): void {
     if (this.currentPage > 1) {
-      this.goToPage(this.currentPage - 1);
+      this.currentPage--;
+      this.paginateTransactions();
     }
   }
 
   // Navigate to next page
   goToNextPage(): void {
     if (this.currentPage < this.totalPages) {
-      this.goToPage(this.currentPage + 1);
-    }
-  }
+      this.currentPage++;
+      this.paginateTransactions();
+      }
+    }
 
   // Paginate transactions based on current page
   paginateTransactions(): void {
@@ -269,9 +272,9 @@ export class TransactionComponent implements OnInit {
     this.pagedTransactions = this.filteredTransactions.slice(startIndex, endIndex);
   }
 
-  // Calculate the number of transactions for the current merchant
-  calculateMerchantTransactions(): number {
-    return this.filteredTransactions.filter(transaction => transaction.merchantId === this.merchantId).length;
+  // Calculate the number of transactions for the current marchand
+  calculateMarchandTransactions(): number {
+    return this.filteredTransactions.filter(transaction => transaction.marchandId === this.merchantId).length;
   }
 
   //////////// Scroll to section //////////////
@@ -282,5 +285,4 @@ export class TransactionComponent implements OnInit {
     if (this.detailedDescription && this.detailedDescription.nativeElement) {
       this.detailedDescription.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
-  }
-}
+  }}

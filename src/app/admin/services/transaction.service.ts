@@ -1,35 +1,46 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
-import { Marchand } from "src/app/admin/model/marchand.model";
+import { Merchant } from '../model/merchant.model';
 
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TransactionService {
+  readonly API_URL = 'http://localhost:8080/api/merchants';
+  constructor(private http: HttpClient) {}
 
-  constructor(private http:HttpClient){ }
-
-  public getMarchands(): Observable<Array<Marchand>> {
-    return this.http.get<Array<Marchand>>(environment.backendHost + "/marchands")
+  public getMarchands(): Observable<Array<Merchant>> {
+    return this.http.get<Array<Merchant>>(
+      environment.apiUrl + '/marchands'
+    );
   }
 
-  public searchMarchands(keyword: string): Observable<Array<Marchand>> {
-    return this.http.get<Array<Marchand>>(environment.backendHost + "/marchands/search?keyword=" + keyword)
+  public searchMarchands(keyword: string): Observable<Array<Merchant>> {
+    return this.http.get<Array<Merchant>>(
+      environment.apiUrl + '/marchands/search?keyword=' + keyword
+    );
   }
 
-  public saveMarchand(customer: Marchand): Observable<Marchand> {
-    return this.http.post<Marchand>(environment.backendHost + "/marchands", customer)
+  public saveMarchand(customer: Merchant): Observable<Merchant> {
+    return this.http.post<Merchant>(
+      environment.apiUrl + '/marchands',
+      customer
+    );
   }
 
-  public deleteMarchand(id: number): Observable<Marchand> {
-    return this.http.delete<Marchand>(environment.backendHost + "/marchands/" + id)
+  public deleteMarchand(id: number): Observable<Merchant> {
+    return this.http.delete<Merchant>(
+      environment.apiUrl + '/marchands/' + id
+    );
   }
 
-  public editMarchand(id: number, customer: Marchand): Observable<Marchand> {
-    return this.http.put<Marchand>(environment.backendHost + "/marchands/" + id, customer)
+  public editMarchand(id: number, customer: Merchant): Observable<Merchant> {
+    return this.http.put<Merchant>(
+      environment.apiUrl + '/marchands/' + id,
+      customer
+    );
   }
-
 }
