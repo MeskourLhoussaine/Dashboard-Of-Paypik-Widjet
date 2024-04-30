@@ -8,6 +8,7 @@ import { Merchant } from '../../models/merchant.model';
 import { Transaction } from '../../models/transaction.model';
 import { PaymentMethod } from '../../models/payment-method.model';
 import { pageTransition } from 'src/app/shared/utils/animations';
+import jsPDF from 'jspdf';
 
 Chart.register(...registerables);
 
@@ -18,6 +19,13 @@ Chart.register(...registerables);
   animations: [pageTransition],
 })
 export class MoreComponent implements OnInit {
+  transactionData = {
+    id: '123456',
+    date: '2024-04-29',
+    amount: '$100.00',
+    // Add other transaction information here
+  };
+
   merchants: Merchant[] = [];
   transactions: Transaction[] = [];
   paymentMethods: PaymentMethod[] = [];
@@ -36,31 +44,31 @@ export class MoreComponent implements OnInit {
       this.merchantId = +params['id'];
       this.transactionId = +params['transaId'];
       this.retrieveMerchantAndTransaction();
+      
     });
   }
 
-  // Retrieve both merchant and transaction details
   retrieveMerchantAndTransaction(): void {
     this.retrieveMerchantById();
     this.retrieveTransactionById();
   }
 
-  // Retrieve merchant by ID
   retrieveMerchantById(): void {
     this.merchantService.getMerchantById(this.merchantId).subscribe({
       next: (data: Merchant) => {
-        console.log('Données du marchand :', data);
+        console.log('Merchant data:', data);
         this.merchants.push(data);
+        
       },
       error: (error) => console.error(error),
     });
   }
 
-  // Retrieve transaction by ID
   retrieveTransactionById(): void {
     this.transactionService.getTransactionById(this.transactionId).subscribe({
       next: (data: Transaction) => {
-        console.log('Données du Transaction :', data);
+        console.log('Transaction data:', data);
+        
         this.transactions.push(data);
         this.retrievePaymentMethodById(data.paymentMethodId);
       },
@@ -68,14 +76,16 @@ export class MoreComponent implements OnInit {
     });
   }
 
-  // Retrieve payment method by ID
   retrievePaymentMethodById(paymentMethodId: number): void {
     this.paymentMethodService.getPymentMethodeById(paymentMethodId).subscribe({
       next: (data: PaymentMethod) => {
         this.paymentMethods.push(data);
-        console.log('Détails de la méthode de paiement :', data);
+        console.log('Payment method details:', data);
       },
       error: (error) => console.error(error),
     });
   }
+
+ /*utiliser pour moreComponent */
+ 
 }

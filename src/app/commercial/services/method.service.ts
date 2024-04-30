@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class MethodService {
 
-  private host:string="http://localhost:8085";
+  private host:string="http://localhost:8080";
 
   constructor(private http:HttpClient){ }
 

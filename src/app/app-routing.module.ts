@@ -19,6 +19,11 @@ const routes: Routes = [
     component: AdminComponent,
     loadChildren: () => import('./admin/admin.module').then((m) => m.AdminModule),
   },
+  {
+    path: AppRoutes.Commercial,
+    component: CommercialComponent,
+    loadChildren: () => import('./commercial/commercial.module').then((m) => m.CommercialModule),
+  },
  
   {
     path: AppRoutes.Marchand,

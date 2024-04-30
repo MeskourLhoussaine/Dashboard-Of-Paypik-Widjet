@@ -59,4 +59,3 @@ export class EventsComponent implements OnInit{
   
 
 }
-
