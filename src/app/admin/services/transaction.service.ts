@@ -9,37 +9,37 @@ import { Merchant } from '../model/merchant.model';
   providedIn: 'root',
 })
 export class TransactionService {
-  readonly API_URL = 'http://localhost:8080/api/merchants';
+  API_URL =  environment.apiUrl; //api
   constructor(private http: HttpClient) {}
 
   public getMarchands(): Observable<Array<Merchant>> {
     return this.http.get<Array<Merchant>>(
-      environment.apiUrl + '/api/merchants/findAll'
+      this.API_URL + '/api/merchants/findAll'
     );
   }
 
   public searchMarchands(keyword: string): Observable<Array<Merchant>> {
     return this.http.get<Array<Merchant>>(
-      environment.apiUrl + '/marchands/search?keyword=' + keyword
+     this.API_URL + '/marchands/search?keyword=' + keyword
     );
   }
 
   public saveMarchand(customer: Merchant): Observable<Merchant> {
     return this.http.post<Merchant>(
-      environment.apiUrl + '/marchands',
+      this.API_URL + '/marchands',
       customer
     );
   }
 
   public deleteMarchand(id: number): Observable<Merchant> {
     return this.http.delete<Merchant>(
-      environment.apiUrl + '/marchands/' + id
+      this.API_URL+ '/marchands/' + id
     );
   }
 
   public editMarchand(id: number, customer: Merchant): Observable<Merchant> {
     return this.http.put<Merchant>(
-      environment.apiUrl + '/marchands/' + id,
+      this.API_URL+ '/marchands/' + id,
       customer
     );
   }

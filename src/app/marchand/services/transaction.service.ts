@@ -2,81 +2,52 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Transaction } from '../models/transaction.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionService {
-  readonly API_URL = 'http://localhost:8080/api/Transaction'; 
+  
+   API_URL = environment.apiUrl; 
  
   constructor(private http: HttpClient) {}
 
-  
-
-  getAll(): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(`${this.API_URL}/findAll`).pipe(
+  public getAll(): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(this.API_URL + "/findAll").pipe(
       catchError(this.handleError)
     );
   }
-
   getTransactionsByMerchantId(merchantId: number): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(`${this.API_URL}/findByMerchantId/${merchantId}`).pipe(
+    return this.http.get<Transaction[]>(this.API_URL+'/api/Transaction/findByMerchantId/'+merchantId).pipe(
       catchError(this.handleError)
     );
   }
 
   getTransactionsByPaymentMethodName(name: string): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(`${this.API_URL}/BypymentMethothodName/${name}`);
+    return this.http.get<Transaction[]>(this.API_URL+'/api/Transaction/BypymentMethothodName/'+name);
 
   }
 //le nombre de transaction a fait le client dans un merchand
 getNumberOfTransactionsByClientAndMerchant(merchantId: number, clientName: string): Observable<number> {
-  return this.http.get<number>(`${this.API_URL}/NumberOfTransactionsByClientAndMerchant/${merchantId}/${clientName}`).pipe(
+  return this.http.get<number>(this.API_URL+'/api/Transaction/NumberOfTransactionsByClientAndMerchant/'+merchantId+'/'+clientName).pipe(
     catchError(this.handleError)
   );
 }
 
 
 
-//###########
+
 
 
 
   getTransactionById(id: number): Observable<Transaction> {
-    return this.http.get<Transaction>(`${this.API_URL}/${id}`).pipe(
+    return this.http.get<Transaction>(this.API_URL+'/api/Transaction/'+id).pipe(
       catchError(this.handleError)
     );
   }
-
-  saveTerrain(terrain: Transaction): Observable<any> {
-    return this.http.post(`${this.API_URL}/save`, terrain).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  updateTerrain(terrain: Transaction): Observable<any> {
-    return this.http.put(`${this.API_URL}/update`, terrain).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  deleteTerrain(id: number): Observable<any> {
-    return this.http.delete(`${this.API_URL}/delete/${id}`).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  deleteAll(): Observable<any> {
-    return this.http.delete(`${this.API_URL}/deleteAll`).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  findByName(name: string): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(`${this.API_URL}/findByName?name=${name}`).pipe(
-      catchError(this.handleError)
-    );
-  }
+//###########
+ 
 
  
   private handleError(error: HttpErrorResponse) {

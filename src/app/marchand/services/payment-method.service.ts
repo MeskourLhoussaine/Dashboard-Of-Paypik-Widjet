@@ -2,30 +2,31 @@ import { Injectable } from '@angular/core';
 import { PaymentMethod } from '../models/payment-method.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentMethodService {
-  readonly API_URL = 'http://localhost:8080/api/merchant_methods'; // Assurez-vous que l'URL est correcte
 
+ API_URL = environment.apiUrl; 
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<PaymentMethod[]> {
-    return this.http.get<PaymentMethod[]>(`${this.API_URL}/findAll`).pipe(
+    return this.http.get<PaymentMethod[]>(this.API_URL+'/api/merchant_methods/findAll').pipe(
       catchError(this.handleError)
     );
   }
 /*utiliser pour Frant details transaction */
   getPymentMethodeById(id: number): Observable<PaymentMethod> {
-    return this.http.get<PaymentMethod>(`${this.API_URL}/findById/${id}`).pipe(
+    return this.http.get<PaymentMethod>(this.API_URL+'/api/merchant_methods/findById/'+id).pipe(
       catchError(this.handleError)
     );
   }
 
 
   getPaimentMethodeBymerchanId(merchantId: number): Observable<PaymentMethod[]> {
-    return this.http.get<PaymentMethod[]>(`${this.API_URL}/pymentMethodeBymerchanId/${merchantId}`).pipe(
+    return this.http.get<PaymentMethod[]>(this.API_URL+'/pymentMethodeBymerchanId/'+merchantId).pipe(
       catchError(this.handleError)
     );
   }
