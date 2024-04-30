@@ -22,6 +22,7 @@ export class TransactionComponent implements OnInit {
   pagedTransactions: any[] = [];
   pages: number[] = [];
   totalPages: number = 0;
+  clientName!:string;
 
   @ViewChild('dateInput') dateInput!: ElementRef;
   @ViewChild('statusInput') statusInput!: ElementRef;
@@ -38,6 +39,8 @@ export class TransactionComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.merchantId = +params['id'];
       this.transactionId = +params['transaId'];
+      this.clientName = params['clientName'];
+      console.log('Client Name:', this.clientName);
       this.retrieveTransactions();
       this.loadPymentMethods();
     });

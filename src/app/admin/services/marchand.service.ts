@@ -13,7 +13,7 @@ export class MarchandService {
   constructor(private http:HttpClient){ }
 
   public getMarchands(): Observable<Array<Merchant>> {
-    return this.http.get<Array<Merchant>>(environment.apiUrl + "api/merchants/findAll")
+    return this.http.get<Array<Merchant>>(environment.apiUrl + "/api/merchants/findAll")
   }
 
   // public searchMarchands(keyword: string): Observable<Array<Marchand>> {

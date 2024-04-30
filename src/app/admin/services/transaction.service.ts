@@ -14,7 +14,7 @@ export class TransactionService {
 
   public getMarchands(): Observable<Array<Merchant>> {
     return this.http.get<Array<Merchant>>(
-      environment.apiUrl + '/marchands'
+      environment.apiUrl + '/api/merchants/findAll'
     );
   }
 
