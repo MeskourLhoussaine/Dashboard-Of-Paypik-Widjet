@@ -21,15 +21,14 @@ export class MarchandService {
   // }
 
   public saveMarchand(marchand: Merchant): Observable<Merchant> {
-    return this.http.post<Merchant>(environment.apiUrl + "/marchand/save", marchand)
+    return this.http.post<Merchant>(environment.apiUrl + "/api/merchants/save", marchand)
   }
 
   public deleteMarchand(id: number): Observable<Merchant> {
-    return this.http.delete<Merchant>(environment.apiUrl + "/marchand/delete/" + id)
+    return this.http.delete<Merchant>(environment.apiUrl + "/api/merchants/delete/" + id)
   }
 
-  public editMarchand(marchand: Merchant): Observable<Merchant> {
-    return this.http.put<Merchant>(environment.apiUrl + "/marchands/" + marchand.merchantId, marchand);
+  public editMarchand( marchand: Merchant): Observable<Merchant> {
+    return this.http.put<Merchant>(environment.apiUrl + "/api/merchants/updateMarchand/" + marchand.merchantId,marchand);
   }
-
 }
