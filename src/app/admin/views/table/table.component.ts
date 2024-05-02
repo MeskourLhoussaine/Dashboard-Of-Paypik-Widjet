@@ -8,7 +8,7 @@ import { MarchandService } from '../../services/marchand.service';
   templateUrl: './table.component.html',
   styleUrl: './table.component.css'
 })
-export class TableComponent implements OnInit{
+export class TableComponent  implements OnInit{
 
   @Input() columnData: any = [];
   @Input() rowData: any = [];
@@ -42,7 +42,6 @@ export class TableComponent implements OnInit{
     this.marchandService.getMarchands().subscribe(
       (data: Merchant[]) => {
         this.marchands = data;
-        console.log('Détails de Merchant :', data);
       },
       (error) => {
         console.error('Error fetching marchands:', error);
