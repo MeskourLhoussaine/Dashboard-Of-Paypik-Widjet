@@ -2,6 +2,8 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import { pageTransition } from 'src/app/shared/utils/animations';
+import { MarchandService } from '../../services/marchand.service';
+import { Merchant } from '../../model/merchant.model';
 Chart.register(...registerables);
 
 @Component({
@@ -46,5 +48,27 @@ export class DashboardComponent implements OnInit {
         },
       },
     });
+  }
+  ////////////////////  services  /////////////////////
+
+  marchands: Merchant[] = [];
+
+  constructor(
+    private marchandService: MarchandService
+  ) {}
+
+  fetchMarchands() {
+    this.marchandService.getMarchands().subscribe(
+      (data: Merchant[]) => {
+        this.marchands = data;
+      },
+      (error) => {
+        console.error('Error fetching marchands:', error);
+      }
+    );
+  }
+
+  get totalMarchands() {
+    return this.marchands.length;
   }
 }
