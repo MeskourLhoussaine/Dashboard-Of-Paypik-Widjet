@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class MerchantService {
-  API_URL = environment.apiUrl; ; 
+  API_URL = environment.apiUrl;  
   constructor(private http: HttpClient) { }
 
   getMerchantById(id: number): Observable<Merchant> {
