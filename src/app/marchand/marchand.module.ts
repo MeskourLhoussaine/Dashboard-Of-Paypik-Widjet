@@ -32,6 +32,7 @@ imports: [
     SettingsModule,
     ScrollToTopComponent,
     FormsModule,
+    
 ]
 })
 export class MarchandModule { }

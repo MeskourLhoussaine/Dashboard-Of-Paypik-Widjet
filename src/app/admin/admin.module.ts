@@ -19,6 +19,7 @@ import { AddmarchandformComponent } from './views/addmarchandform/addmarchandfor
 import { SingletransactionComponent } from './views/singletransaction/singletransaction.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditmarchandformComponent } from './views/editmarchandform/editmarchandform.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { EditmarchandformComponent } from './views/editmarchandform/editmarchand
     ModalModule,
     FormsModule,
     ReactiveFormsModule,
+    NgApexchartsModule,
    
     
     
