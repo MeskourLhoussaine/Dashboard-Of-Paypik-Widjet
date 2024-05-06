@@ -47,7 +47,8 @@ methods: PaymentMethod[] = [];
 
     this.createChart();
     this.retrieveMerchantById();
-    this.getMethodsUsingByMarchand();
+   
+    this.getPaymentMethods();
    
     
   });
@@ -74,33 +75,6 @@ findStatusForMethod(method: PaymentMethod): void {
     });
 }
 
-
-getMethodsUsingByMarchand(): void {
-  this.merchantService.getMarchandPaymentMethod(this.merchantId).subscribe({
-    next: (data: any[]) => {
-      for (let i = 0; i < data.length; i++) {
-        const methodData = data[i];
-        const method: PaymentMethod = {
-          paymentMethodId: methodData.paymentMethodId,
-          name: methodData.methodName,
-          description: methodData.methodDescription,
-          iconUrl: methodData.methodIconUrl
-        };
-        this.methods.push(method); // Ajoute la méthode à la liste des méthodes
-        this.methodNumbers.push(method.paymentMethodId); 
-        this.findStatusForMethod(method);// Ajoute le paymentMethodId à la liste des identifiants de méthode
-      }
-      console.log('Merchant paymentMethode', this.methods);
-      console.log('Array of method IDs: ', this.methodNumbers);
-      /***************/
-   
-    },
-    error: (error) => console.error(error),
-  });
-
- 
-}
-/*update implement */
 updateStatus(paymentMethodId: number, event: any): void {
   const checked = event.target.checked;
   this.methodService
@@ -116,26 +90,57 @@ updateStatus(paymentMethodId: number, event: any): void {
       },
     });
 }
-
-/*
-getMerchantPaymentStatus() {
-  if (!isNaN( this.methodNumbers[0])) { // Vérifie si paymentMethodId est un nombre valide
-    this.merchantService.findStatusMerchantPayment(this.merchantId, this.methodNumbers[0])
-      .subscribe(status => {
-        this.status = status;
-        console.log('Merchant payment status: ', this.status);
+getPaymentMethods(): void {
+  this.methodService.getAll().subscribe(
+    (data) => {
+      this.paymentMethods = data;
+      
+      console.log('les methodes pay:', this.paymentMethods);
+      
+      // Call findStatusForMethod for each payment method
+      this.paymentMethods.forEach((method) => {
+        this.findStatusForMethod(method);
       });
-  } else {
-    console.error('Invalid paymentMethodId: ', this.paymentMethodId);
-  }
+    },
+    (error) => {
+      console.error('Error fetching unverified demandes:', error);
+    }
+  );
 }
 
-*/
+/*
 
+getMethodsUsingByMarchand(): void {
+  this.merchantService.getMarchandPaymentMethod(this.merchantId).subscribe({
+    next: (data: any[]) => {
+      for (let i = 0; i < data.length; i++) {
+        const methodData = data[i];
+        const method: PaymentMethod = {
+          paymentMethodId: methodData.paymentMethodId,
+          name: methodData.name,
+          description: methodData.description,
+          iconUrl: methodData.iconUrl
+        };
+        this.methods.push(method); // Ajoute la méthode à la liste des méthodes
+        this.methodNumbers.push(method.paymentMethodId); 
+        this.findStatusForMethod(method);// Ajoute le paymentMethodId à la liste des identifiants de méthode
+      }
+      console.log('Merchant paymentMethode', this.methods);
+      console.log('Array of method IDs: ', this.methodNumbers);
+ 
+   
+    },
+    error: (error) => console.error(error),
+  });
 
+ 
+}*/
 
+isMethodChecked(method: PaymentMethod): boolean {
+  return this.methods.some(m => m.paymentMethodId === method.paymentMethodId && m.status === true);
+}
 
-
+/*update implement */
 
 
   ////////////Scroll to section //////////////
@@ -147,6 +152,7 @@ getMerchantPaymentStatus() {
       this.detailedDescription.nativeElement.scrollIntoView({ behavior: 'smooth' });
     }
   }
+// test chart 
 
   //-----------------------------chart ---------------------
   createChart() {
@@ -185,7 +191,5 @@ getMerchantPaymentStatus() {
     });
   }
 }
-function getMerchantPaymentStatus() {
-  throw new Error('Function not implemented.');
-}
+
 

@@ -105,7 +105,7 @@
         style="max-height: 500px"
       >
         <ul role="list" class="divide-y divide-gray-200">
-          <li class="py-3 sm:py-4" *ngFor="let method of methods">
+          <li class="py-3 sm:py-4" *ngFor="let method of paymentMethods">
             <div class="flex items-center space-x-4">
               <div class="flex-shrink-0">
                 <img
@@ -123,8 +123,12 @@
                 class="inline-flex items-center text-base font-semibold text-gray-900"
               >
                 <label class="inline-flex items-center me-5 cursor-pointer">
-                 <input type="checkbox" [checked]="method?.status" (change)="updateStatus(method.paymentMethodId, $event)" class="sr-only peer"/>
-
+                  <input
+                    type="checkbox" [checked]="isMethodChecked(method)" 
+                    [checked]="method?.status" (change)="updateStatus(method.paymentMethodId, $event)"
+                   
+                    class="sr-only peer"
+                  />
 
                   <div
                     class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-emerald-300 dark:peer-focus:ring-emerald-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-600"
