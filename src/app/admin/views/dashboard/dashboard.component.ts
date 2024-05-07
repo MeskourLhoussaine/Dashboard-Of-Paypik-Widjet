@@ -4,6 +4,8 @@ import { Chart, registerables } from 'chart.js';
 import { pageTransition } from 'src/app/shared/utils/animations';
 import { MarchandService } from '../../services/marchand.service';
 import { Merchant } from '../../model/merchant.model';
+import { Transaction } from '../../model/transaction.model';
+import { TransactionService } from '../../services/transaction.service';
 Chart.register(...registerables);
 
 @Component({
@@ -16,6 +18,9 @@ export class DashboardComponent implements OnInit {
   eventDate: any = formatDate(new Date(), 'MMM dd, yyyy', 'en');
 
   ngOnInit(): void {
+    this.fetchMarchands();
+    this.fetchTransactions();
+    this.fetchTransactionsTotalAmounts();
     var myChart = new Chart("areaWiseSale", {
       type: 'doughnut',
       data: {
@@ -49,12 +54,17 @@ export class DashboardComponent implements OnInit {
       },
     });
   }
-  ////////////////////  services  /////////////////////
+
+
+////////////////////  services  /////////////////////
 
   marchands: Merchant[] = [];
+  transactions: Transaction[]=[];
+  totalAmount!: number;
 
   constructor(
-    private marchandService: MarchandService
+    private marchandService: MarchandService,
+    private transitionService : TransactionService
   ) {}
 
   fetchMarchands() {
@@ -68,7 +78,68 @@ export class DashboardComponent implements OnInit {
     );
   }
 
+  fetchTransactions() {
+    this.transitionService.getTransactions().subscribe(
+      (data: Transaction[]) => {
+        this.transactions = data;
+      },
+      (error) => {
+        console.error('Error fetching transactions:', error);
+      }
+    );
+  }
+
+  fetchTransactionsTotalAmounts() {
+    this.transitionService.getTransactions().subscribe(
+      (data: Transaction[]) => {
+        // Define exchange rates
+        const exchangeRates: { [key: string]: number } = {
+          'MAD': 1,
+          'EUR': 0.092701,
+          'USD': 0.1
+          // Add more currencies and their exchange rates as needed
+        };
+  
+        // Calculate the sum of transaction amounts in MAD
+        let totalMADAmount = 0;
+        for (const transaction of data) {
+          // Convert each transaction amount to MAD
+          if (transaction.currency in exchangeRates) {
+            totalMADAmount += this.convertToMAD(transaction.amount, transaction.currency, exchangeRates);
+          } else {
+            console.error(`No exchange rate found for ${transaction.currency} to MAD`);
+          }
+        }
+        this.totalAmount = totalMADAmount;
+      },
+      (error) => {
+        console.error('Error fetching transactions amounts:', error);
+      }
+    );
+  }
+  
+  // Function to convert amount to MAD
+  convertToMAD(amount: number, currency: string, exchangeRates: { [key: string]: number }): number {
+    const exchangeRate = exchangeRates[currency];
+    return amount * exchangeRate;
+  }
+  
+  get totalAmounts() {
+    if (this.totalAmount !== undefined && this.totalAmount !== null) {
+      return this.totalAmount.toFixed(3);
+  } else {
+      return 'N/A'; 
+  }
+  }
+
   get totalMarchands() {
     return this.marchands.length;
   }
+
+  get totalTransactions() {
+    return this.transactions.length;
+  }
+
 }
+
+

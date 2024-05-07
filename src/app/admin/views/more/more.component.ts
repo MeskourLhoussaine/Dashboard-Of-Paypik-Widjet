@@ -55,7 +55,7 @@ methods: PaymentMethod[] = [];
   }
 //find marchand by id 
 retrieveMerchantById(): void {
-  this.merchantService.getMerchantById(this.merchantId).subscribe({
+  this.merchantService.getMarchandById(this.merchantId).subscribe({
     next: (data: any) => { // Utilisation de 'any' temporairement pour résoudre le problème de type
      console.log('Merchant data:', data);
       this.merchants.push(data as Merchant); // Cast 'data' en tant que Merchant
@@ -68,7 +68,7 @@ retrieveMerchantById(): void {
 
 
 findStatusForMethod(method: PaymentMethod): void {
-  this.merchantService.findStatusMerchantPayment(this.merchantId, method.paymentMethodId)
+  this.merchantService.findStatusMarchandPayment(this.merchantId, method.paymentMethodId)
     .subscribe(status => {
       method.status = status; // Assigner le statut à la méthode
       console.log('Method:', method.name, 'status:', status);

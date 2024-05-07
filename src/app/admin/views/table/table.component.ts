@@ -8,7 +8,8 @@ import { MarchandService } from '../../services/marchand.service';
   templateUrl: './table.component.html',
   styleUrl: './table.component.css'
 })
-export class TableComponent  implements OnInit{
+export class TableComponent implements OnInit{
+ 
 
   @Input() columnData: any = [];
   @Input() rowData: any = [];
@@ -54,17 +55,28 @@ export class TableComponent  implements OnInit{
 
   get filteredMarchands() {
     // Apply search filter first
-    const filteredData = this.marchands.filter(marchand => 
-      marchand.merchantName.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+    let filteredData = this.marchands.filter(marchand => {
+      const searchTerm = this.searchTerm ? this.searchTerm.toLowerCase() : '';
+      const merchantName = marchand.merchantName ? marchand.merchantName.toLowerCase() : '';
+      return merchantName.includes(searchTerm);
+  });
   
+
+    // Apply status filter if a status is selected
+    if (this.selectedOption1 !== '') {
+        filteredData = filteredData.filter(marchand =>
+            marchand.marchandStatus === this.selectedOption1
+        );
+    }
+
     // Calculate pagination indexes
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-  
+
     // Return the slice of data based on pagination indexes
     return filteredData.slice(startIndex, endIndex);
-  }
+}
+
   
   ////////////////////////////// send Id //////////////////////////////
 
@@ -116,10 +128,40 @@ onItemsPerPageChange(selectedValue: number) {
 ////////////////////
 
 rejectOpen: boolean = false;
+marchandId!: number;
 
-toggleReject() {
+toggleReject(marchandId: number) {
   this.rejectOpen = !this.rejectOpen;
+  this.marchandId = marchandId;
+}
+
+  //select input color text
+
+  selectedOption: string = '';
+  handleChange(event: any) {
+  this.selectedOption = event.target.value;
+  }
+
+  selectedOption1: string = '';
+  handleChange1(event: any) {
+  this.selectedOption1 = event.target.value;
 }
 
 
+
+///////////////////// Delete marchand
+  deleteMarchand(demandeId: number) {
+    this.marchandService.deleteMarchand(demandeId).subscribe(
+      (data) => {
+        console.log('marchand deleted successfully:', data);
+        window.location.href = '/admin/dashboard';
+        // Call any additional functions or handle the response as needed
+      },
+      (error) => {
+        console.error('Error deleteing marchand:', error);
+      }
+    );
+  }
+
 }
+
