@@ -20,6 +20,9 @@ import { SingletransactionComponent } from './views/singletransaction/singletran
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditmarchandformComponent } from './views/editmarchandform/editmarchandform.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { IncreaseDirective } from './directives/increase.directive';
+import { IncreaseNumberDirective } from './directives/increase-number.directive';
+import { ChartComponent } from './views/chart/chart.component';
 
 
 
@@ -37,6 +40,9 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     AddmarchandformComponent,
     SingletransactionComponent,
     EditmarchandformComponent,
+    ChartComponent,
+    IncreaseDirective,
+    IncreaseNumberDirective
     
   
 
