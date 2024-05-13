@@ -44,6 +44,10 @@ export class TransactionComponent implements OnInit {
       this.retrieveTransactions();
       this.loadPymentMethods();
     });
+    this.dateInput.nativeElement.addEventListener('input', () => this.applyFilters());
+    this.statusInput.nativeElement.addEventListener('change', () => this.applyFilters());
+    this.clientNameInput.nativeElement.addEventListener('input', () => this.applyFilters());
+    this.paymentMethodInput.nativeElement.addEventListener('change', () => this.applyFilters());
   }
 
   retrieveTransactions(): void {
@@ -224,6 +228,20 @@ export class TransactionComponent implements OnInit {
         return {};
     }
   }
+
+  //select input color text
+
+  selectedOption: string = '';
+
+  handleChange(event: any) {
+  this.selectedOption = event.target.value;
+  }
+
+  selectedOption1: string = '';
+
+  handleChange1(event: any) {
+  this.selectedOption1 = event.target.value;
+}
 
   // Calculate total number of pages
   calculatePages(): void {

@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-} from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment.development';
 import { Merchant } from '../model/merchant.model';
-import { environment } from 'src/environments/environment';
+
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class MarchandService {
 
@@ -36,10 +33,12 @@ export class MarchandService {
   }
 
   public editMarchand(marchand: Merchant): Observable<Merchant> {
-    return this.http.put<Merchant>(environment.apiUrl + "/api/merchants/updateMarchand/" +marchand.merchantId, marchand);
+    return this.http.put<Merchant>(environment.apiUrl + "/api/merchants/updateMarchand/"  + marchand.merchantId ,marchand);
   }
 
   findStatusMarchandPayment(marchandId: number, paymentMethodId: number): Observable<boolean> {
-    return this.http.get<boolean>(environment.apiUrl + '/api/merchants/status/' + marchandId + '/' + paymentMethodId)
+    return this.http.get<boolean>(environment.apiUrl + '/api/merchant_methods/status/' + marchandId + '/' + paymentMethodId)
   }
+
 }
+

@@ -22,6 +22,10 @@ import { EditmarchandformComponent } from './views/editmarchandform/editmarchand
 import { NgApexchartsModule } from 'ng-apexcharts';
 
 
+
+
+
+
 @NgModule({
   declarations: [
     AdminComponent,
@@ -32,7 +36,11 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     TableComponent,
     AddmarchandformComponent,
     SingletransactionComponent,
-    EditmarchandformComponent
+    EditmarchandformComponent,
+    
+  
+
+  
   ],
   imports: [
     CommonModule,

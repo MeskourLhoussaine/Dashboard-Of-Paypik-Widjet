@@ -16,9 +16,14 @@ import { ChartModule } from 'primeng/chart';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { CommercialModule } from './commercial/commercial.module'; // Assurez-vous que ce module est correctement exporté
 
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
+   
+   
   ],
   imports: [
     BrowserModule,
