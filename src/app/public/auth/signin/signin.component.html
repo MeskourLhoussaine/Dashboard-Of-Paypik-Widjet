@@ -10,7 +10,7 @@
             <app-alert (hideAlert)="onAlertCloseHandler($event)" [dismissible]="true" [messages]="serverErrors"
                 [show]="serverErrors.length > 0" [type]="AlertType.Danger"></app-alert>
 
-            <form class="my-5 mt-28" [formGroup]="signInForm" (ngSubmit)="onFormSubmitHandler($event)">
+         <form class="my-5 mt-28" [formGroup]="signInForm" (submit)="onFormSubmitHandler($event)">
                 <div class="form-group">
                     <label for="email">Email</label>
                     <div class="relative">

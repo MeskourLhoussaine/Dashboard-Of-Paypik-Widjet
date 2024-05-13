@@ -33,7 +33,7 @@ export class MarchandService {
   }
 
   public editMarchand(marchand: Merchant): Observable<Merchant> {
-    return this.http.put<Merchant>(environment.apiUrl + "/api/merchants/updateMarchand/"  + marchand.merchantId ,marchand);
+    return this.http.put<Merchant>(environment.apiUrl + "/api/merchants/update"   ,marchand);
   }
 
   findStatusMarchandPayment(marchandId: number, paymentMethodId: number): Observable<boolean> {

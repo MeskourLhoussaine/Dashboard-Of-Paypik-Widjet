@@ -1,15 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Transaction } from '../../model/transaction.model';
 import { TransactionService } from '../../services/transaction.service';
+import { IncreaseDirective } from '../../../admin/directives/increase.directive';
 
 @Component({
   selector: 'app-chart',
-  standalone: true,
-  imports: [],
   templateUrl: './chart.component.html',
-  styleUrl: './chart.component.css'
+  styleUrls: ['./chart.component.css'] 
 })
-export class ChartComponent  implements OnInit {
+export class ChartComponent implements OnInit {
 
   @Input() marchandId!: number;
 
