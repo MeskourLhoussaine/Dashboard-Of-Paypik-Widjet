@@ -3,41 +3,20 @@ import {HttpClient} from "@angular/common/http";
 import {Signin} from "./signin/signin.model";
 import {Observable} from "rxjs";
 import {AuthResponse} from "./auth.response";
-import { AppRoutes } from 'src/app/app.routes';
+import { environment } from 'src/environments/environment.development';
+import { Token } from './signin/Token';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private endpoints: any = {
-    signin: "api/auth/signin"
-};
+  url = environment.apiUrl+"/api/auth/signin"
 
+  constructor(private http: HttpClient) { }
 
-  constructor(private httpClient: HttpClient) { }
+  signin(credentials : Signin): Observable<Token>{
+    return this.http.post<Token>(this.url,credentials);
+  }
+  }
 
-  protected onFormSubmitHandler(event: Event) {
-    event.preventDefault();
-    if (this.signInForm.valid) {
-        this.isLoading = true;
-        const signInData: Signin = this.signInForm.value;
-        this.authService.signIn(signInData).subscribe(
-            (response) => {
-                // Gérer la réponse réussie (par exemple, stocker le jeton dans le stockage local)
-                this.isLoading = false;
-                this.router.navigate([AppRoutes.Admin, AdminRoutes.Dashboard]);
-            },
-            (error) => {
-                // Gérer les erreurs (par exemple, afficher les messages d'erreur)
-                this.isLoading = false;
-                console.error(error);
-                this.serverErrors.push(error.message || "An error occurred during sign-in.");
-            }
-        );
-    } else {
-        // Marquer les champs du formulaire comme touchés pour afficher les messages d'erreur
-        this.signInForm.markAllAsTouched();
-    }
-}
-
-}

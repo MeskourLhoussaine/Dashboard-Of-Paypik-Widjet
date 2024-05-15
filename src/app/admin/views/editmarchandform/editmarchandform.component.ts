@@ -104,7 +104,7 @@ merchantId: string = '';
         // Vérification si le marchand a été trouvé
         console.log('Marchand id', id);
         console.log('Marchand ', this.marchand);
-        this.previewImageUrl=this.marchand.marchandLogoUrl;
+        this.previewImageUrl=this.marchand.merchantUrl;
         if (!this.marchand) {
           console.error('Marchand not found with id:', id);
         }

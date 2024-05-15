@@ -20,10 +20,7 @@ export class MarchandService {
   // }
 
   public saveMarchand(marchand: Merchant): Observable<Merchant> {
-    return this.http.post<Merchant>(
-      environment.apiUrl + '/marchand/save',
-      marchand
-    );
+    return this.http.post<Merchant>(environment.apiUrl + "/api/merchants/save", marchand)
   }
 
   public deleteMarchand(id: number): Observable<Merchant> {

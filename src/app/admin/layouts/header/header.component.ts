@@ -1,7 +1,9 @@
+
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { Images } from 'src/assets/data/images';
-import { Merchant } from '../../model/merchant.model';
+
 import { MarchandService } from '../../services/marchand.service';
+import { Merchant } from '../../model/merchant.model';
 
 @Component({
   selector: 'app-header',

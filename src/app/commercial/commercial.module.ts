@@ -1,7 +1,7 @@
 
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { RxStompService } from '@stomp/ng2-stompjs'; // Import RxStompService
 import { CommercialRoutingModule } from './commercial-routing.module';
 import { LayoutsModule } from './layouts/layouts.module';
 
@@ -37,6 +37,8 @@ import { CommercialComponent } from './commercial.component';
     ScrollToTopComponent,
     ReactiveFormsModule,
 
-  ]
+  ],
+  providers: [RxStompService], // Provide RxStompService here
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CommercialModule { }

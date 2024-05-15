@@ -10,7 +10,7 @@
             <app-alert (hideAlert)="onAlertCloseHandler($event)" [dismissible]="true" [messages]="serverErrors"
                 [show]="serverErrors.length > 0" [type]="AlertType.Danger"></app-alert>
 
-         <form class="my-5 mt-28" [formGroup]="signInForm" (submit)="onFormSubmitHandler($event)">
+            <form class="my-5 mt-28" [formGroup]="signInForm" (ngSubmit)="onSubmit()">
                 <div class="form-group">
                     <label for="email">Email</label>
                     <div class="relative">
@@ -20,7 +20,6 @@
                             <i class="bi bi-envelope-at"></i>
                         </span>
                     </div>
-                    <validation-error [fieldControl]="signInForm.controls['username']"></validation-error>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
@@ -31,7 +30,6 @@
                             <i class="bi bi-shield-lock"></i>
                         </span>
                     </div>
-                    <validation-error [fieldControl]="signInForm.controls['password']"></validation-error>
                 </div>
 
                 <div class="text-sm my-4">

@@ -1,15 +1,15 @@
 import { PaymentMethod } from "./paymentmethod.model";
 import { Transaction } from "./transaction.model";
 
-export interface Marchand {
-    marchandId: number;
-    marchandName: string;
-    marchandDescription: string;
+export interface Merchant{
+    merchantId: number;
+    merchantName: string;
+    merchantDescrip: string;
     marchandPhone: string;
-    marchandHost: string;
+    merchantHost: string;
     marchandEmail: string;
     marchandStatus: string;
-    marchandLogoUrl: string;
+    merchantUrl: string;
     marchandFormejuridique: string;
     marchandRcIf: string;
     marchandSiegeAddresse: string;

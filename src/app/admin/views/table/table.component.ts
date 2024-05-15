@@ -1,7 +1,11 @@
 import { NgClass, NgIf } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import {  AfterViewInit, ViewChild,Component, Input, OnInit, ElementRef } from '@angular/core';
 import { Merchant } from '../../model/merchant.model';
 import { MarchandService } from '../../services/marchand.service';
+import lottie from "lottie-web";
+import { defineElement } from "@lordicon/element";
+
+defineElement(lottie.loadAnimation);
 
 @Component({
   selector: 'app-table',
@@ -9,8 +13,8 @@ import { MarchandService } from '../../services/marchand.service';
   styleUrl: './table.component.css'
 })
 export class TableComponent implements OnInit{
- 
 
+  @ViewChild('statusInput') statusInputRef!: ElementRef;
   @Input() columnData: any = [];
   @Input() rowData: any = [];
   @Input() pageData: number[] = [];
@@ -36,13 +40,13 @@ export class TableComponent implements OnInit{
 
   ngOnInit() {
     this.fetchMarchands();
-    
   }
 
   fetchMarchands() {
     this.marchandService.getMarchands().subscribe(
       (data: Merchant[]) => {
         this.marchands = data;
+        console.log("merchand ",this.marchands )
       },
       (error) => {
         console.error('Error fetching marchands:', error);
@@ -60,7 +64,6 @@ export class TableComponent implements OnInit{
       const merchantName = marchand.merchantName ? marchand.merchantName.toLowerCase() : '';
       return merchantName.includes(searchTerm);
   });
-  
 
     // Apply status filter if a status is selected
     if (this.selectedOption1 !== '') {
@@ -77,7 +80,7 @@ export class TableComponent implements OnInit{
     return filteredData.slice(startIndex, endIndex);
 }
 
-  
+
   ////////////////////////////// send Id //////////////////////////////
 
 
@@ -89,7 +92,7 @@ export class TableComponent implements OnInit{
     return Math.ceil(this.marchands.length / this.itemsPerPage);
   }
 
-nextPage() {
+  nextPage() {
     if (this.currentPage < this.totalPages) {
         this.currentPage++;
         // Ensure itemsPerPage matches the selected option when navigating pages
@@ -97,7 +100,7 @@ nextPage() {
     }
   }
 
-prevPage() {
+  prevPage() {
     if (this.currentPage > 1) {
         this.currentPage--;
         // Ensure itemsPerPage matches the selected option when navigating pages
@@ -105,7 +108,7 @@ prevPage() {
     }
   }
 
-onItemsPerPageChange(selectedValue: number) {
+  onItemsPerPageChange(selectedValue: number) {
     // Update itemsPerPage immediately when the user selects an option
     this.itemsPerPage = selectedValue;
     console.log("Selected items per page:", this.itemsPerPage);
@@ -130,12 +133,12 @@ onItemsPerPageChange(selectedValue: number) {
 rejectOpen: boolean = false;
 marchandId!: number;
 
-toggleReject(marchandId: number) {
-  this.rejectOpen = !this.rejectOpen;
-  this.marchandId = marchandId;
-}
+  toggleReject(marchandId: number) {
+    this.rejectOpen = !this.rejectOpen;
+    this.marchandId = marchandId;
+  }
 
-  //select input color text
+//select input color text
 
   selectedOption: string = '';
   handleChange(event: any) {
@@ -147,21 +150,61 @@ toggleReject(marchandId: number) {
   this.selectedOption1 = event.target.value;
 }
 
-
-
 ///////////////////// Delete marchand
-  deleteMarchand(demandeId: number) {
-    this.marchandService.deleteMarchand(demandeId).subscribe(
-      (data) => {
-        console.log('marchand deleted successfully:', data);
-        window.location.href = '/admin/dashboard';
-        // Call any additional functions or handle the response as needed
+
+marchand !: Merchant | undefined;
+
+  deleteMarchand(marchandId: number) {
+    this.marchandService.getMarchands().subscribe(
+      (data: Merchant[]) => {
+        this.marchands = data;
+        
+        const Id = marchandId; 
+
+        this.marchand = this.marchands.find(marchand => marchand.merchantId === Number(Id));
+        if (this.marchand?.marchandStatus === "Active") {
+          this.marchand.marchandStatus = "Inactive"
+        }
+
+        if (this.marchand) {
+          // Appel du service pour mettre à jour le marchand
+          this.marchandService.editMarchand(this.marchand).subscribe(
+            (updatedMarchand: Merchant) => {
+              console.log('Marchand updated successfully:', updatedMarchand);
+            },
+            (error) => {
+              console.error('Error updating marchand:', error);
+              // Affichez un message d'erreur à l'utilisateur
+            }
+          );
+        }
       },
       (error) => {
-        console.error('Error deleteing marchand:', error);
+        console.error('Error fetching marchands:', error);
       }
     );
+  
+    // this.marchandService.deleteMarchand(marchandId).subscribe(
+    //   (data) => {
+    //     console.log('marchand deleted successfully:', data);
+    //     window.location.href = '/admin/dashboard';
+    //     // Call any additional functions or handle the response as needed
+    //   },
+    //   (error) => {
+    //     console.error('Error deleteing marchand:', error);
+    //   }
+    // );
+  }
+
+
+  /////////////////// reset filter
+    
+  resetFilters(): void {
+      this.searchTerm = ''; // Reset the search term to empty string
+      this.selectedOption1 = ''; // Reset the selected option in the dropdown to empty string
+      
+      // Reset dropdown value
+      (this.statusInputRef.nativeElement as HTMLSelectElement).value = '';
   }
 
 }
-
