@@ -48,17 +48,17 @@ export class SignupComponent implements OnInit {
 
   initializeForm(): void {
     this.form = this.fb.group({
-      username: [''],
-      juridique: [''],
-      c_capital: [''],
-      c_address: [''],
-      c_dg: [''],
-      c_field: [''],
-      c_web: [''],
-      email: [''],
-      phone: [''],
-      c_fieldyears: [''],
-      c_products: ['']
+      username: ['',Validators.required],
+      juridique: ['',Validators.required],
+      c_capital: ['',Validators.required],
+      c_address: ['',Validators.required],
+      c_dg: ['',Validators.required],
+      c_field: ['',Validators.required],
+      c_web: ['',Validators.required],
+      email: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@gmail\\.com')]],
+      telephone: ['', [Validators.required, Validators.pattern('\\+?\\d[\\d\\+\\s()-]*')]],
+      c_fieldyears: ['',Validators.required],
+      c_products: ['',Validators.required]
     });
   }
   
