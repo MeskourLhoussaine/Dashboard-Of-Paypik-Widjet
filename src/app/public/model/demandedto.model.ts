@@ -1,4 +1,5 @@
 export interface Demandedto {
+    /*les attribut*/
     demandeId: number;
     demandeMarchandName: string;
     demandeMarchandDescription: string;

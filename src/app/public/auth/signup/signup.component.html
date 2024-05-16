@@ -14,21 +14,12 @@
             placeholder="* Nom entité (entreprise ou auto-entrepreneur)"
             [ngClass]="{
               'border-label':
-                form.get('username')?.invalid && form.get('username')?.touched
+                form.get('username')!.invalid && form.get('username')!.touched
             }"
           />
           <span class="absolute top-2 left-0 ps-3 text-gray-400">
             <i class="bi bi-shop"></i>
           </span>
-          <!-- Error Message -->
-          <div
-            *ngIf="
-              form.get('username')?.invalid && form.get('username')?.touched
-            "
-            class="text-red-500 text-sm mt-1"
-          >
-            Nom entité requis.
-          </div>
         </div>
 
         <div class="my-5"></div>
@@ -50,15 +41,6 @@
           <span class="absolute top-2 left-0 ps-3 text-gray-400">
             <i class="bi bi-bank2"></i>
           </span>
-          <!-- Error Message -->
-          <div
-            *ngIf="
-              form.get('juridique')?.invalid && form.get('juridique')?.touched
-            "
-            class="text-red-500 text-sm mt-1"
-          >
-            Forme juridique requise.
-          </div>
         </div>
 
         <div class="my-5"></div>
@@ -74,15 +56,6 @@
           <span class="absolute top-2 left-0 ps-3 text-gray-400">
             <i class="bi bi-pencil-square"></i>
           </span>
-          <!-- Error Message -->
-          <div
-            *ngIf="
-              form.get('c_capital')?.invalid && form.get('c_capital')?.touched
-            "
-            class="text-red-500 text-sm mt-1"
-          >
-            RC ou IF requis.
-          </div>
         </div>
 
         <div class="my-5"></div>
@@ -98,15 +71,6 @@
           <span class="absolute top-2 left-0 ps-3 text-gray-400">
             <i class="bi bi-geo-alt"></i>
           </span>
-          <!-- Error Message -->
-          <div
-            *ngIf="
-              form.get('c_address')?.invalid && form.get('c_address')?.touched
-            "
-            class="text-red-500 text-sm mt-1"
-          >
-            Adresse du siège social requise.
-          </div>
         </div>
 
         <div class="my-5"></div>
@@ -122,13 +86,6 @@
           <span class="absolute top-2 left-0 ps-3 text-gray-400">
             <i class="bi bi-person-circle"></i>
           </span>
-          <!-- Error Message -->
-          <div
-            *ngIf="form.get('c_dg')?.invalid && form.get('c_dg')?.touched"
-            class="text-red-500 text-sm mt-1"
-          >
-            Nom du DG ou gérant requis.
-          </div>
         </div>
 
         <div class="my-5"></div>
@@ -144,13 +101,6 @@
           <span class="absolute top-2 left-0 ps-3 text-gray-400">
             <i class="bi bi-ui-checks-grid"></i>
           </span>
-          <!-- Error Message -->
-          <div
-            *ngIf="form.get('c_field')?.invalid && form.get('c_field')?.touched"
-            class="text-red-500 text-sm mt-1"
-          >
-            Type de l'activité requis.
-          </div>
         </div>
 
         <div class="my-5"></div>
@@ -166,13 +116,6 @@
           <span class="absolute top-2 left-0 ps-3 text-gray-400">
             <i class="bi bi-pc-display"></i>
           </span>
-          <!-- Error Message -->
-          <div
-            *ngIf="form.get('c_web')?.invalid && form.get('c_web')?.touched"
-            class="text-red-500 text-sm mt-1"
-          >
-            Adresse site web requise.
-          </div>
         </div>
 
         <div class="my-5"></div>
@@ -202,26 +145,34 @@
         </div>
 
         <div class="my-5"></div>
+
         <div class="relative">
-          <input
-            type="tel"
-            formControlName="telephone"
-            class="form-control w-full ps-10"
-            placeholder="* Téléphone"
-          />
-          <span class="absolute top-2 left-0 ps-3 text-gray-400">
-            <i class="bi bi-telephone"></i>
-          </span>
-        </div>
-        <!-- Affichage du message d'erreur -->
-        <div
-          *ngIf="
-            form.get('telephone')?.invalid && form.get('telephone')?.touched
-          "
-          class="text-red-500 text-sm mt-1"
-        >
-          Numéro de téléphone invalide !
-        </div>
+    <input
+        type="tel"
+        id="telephone"
+        formControlName="phone"
+        class="form-control w-full ps-10"
+        placeholder="* Téléphone"
+        pattern="\+?\d[\d\+\s()-]*"
+        
+       
+    />
+    <span class="absolute top-2 left-0 ps-3 text-gray-400">
+        <i class="bi bi-telephone"></i>
+    </span>
+
+    <div
+            *ngIf="
+              form.get('telephone')?.hasError('pattern') &&
+              form.get('telephone')?.touched
+            "
+            class="text-red-500 text-sm mt-1"
+          >
+          Veuillez entrer un numéro de téléphone valide.
+          </div>
+    
+</div>
+
 
         <div class="my-5"></div>
 
@@ -242,17 +193,8 @@
           <span class="absolute top-2 left-0 ps-3 text-gray-400">
             <i class="bi bi-calendar3"></i>
           </span>
-          <!-- Error Message -->
-          <div
-            *ngIf="
-              form.get('c_fieldyears')?.invalid &&
-              form.get('c_fieldyears')?.touched
-            "
-            class="text-red-500 text-sm mt-1"
-          >
-            Années d'activité requises.
-          </div>
         </div>
+
         <div class="my-5"></div>
 
         <div class="relative">
@@ -265,15 +207,6 @@
           <span class="absolute top-2 left-0 ps-3 text-gray-400">
             <i class="bi bi-body-text"></i>
           </span>
-          <!-- Error Message -->
-          <div
-            *ngIf="
-              form.get('c_products')?.invalid && form.get('c_products')?.touched
-            "
-            class="text-red-500 text-sm mt-1"
-          >
-            Description des produits ou services vendus requise.
-          </div>
         </div>
       </form>
     </div>
