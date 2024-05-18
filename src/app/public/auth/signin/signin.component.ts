@@ -85,7 +85,7 @@ export class SigninComponent implements OnInit {
     } else if (roles.includes('ROLE_COMERCIAL')) {
       this.router.navigate(['/commercial']);
     } else if (roles.includes('ROLE_MARCHAND')) {
-      this.router.navigate(['/marchand/']);
+      this.router.navigate(['marchand/dashboard/4']);
     } else {
       this.router.navigate(['/default']);
     }

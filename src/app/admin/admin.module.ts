@@ -23,6 +23,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { IncreaseDirective } from './directives/increase.directive';
 import { IncreaseNumberDirective } from './directives/increase-number.directive';
 import { ChartComponent } from './views/chart/chart.component';
+import { ChartLineComponent } from './views/chart-line/chart-line.component';
 
 
 
@@ -42,7 +43,8 @@ import { ChartComponent } from './views/chart/chart.component';
     EditmarchandformComponent,
     ChartComponent,
     IncreaseDirective,
-    IncreaseNumberDirective
+    IncreaseNumberDirective,
+    ChartLineComponent
     
   
 
