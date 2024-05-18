@@ -54,7 +54,7 @@ export class ChartComponent implements OnInit{
         const date = new Date(transaction.timestamp);
         const month = date.getMonth()+1;
         console.log(`Transaction Timestamp: ${transaction.timestamp}, Parsed Date: ${date}, Month: ${month}`);
-        if (!isNaN(month)) { // Vérifiez si month est un nombre valide
+        if (!isNaN(month)) { // Vérifiez si month est un nombre valide hh
           monthlyData[month]++;
         
         }

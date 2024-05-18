@@ -16,7 +16,7 @@ describe('ChartComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-
+//h
   it('should create', () => {
     expect(component).toBeTruthy();
   });

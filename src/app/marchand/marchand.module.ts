@@ -26,7 +26,7 @@ declarations: [
     EventsComponent,
     MoreComponent,
     TransactionComponent,
-    ChartComponent
+    ChartComponent/*h*/
 ],
 imports: [
     CommonModule,
