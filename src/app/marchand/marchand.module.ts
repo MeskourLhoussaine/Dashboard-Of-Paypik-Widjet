@@ -1,7 +1,7 @@
 import { MoreComponent } from './views/more/more.component';
 
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 
 import { marchandRoutingModule } from './marchand-routing.module';
 import { LayoutsModule } from './layouts/layouts.module';
@@ -14,6 +14,8 @@ import { SettingsModule } from './views/settings/settings.module';
 import { ScrollToTopComponent } from './views/scroll-to-top/scroll-to-top.component';
 import { TransactionComponent } from '../marchand/views/transaction/transaction.component';
 import { FormsModule } from '@angular/forms';
+import { ChartComponent } from './views/chart/chart.component';
+
 
 
 @NgModule({
@@ -24,6 +26,7 @@ declarations: [
     EventsComponent,
     MoreComponent,
     TransactionComponent,
+    ChartComponent
 ],
 imports: [
     CommonModule,
@@ -33,6 +36,7 @@ imports: [
     ScrollToTopComponent,
     FormsModule,
     
-]
+],
+schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class MarchandModule { }
