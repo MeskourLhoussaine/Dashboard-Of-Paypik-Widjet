@@ -17,13 +17,13 @@ import { ContactComponent } from './views/contact/contact.component';
 const routes: Routes = [
 {
     path: '',
-    redirectTo: MarchandRoutes.Dashboard,
+    redirectTo: MarchandRoutes.MarchandDashboard,
     pathMatch: 'full',
 },
 
 {
 title: 'Dashboard',
-path: MarchandRoutes.Dashboard,
+path: MarchandRoutes.MarchandDashboard,
 children: [
     {
     path: '',

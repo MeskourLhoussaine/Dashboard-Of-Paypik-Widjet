@@ -30,6 +30,7 @@ import { ChartLineComponent } from './views/chart-line/chart-line.component';
 
 
 
+
 @NgModule({
   declarations: [
     AdminComponent,
@@ -44,7 +45,9 @@ import { ChartLineComponent } from './views/chart-line/chart-line.component';
     ChartComponent,
     IncreaseDirective,
     IncreaseNumberDirective,
-    ChartLineComponent
+    ChartLineComponent,
+   
+   
     
   
 
