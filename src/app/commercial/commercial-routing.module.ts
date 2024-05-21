@@ -8,12 +8,12 @@ import { AdminDataTableComponent } from './views/elements/data-table/data-table.
 import { FormsComponent } from './views/elements/forms/forms.component';
 import { AdminModalComponent } from './views/elements/modal/admin-modal.component';
 import { AdminTabComponent } from './views/elements/tab/admin-tab.component';
-import { EventsComponent } from './views/validation/validation.component';
+
 import { DemandeComponent } from './views/validation/demande/demande.component';
 import { ProfileComponent } from './views/settings/profile/profile.component';
 import { UsersComponent } from './views/settings/users/users.component';
 import { AddmarchandformComponent } from './views/addmarchandform/addmarchandform.component';
-
+import { ValidationComponent } from './views/validation/validation.component';
 
 
 const routes: Routes = [
@@ -26,7 +26,7 @@ const routes: Routes = [
   {
     title: 'Validation',
     path: CommercialRoutes.Validation,
-    component: EventsComponent,
+    component: ValidationComponent,
     children: [
       {
         path: 'marchand/:demandeId',
@@ -42,41 +42,41 @@ const routes: Routes = [
     component: AddmarchandformComponent,
   },
 
-  {
-    title: 'Elements',
-    path: CommercialRoutes.Elements,
-    children: [
-      {
-        title: 'Alert',
-        path: ElementRoutes.Alert,
-        component: AdminAlertComponent,
-      },
-      {
-        path: 'tabs',
-        component: AdminTabComponent,
-      },
-      {
-        title: 'Modal',
-        path: ElementRoutes.Modal,
-        component: AdminModalComponent,
-      },
-      {
-        title: 'Buttons',
-        path: ElementRoutes.Buttons,
-        component: ButtonsComponent,
-      },
-      {
-        title: 'Data Table',
-        path: ElementRoutes.DataTable,
-        component: AdminDataTableComponent,
-      },
-      {
-        title: 'Forms',
-        path: ElementRoutes.Forms,
-        component: FormsComponent,
-      },
-    ],
-  },
+  // {
+  //   title: 'Elements',
+  //   path: CommercialRoutes.Elements,
+  //   children: [
+  //     {
+  //       title: 'Alert',
+  //       path: ElementRoutes.Alert,
+  //       component: AdminAlertComponent,
+  //     },
+  //     {
+  //       path: 'tabs',
+  //       component: AdminTabComponent,
+  //     },
+  //     {
+  //       title: 'Modal',
+  //       path: ElementRoutes.Modal,
+  //       component: AdminModalComponent,
+  //     },
+  //     {
+  //       title: 'Buttons',
+  //       path: ElementRoutes.Buttons,
+  //       component: ButtonsComponent,
+  //     },
+  //     {
+  //       title: 'Data Table',
+  //       path: ElementRoutes.DataTable,
+  //       component: AdminDataTableComponent,
+  //     },
+  //     {
+  //       title: 'Forms',
+  //       path: ElementRoutes.Forms,
+  //       component: FormsComponent,
+  //     },
+  //   ],
+  // },
 
   {
     path: CommercialRoutes.Settings,

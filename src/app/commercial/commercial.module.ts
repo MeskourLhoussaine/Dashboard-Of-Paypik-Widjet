@@ -7,7 +7,7 @@ import { LayoutsModule } from './layouts/layouts.module';
 
 
 import { AdminPageNotFoundComponent } from './views/admin-page-not-found/admin-page-not-found.component';
-import { EventsComponent } from './views/validation/validation.component';
+import {  ValidationComponent } from './views/validation/validation.component';
 import { SettingsModule } from './views/settings/settings.module';
 import { ElementsModule } from './views/elements/elements.module';
 import { ScrollToTopComponent } from './views/scroll-to-top/scroll-to-top.component';
@@ -23,9 +23,8 @@ import { CommercialComponent } from './commercial.component';
   declarations: [
     CommercialComponent,
     AdminPageNotFoundComponent,
-    EventsComponent,
+    ValidationComponent,
     AddmarchandformComponent,
-   
   ],
   imports: [
     CommonModule,
@@ -34,8 +33,8 @@ import { CommercialComponent } from './commercial.component';
     LayoutsModule,
     SettingsModule,
     ElementsModule,
-    ScrollToTopComponent,
     ReactiveFormsModule,
+    ScrollToTopComponent
 
   ],
   providers: [RxStompService], // Provide RxStompService here

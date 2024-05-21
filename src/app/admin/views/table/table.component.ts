@@ -207,4 +207,37 @@ marchand !: Merchant | undefined;
       (this.statusInputRef.nativeElement as HTMLSelectElement).value = '';
   }
 
+  swipeMarchand(merchantId: number) {
+    this.marchandService.getMarchands().subscribe(
+      (data: Merchant[]) => {
+        this.marchands = data;
+
+        const Id = merchantId; 
+
+        this.marchand = this.marchands.find(marchand => marchand.merchantId === Number(Id));
+        
+        if (this.marchand) {
+          if (this.marchand.marchandStatus === "Active") {
+            this.marchand.marchandStatus = "Inactive";
+          } else if (this.marchand.marchandStatus === "Inactive") {
+            this.marchand.marchandStatus = "Active";
+          }else if (this.marchand.marchandStatus === "JustCreated") {
+            this.marchand.marchandStatus = "Active";
+          }
+
+          this.marchandService.editMarchand(this.marchand).subscribe(
+            (updatedMarchand: Merchant) => {
+              console.log('Marchand swiped successfully:',updatedMarchand);
+            },
+            (error) => {
+              console.error('Error swiping marchand:', error);
+            }
+          );
+        }
+      },
+      (error) => {
+        console.error('Error fetching marchands:', error);
+      }
+    );
+  }
 }

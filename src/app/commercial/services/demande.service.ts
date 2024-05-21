@@ -34,5 +34,13 @@ export class DemandeService {
 
   updateDemandeAccepted(demandeId: number): Observable<Demandedto> {
     return this.http.put<Demandedto>(environment.apiUrl + "/api/demandes/" + demandeId +"/accepted", null);
+
+  }
+  updateDemandeUpdateAndAccepted(demandeId: number,demande: Demandedto): Observable<Demandedto> {
+    return this.http.put<Demandedto>(environment.apiUrl + "/api/demandes/" + demandeId +"/update/accepted", demande);
+  }
+
+  updateDemandeUpdate(demandeId: number,demande: Demandedto): Observable<Demandedto> {
+    return this.http.put<Demandedto>(environment.apiUrl + "/api/demandes/" + demandeId +"/update", demande);
   }
 }

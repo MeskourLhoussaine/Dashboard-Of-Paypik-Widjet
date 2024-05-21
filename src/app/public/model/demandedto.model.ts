@@ -7,7 +7,6 @@ export interface Demandedto {
     demandeMarchandHost: string;
     demandeMarchandEmail: string;
     demandeMarchandLogoUrl: string;
-    demandeMarchandStatus: Status;
     demandeMarchandTypeActivite: string;
     demandeMarchandRcIf: string;
     demandeMarchandSiegeAddresse: string;

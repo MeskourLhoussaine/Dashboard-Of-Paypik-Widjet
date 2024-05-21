@@ -139,6 +139,13 @@
                                     style="width:24px;height:24px">
                                 </lord-icon>
                             </a>
+                             <a (click)="swipeMarchand(marchand.merchantId)"
+                                                x-data="{ tooltip: 'Swipe' }"
+                                                class="ml-3 text-yellow-400 hover:text-yellow-600 ">
+                                                <lord-icon src="https://cdn.lordicon.com/xunzgeah.json" trigger="loop-on-hover"
+                                                    colors="primary:#ca8a04 " style="width:24px;height:24px">
+                                                </lord-icon>
+                                            </a>
                             <a (click)="toggleReject(marchand.merchantId)" x-data="{ tooltip: 'Delete' }"  class="ml-3 text-red-600 hover:text-red-900 ">
                                 <lord-icon
                                     src="https://cdn.lordicon.com/skkahier.json"
