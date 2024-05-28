@@ -19,6 +19,7 @@ import { MoreComponent } from './views/more/more.component';
 import { AddmarchandformComponent } from './views/addmarchandform/addmarchandform.component';
 import { SingletransactionComponent } from './views/singletransaction/singletransaction.component';
 import { EditmarchandformComponent } from './views/editmarchandform/editmarchandform.component';
+import { UsertableComponent } from './views/settings/users/usertable/usertable.component';
 
 
 
@@ -48,6 +49,10 @@ const routes: Routes = [
       {
         path: AdminRoutes.Edit,
         component: EditmarchandformComponent,
+      },
+      {
+        path: AdminRoutes.EditUser,
+        component: UsertableComponent,
       },
     ],
   },

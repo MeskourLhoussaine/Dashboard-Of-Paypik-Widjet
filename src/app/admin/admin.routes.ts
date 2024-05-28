@@ -8,7 +8,8 @@ export enum AdminRoutes {
   Events = 'events',
   Settings = 'settings',
   Elements = 'elements',
-  MarchandDashboard = 'marchand/dashboard/:merchantId' 
+  MarchandDashboard = 'marchand/dashboard/:merchantId' ,
+  EditUser='user/edit/:id'
 }
 
 export enum ElementRoutes {

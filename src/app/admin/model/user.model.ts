@@ -9,7 +9,8 @@ export interface User{
     password: string;
     roles?: Role[];
     status:string;
-
+    profilLogoUrl:string;
+  email: string;
    
 
 }
