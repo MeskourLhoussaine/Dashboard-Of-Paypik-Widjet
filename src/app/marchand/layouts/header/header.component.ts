@@ -1,31 +1,35 @@
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { User } from 'src/app/admin/model/user.model';
+import { AuthService } from 'src/app/public/auth/auth.service';
 import { Images } from 'src/assets/data/images';
-import { MerchantService } from '../../services/merchant.service';
-import { Merchant } from '../../models/merchant.model';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent  implements OnInit{
+export class HeaderComponent implements OnInit {
   public userOne: string = Images.users.userOne;
   isOpen: boolean = false;
-  /*transaction*/
-  merchantId!: number;
-  merchants: Merchant[] = [];
+  Id!: number; // ID de l'utilisateur
+  user: User | null = null; // Utilisateur authentifié
 
+  constructor(
+    private authService: AuthService, // Injection du service d'authentification
+    private element: ElementRef,
+    private renderer: Renderer2
+  ) {}
 
-  constructor( private route: ActivatedRoute,private merchantService: MerchantService, private element: ElementRef, private renderer: Renderer2) {}
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      this.merchantId = +params['id'];
-      this. retrieveMerchantById();
-    
-    });
+    // Récupérer l'ID de l'utilisateur authentifié lors de l'initialisation du composant
+    this.Id = this.authService.getAuthenticatedUserId();
+    console.log("ID de l'utilisateur authentifié:", this.Id);
+    if (this.Id !== 0) { // Vérifier si l'ID de l'utilisateur est valide
+      this.retrieveUserById(); // Appel à la méthode pour récupérer les données de l'utilisateur
+    } else {
+      console.error('ID d\'utilisateur invalide:', this.Id);
+    }
   }
-
 
   onClickProfile = () => {
     const profileDropdownList = this.element.nativeElement.querySelector(
@@ -34,15 +38,14 @@ export class HeaderComponent  implements OnInit{
     this.renderer.setAttribute(profileDropdownList, 'aria-expanded', 'true');
   };
 
-
-  retrieveMerchantById(): void {
-    this.merchantService.getMerchantById(this.merchantId).subscribe({
-      next: (data: Merchant) => {
-        console.log('Merchant data:', data);
-        this.merchants.push(data);
+  retrieveUserById(): void {
+    // Appel au service pour récupérer les données de l'utilisateur en utilisant son ID
+    this.authService.getUserById(this.Id).subscribe({
+      next: (data: User) => {
+        console.log('Données de l\'utilisateur:', data);
+        this.user = data;
       },
-      error: (error) => console.error(error),
+      error: (error) => console.error('Erreur lors de la récupération de l\'utilisateur:', error),
     });
   }
-  
 }
