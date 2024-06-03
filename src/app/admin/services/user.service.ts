@@ -43,5 +43,10 @@ export class UserService {
     const url = `${environment.apiUrl}/api/auth/signup`;
     return this.http.post<User>(url, user);
   }
+/*
+  public getRoles():Observable<Array<User>>{
+    return this.http.get<Array<User>>(environment.apiUrl + "/api/auth/users");
+  }
+*/
 
 }
