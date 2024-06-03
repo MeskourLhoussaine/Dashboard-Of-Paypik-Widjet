@@ -247,12 +247,24 @@ export class UsertableComponent implements OnInit {
     profilLogoUrl:'', // Initialisez le tableau de rôles sélectionnés
     // Ajoutez d'autres champs si nécessaire
   };
+
   toggleAddModal() {
     this.addModalOpen = !this.addModalOpen;
   }
 
+  generatePassword(length: number = 8): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let password = '';
+    for (let i = 0; i < length; i++) {
+      password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    console.log("password",password)
+    return password;
+  }
+
   onAddSubmit(form: NgForm) {
     if (form.valid) {
+      this.addFormData.password = this.generatePassword(); // Générer et assigner un mot de passe
       // Envoyer les informations de l'utilisateur au service UserService pour créer un nouvel utilisateur
       this.userService.addUser(this.addFormData).subscribe(
         () => {
@@ -263,8 +275,8 @@ export class UsertableComponent implements OnInit {
             lastName: '',
             email: '',
             password: '',
-            roles: [], 
-            profilLogoUrl:'',// Réinitialisez le tableau de rôles sélectionnés
+            roles: [],
+            profilLogoUrl:'', // Réinitialisez le tableau de rôles sélectionnés
             // Réinitialisez d'autres champs si nécessaire
           };
           this.toggleAddModal();
