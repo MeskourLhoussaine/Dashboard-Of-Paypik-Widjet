@@ -1,4 +1,3 @@
-
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -11,6 +10,8 @@ import { Merchant } from '../../model/merchant.model';
   styleUrl: './addmarchandform.component.css'
 })
 export class AddmarchandformComponent implements OnInit{
+
+  addMarchandReussie: boolean = false;
 
   constructor(        
     private marchandService: MarchandService,
@@ -116,18 +117,22 @@ export class AddmarchandformComponent implements OnInit{
         };
   
         // Call the service method to save the merchant
-        (this.marchandService.saveMarchand(marchandData)).subscribe(
+        this.marchandService.saveMarchand(marchandData).subscribe(
           (savedMarchand: any) => {
             console.log('Merchant saved successfully:', savedMarchand);
             // Optionally, perform any additional actions after saving
             this.myForm.reset();
+
+          this.addMarchandReussie = true;
+          setTimeout(() => {
+            this.addMarchandReussie = false;
+          }, 3000); 
           },
           (error) => {
             console.error('Error occurred while saving merchant:', error);
             // Handle error if needed
           }
         );
-        
   
       } else {
         // Handle form validation errors if needed
@@ -148,7 +153,5 @@ export class AddmarchandformComponent implements OnInit{
     }
     
     
-
-
   
 }

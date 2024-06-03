@@ -19,7 +19,8 @@ const routes: Routes = [
   {
     path: AppRoutes.Admin,
     component: AdminComponent,
-    canActivate: [AdminGuard], // Utilisation du AdminGuard pour protéger l'accès à la route d'administration
+    canActivate: [AdminGuard],
+     // Utilisation du AdminGuard pour protéger l'accès à la route d'administration
     loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
   },
   {

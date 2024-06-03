@@ -13,7 +13,7 @@ import { EventsComponent } from './views/events/events.component';
 import { SettingsModule } from './views/settings/settings.module';
 import { ScrollToTopComponent } from './views/scroll-to-top/scroll-to-top.component';
 import { TransactionComponent } from '../marchand/views/transaction/transaction.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ChartComponent } from './views/chart/chart.component';
 
 
@@ -35,6 +35,7 @@ imports: [
     SettingsModule,
     ScrollToTopComponent,
     FormsModule,
+    ReactiveFormsModule,
     
 ],
 schemas: [CUSTOM_ELEMENTS_SCHEMA],

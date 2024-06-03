@@ -66,6 +66,7 @@ import { ChartLineComponent } from './views/chart-line/chart-line.component';
     FormsModule,
     ReactiveFormsModule,
     NgApexchartsModule,
+   // SettingsModule
    
     
     

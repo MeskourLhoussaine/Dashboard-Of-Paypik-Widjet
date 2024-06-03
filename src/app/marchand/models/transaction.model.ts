@@ -8,7 +8,7 @@ export interface Transaction {
     amount?:string;
     currency?:string;
     status?:string;
-    timestamp?:string;
+    timestamp: string;
     clientId?:string;
     clientName?:string;
     clientEmail?:string;
