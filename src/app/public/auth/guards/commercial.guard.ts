@@ -1,20 +1,27 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { SuperadminGuard } from './superadmin.guard';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommercialGuard implements CanActivate {
-
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private superadminGuard: SuperadminGuard
+  ) {}
 
   canActivate(): boolean {
-    if (this.authService.isCommercial()) {
+    // Check if the user has commercial access or is a superadmin
+    if (this.authService.isCommercial() || this.superadminGuard.canActivate()) {
       return true;
-    } else {
-      this.router.navigate(['']); // Rediriger vers la page de connexion si l'utilisateur n'est pas un commercial
-      return false;
     }
+
+    // Redirect to the sign-in page if neither condition is met
+    this.router.navigate(['/signin']);
+    return false;
   }
 }
