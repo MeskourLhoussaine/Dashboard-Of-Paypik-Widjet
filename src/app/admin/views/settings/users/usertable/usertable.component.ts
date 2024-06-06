@@ -12,13 +12,13 @@ import { of } from 'rxjs';
 @Component({
   selector: 'app-usertable',
   templateUrl: './usertable.component.html',
-  styleUrls: ['./usertable.component.css']
+  styleUrls: ['./usertable.component.css'],
 })
 export class UsertableComponent implements OnInit {
   @ViewChild('statusInput') statusInputRef!: ElementRef;
   id!: number;
   thisUser!: User;
-  userId!: number;
+  userId: number | null = null;
 
   marchands: Merchant[] = [];
   users: User[] = [];
@@ -29,36 +29,41 @@ export class UsertableComponent implements OnInit {
   marchandId!: number;
   selectedOption1: string = '';
   editModalOpen: boolean = false;
-  editFormData: User = {
-    id: 0,
-    username: '',
-    firstName: '',
-    lastName: '',
-    password: '',
-    email:'',
-    profilLogoUrl:'',
-    roles: [],
-    status: ''
-  };
+  editFormData: User = this.initializeUser();
   roles: Role[] = [
-    { id: 1, name: 'ROLE_COMERCIAL' },
-    { id: 2, name: 'ROLE_ADMIN' },
-    { id: 3, name: 'ROLE_MARCHAND' },
+    { id: 1, name: 'ROLE_COMERCIAL'},
+    { id: 2, name: 'ROLE_ADMIN'},
+    { id: 3, name: 'ROLE_MARCHAND'},
   ];
-  selectedUser: any;
+  addModalOpen: boolean = false;
+  addFormData: User = this.initializeUser();
 
   constructor(
     private route: ActivatedRoute,
     private marchandService: MarchandService,
     private userService: UserService
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       this.id = params['id'];
     });
     this.fetchMarchands();
     this.fetchUsers();
+  }
+
+  initializeUser(): User {
+    return {
+      id: 0,
+      username: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      profilLogoUrl: '',
+      password: '',
+      status: 'Inactive',
+      roles: [],
+    };
   }
 
   fetchMarchands() {
@@ -84,22 +89,18 @@ export class UsertableComponent implements OnInit {
   }
 
   get filteredUsers() {
-    let filteredData = this.users.filter(user => {
-      const searchTerm = this.searchTerm ? this.searchTerm.toLowerCase() : '';
-      const username = user.username ? user.username.toLowerCase() : '';
+    let filteredData = this.users.filter((user) => {
+      const searchTerm = this.searchTerm.toLowerCase();
+      const username = user.username.toLowerCase();
       return username.includes(searchTerm);
     });
 
     if (this.selectedOption1 !== '') {
-      filteredData = filteredData.filter(user =>
-        user.status === this.selectedOption1
-      );
+      filteredData = filteredData.filter((user) => user.status === this.selectedOption1);
     }
 
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-
-    return filteredData.slice(startIndex, endIndex);
+    return filteredData.slice(startIndex, startIndex + this.itemsPerPage);
   }
 
   get totalPages() {
@@ -154,29 +155,21 @@ export class UsertableComponent implements OnInit {
   toggleEdit(user: User) {
     this.editModalOpen = !this.editModalOpen;
     if (this.editModalOpen) {
-      this.editFormData = {
-        id: user.id,
-        username: user.username,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        profilLogoUrl: user.profilLogoUrl,
-        password: '', // Réinitialiser le mot de passe si nécessaire
-        status: user.status,
-        roles: user.roles ? [...user.roles] : [] // Copier les rôles pour éviter les références partagées
-      };
+      this.editFormData = { ...user, roles: user.roles ? [...user.roles] : [] };
     }
   }
 
   onSubmit(form: NgForm) {
-    this.userService.updateUser(this.editFormData).subscribe(() => {
-      this.fetchUsers();
-      this.editModalOpen = false;
-    });
+    if (form.valid) {
+      this.userService.updateUser(this.editFormData).subscribe(() => {
+        this.fetchUsers();
+        this.editModalOpen = false;
+      });
+    }
   }
 
   isRoleChecked(role: Role): boolean {
-    return this.editFormData.roles?.some(r => r.id === role.id) || false;
+    return this.editFormData.roles?.some((r) => r.id === role.id) || false;
   }
 
   onRoleChange(event: any, role: Role) {
@@ -186,12 +179,12 @@ export class UsertableComponent implements OnInit {
     if (event.target.checked) {
       this.editFormData.roles.push(role);
     } else {
-      this.editFormData.roles = this.editFormData.roles.filter(r => r.id !== role.id);
+      this.editFormData.roles = this.editFormData.roles.filter((r) => r.id !== role.id);
     }
   }
 
   swipeMarchand(userId: number) {
-    const user = this.users.find(user => user.id === userId);
+    const user = this.users.find((u) => u.id === userId);
     if (user) {
       user.status = user.status === 'Active' ? 'Inactive' : 'Active';
       this.userService.updateUser(user).subscribe(
@@ -205,7 +198,6 @@ export class UsertableComponent implements OnInit {
     }
   }
 
-  // Gestion du modèle de confirmation de suppression
   openModal(id: number): void {
     this.userId = id;
     this.rejectOpen = true;
@@ -214,79 +206,63 @@ export class UsertableComponent implements OnInit {
   toggleReject(): void {
     this.rejectOpen = !this.rejectOpen;
     if (!this.rejectOpen) {
-      this.userId != null;
+      this.userId = null;
     }
   }
 
   confirmDelete(): void {
     if (this.userId !== null) {
       this.userService.deleteUser(this.userId)
-        .pipe(
-          catchError(error => {
-            console.error('Delete failed', error);
-            return of(null); // Gérer l'erreur de manière appropriée
-          })
-        )
-        .subscribe(response => {
+        .pipe(catchError((error) => {
+          console.error('Delete failed', error);
+          return of(null);
+        }))
+        .subscribe((response) => {
           console.log('User deleted successfully');
           this.toggleReject();
-          this.fetchUsers(); // Mise à jour de la liste des utilisateurs après suppression
+          this.fetchUsers();
         });
     }
   }
 
-  /*add User*/
-  addModalOpen: boolean = false;
-  addFormData: any = {
-    username: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    roles: [],
-    profilLogoUrl:'', // Initialisez le tableau de rôles sélectionnés
-    // Ajoutez d'autres champs si nécessaire
-  };
+  
 
+  hasAllRoles(userId: number): boolean {
+    const user = this.users.find((u) => u.id === userId);
+    if (!user || !user.roles) return false;
+
+    const roleNames = user.roles.map((role) => role.name);
+    return roleNames.includes('ROLE_ADMIN') &&
+           roleNames.includes('ROLE_MARCHAND') &&
+           roleNames.includes('ROLE_COMERCIAL');
+  }
+
+  getSelectedRoles(): Role[] {
+    return this.roles.filter(role => role.checked);
+  }
+  
   toggleAddModal() {
     this.addModalOpen = !this.addModalOpen;
-  }
-
-  generatePassword(length: number = 8): string {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let password = '';
-    for (let i = 0; i < length; i++) {
-      password += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    console.log("password",password)
-    return password;
-  }
-
-  onAddSubmit(form: NgForm) {
-    if (form.valid) {
-      this.addFormData.password = this.generatePassword(); // Générer et assigner un mot de passe
-      // Envoyer les informations de l'utilisateur au service UserService pour créer un nouvel utilisateur
-      this.userService.addUser(this.addFormData).subscribe(
-        () => {
-          console.log('Nouvel utilisateur ajouté avec succès');
-          this.addFormData = {
-            username: '',
-            firstName: '',
-            lastName: '',
-            email: '',
-            password: '',
-            roles: [],
-            profilLogoUrl:'', // Réinitialisez le tableau de rôles sélectionnés
-            // Réinitialisez d'autres champs si nécessaire
-          };
-          this.toggleAddModal();
-          this.fetchUsers(); // Mettez à jour la liste des utilisateurs après l'ajout
-        },
-        (error) => {
-          console.error('Erreur lors de l\'ajout de l\'utilisateur :', error);
-          // Gérez l'erreur de manière appropriée
+    if (!this.addModalOpen)
+      {
+        this.addFormData = this.initializeUser(); // Réinitialiser le formulaire d'ajout lorsque le modal est fermé
         }
-      );
-    }
-  }
-}
+        }
+        
+        // Fonction pour soumettre le formulaire d'ajout
+        onAddSubmit(form: NgForm) {
+          if (form.valid) {
+            
+            this.addFormData.roles = this.getSelectedRoles();
+             // Récupérer les rôles sélectionnés
+            this.userService.addUser(this.addFormData).subscribe(() => {
+              this.fetchUsers(); // Rafraîchir la liste des utilisateurs après l'ajout
+              this.toggleAddModal(); // Fermer le modal d'ajout après l'ajout réussi
+            });
+          }
+        }
+        
+        }
+
+
+

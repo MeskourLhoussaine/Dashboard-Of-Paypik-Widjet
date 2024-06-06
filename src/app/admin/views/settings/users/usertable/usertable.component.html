@@ -79,24 +79,22 @@
 
                 <span class="mx-1">Refresh</span>
               </button>
-               </div>
-           
-              <a
-                          (click)="toggleAddModal()"
-                          x-data="{ tooltip: 'Add' }"
-                        >
-                <lord-icon
+            </div>
 
-                  src="https://cdn.lordicon.com/tdiyflsh.json"
-                  trigger="hover"
-                  colors="primary:#545454,secondary:#16c72e"
-                  style="width: 65px; height: 65px"
-                   class="pl-3 "
-                >
-                
-                </lord-icon>
+            <div class="ml-4">
+              <div>
+                <a (click)="toggleAddModal()" x-data="{ tooltip: 'Add' }">
+                  <lord-icon
+                    src="https://cdn.lordicon.com/hojnqwxj.json"
+                    trigger="hover"
+                    state="hover-roll"
+                    colors="primary:#000000,secondary:#16c79e"
+                    style="width: 35px; height: 35px"
+                  >
+                  </lord-icon>
                 </a>
-          
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -106,78 +104,78 @@
         <div class="data-table">
           <div class="table-container">
             <!-- ////////////////////////////////////////////////Table Start//////////////////////////////////////////////////////////////// -->
-            <table
-              class="w-full border-collapse bg-white text-left text-sm text-gray-500"
+              <table
+                class="w-full border-collapse bg-white text-left text-sm text-gray-500"
             >
-              <thead class="bg-gray-50">
+                <thead class="bg-gray-50">
                 <tr>
-                  <th scope="col" class="px-6 py-4 font-medium text-gray-900">
-                    Username
-                  </th>
-                  <th scope="col" class="px-6 py-4 font-medium text-gray-900">
-                    State
-                  </th>
-                  <th scope="col" class="px-6 py-4 font-medium text-gray-900">
-                    Nom/Prenom
-                  </th>
-                  <th scope="col" class="px-6 py-4 font-medium text-gray-900">
-                    Roles
-                  </th>
-                  <th
+                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+                        Nom d'utilisateur
+                    </th>
+                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+                        État
+                    </th>
+                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+                        Nom/Prénom
+                    </th>
+                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">
+                        Rôles
+                    </th>                    
+                    <th
                     scope="col"
                     class="px-6 py-4 font-medium text-gray-900"
-                  ></th>
+                    ></th>
                 </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-100 border-t border-gray-100">
+                </thead>
+                <tbody class="divide-y divide-gray-100 border-t border-gray-100">
                 <ng-container *ngFor="let user of filteredUsers">
-                  <tr
+                    <tr
                     class="hover:bg-gray-50"
                     [ngClass]="{
-                      'opacity-40 hover:opacity-100': user.status === 'Inactive'
+                        'opacity-40 hover:opacity-100': user.status === 'Inactive'
                     }"
-                  >
+                    >
                     <th class="flex gap-3 px-6 py-4 font-normal text-gray-900">
-                      <div class="relative h-10 w-10">
+                        <div class="relative h-10 w-10">
                         <img
-                          class="h-full w-full rounded-full object-cover object-center"
-                          [src]="user.profilLogoUrl"
-                          alt=""
+                            class="h-full w-full rounded-full object-cover object-center"
+                            [src]="user.profilLogoUrl"
+                            alt=""
                         />
                         <span
-                          class="absolute right-0 bottom-0 h-2 w-2 rounded-full ring ring-white"
-                          [ngClass]="{
+                            class="absolute right-0 bottom-0 h-2 w-2 rounded-full ring ring-white"
+                            [ngClass]="{
                             'bg-green-400': user.status === 'Active',
                             'bg-red-400': user.status === 'Inactive'
-                          }"
+                            }"
                         ></span>
-                      </div>
-                      <div class="text-sm">
+                        </div>
+                        <div class="text-sm">
                         <div class="font-medium text-gray-700">
-                          {{ user.username }}
+                            {{ user.username }}
                         </div>
                         <div class="text-gray-400">{{ user.email }}</div>
-                      </div>
+                        </div>
                     </th>
                     <td class="px-6 py-4">
-                      <span
+                        <span
                         class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold"
                         [ngClass]="{
-                          'text-green-600': user.status === 'Active',
-                          'text-red-600': user.status === 'Inactive'
+                            'text-green-600': user.status === 'Active',
+                            'text-red-600': user.status === 'Inactive'
                         }"
-                      >
+                        >
                         <span
-                          class="h-1.5 w-1.5 rounded-full"
-                          [ngClass]="{
+                            class="h-1.5 w-1.5 rounded-full"
+                            [ngClass]="{
                             'bg-green-600': user.status === 'Active',
                             'bg-red-600': user.status === 'Inactive'
-                          }"
+                            }"
                         ></span>
                         {{ user.status }}
-                      </span>
+                        </span>
 
-                      <!-- <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" [ngClass]="{
+                        <!-- <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" [ngClass]="{
                                 'bg-green-100 text-green-800': marchand.marchandStatus === 'Active',
                                 'bg-red-100 text-red-800': marchand.marchandStatus === 'Inactive',
                                 'bg-yellow-100 text-yellow-800': marchand.marchandStatus === 'JustCreated'
@@ -186,96 +184,110 @@
                             </span>-->
                     </td>
                     <td class="px-6 py-4">
-                      {{ user.firstName }} {{ user.lastName }}
+                        {{ user.firstName }} {{ user.lastName }}
                     </td>
                     <!-- usertable.component.html -->
 
-                    <td class="px-6 py-4">
-                      <div class="flex gap-2">
-                        <ng-container *ngIf="user.roles">
-                          <ng-container *ngFor="let role of user.roles">
-                            <span
-                              *ngIf="role.name === 'ROLE_ADMIN'"
-                              class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600"
-                            >
-                              Admin
-                            </span>
-                            <span
-                              *ngIf="role.name === 'ROLE_MARCHAND'"
-                              class="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-1 text-xs font-semibold text-indigo-600"
-                            >
-                              Marchand
-                            </span>
-                            <span
-                              *ngIf="role.name === 'ROLE_COMERCIAL'"
-                              class="inline-flex items-center gap-1 rounded-full bg-violet-50 px-2 py-1 text-xs font-semibold text-violet-600"
-                            >
-                              Commercial
-                            </span>
-                          </ng-container>
-                        </ng-container>
-                      </div>
-                    </td>
+
 
                     <td class="px-6 py-4">
-                      <div class="flex justify-end gap-4">
+                        <div class="flex gap-2">
+                        <ng-container *ngIf="hasAllRoles(user.id); else individualRoles">
+                            <span
+                            class="inline-flex items-center gap-1 rounded-full bg-fuchsia-50 px-2 py-1 text-xs font-semibold text-fuchsia-600"
+                            >
+                            Super Admin
+                            </span>
+                        </ng-container>
+                        <ng-template #individualRoles>
+                            <ng-container *ngIf="user.roles">
+                            <ng-container *ngFor="let role of user.roles">
+                                <span
+                                *ngIf="role.name === 'ROLE_ADMIN'"
+                                class="inline-flex items-center gap-1 rounded-full bg-violet-50 px-2 py-1 text-xs font-semibold text-violet-600"
+                                >
+                                Admin
+                                </span>
+                                <span
+                                *ngIf="role.name === 'ROLE_MARCHAND'"
+                                class="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-1 text-xs font-semibold text-indigo-600"
+                                >
+                                Marchand
+                                </span>
+                                <span
+                                *ngIf="role.name === 'ROLE_COMMERCIAL'"
+                                class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-600"
+                                >
+                                Commercial
+                                </span>
+                            </ng-container>
+                            </ng-container>
+                        </ng-template>
+                        </div>
+                    </td>
+                    
+                    
+
+
+
+                    <td class="px-6 py-4">
+                        <div class="flex justify-end gap-4">
                         <a
-                          (click)="openModal(user.id)"
-                          x-data="{ tooltip: 'Delete' }"
+                            (click)="swipeMarchand(user.id)"
+                            x-data="{ tooltip: 'Swipe' }"
                         >
-                          <lord-icon
-                            src="https://cdn.lordicon.com/skkahier.json"
-                            trigger="hover"
-                            colors="primary:#dc2626"
-                            style="width: 24px; height: 24px"
-                          >
-                          </lord-icon>
-                        </a>
-                        <a
-                          (click)="swipeMarchand(user.id)"
-                          x-data="{ tooltip: 'Swipe' }"
-                          class="ml-3 text-yellow-400 hover:text-yellow-600"
-                        >
-                          <lord-icon
+                            <lord-icon
                             src="https://cdn.lordicon.com/xunzgeah.json"
                             trigger="loop-on-hover"
                             colors="primary:#ca8a04 "
                             style="width: 24px; height: 24px"
-                          >
-                          </lord-icon>
+                            >
+                            </lord-icon>
                         </a>
                         <a
-                          (click)="toggleEdit(user)"
-                          class="text-indigo-600 hover:text-indigo-900 cursor-pointer"
+                            (click)="toggleEdit(user)"
                         >
-                          <lord-icon
+                            <lord-icon
                             src="https://cdn.lordicon.com/wuvorxbv.json"
                             trigger="hover"
                             colors="primary:#312e81  ,secondary:#4f46e5"
                             style="width: 24px; height: 24px"
-                          >
-                          </lord-icon>
+                            >
+                            </lord-icon>
                         </a>
-                      </div>
+                        <a
+                            (click)="openModal(user.id)"
+                            x-data="{ tooltip: 'Delete' }"
+                        >
+                            <lord-icon
+                            src="https://cdn.lordicon.com/skkahier.json"
+                            trigger="hover"
+                            colors="primary:#dc2626"
+                            style="width: 24px; height: 24px"
+                            >
+                            </lord-icon>
+                        </a>
+                        </div>
                     </td>
-                  </tr>
+                    </tr>
                 </ng-container>
-              </tbody>
+                </tbody>
             </table>
 
+
             <!-- ////////////////////////////////////////////////Table Ended//////////////////////////////////////////////////////////////// -->
-          </div>
+            </div>
         </div>
         <nav class="ng-wind-table-pagination" aria-label="Table navigation">
-          <div class="ng-wind-table-page-view">
+            <div class="ng-wind-table-page-view">
             Lignes par page:
             <div class="flex mx-2 rounded-md">
-              <select
+                <select
                 id="states"
                 class="bg-gray-100 text-gray-900 block w-full p-1 rounded-sm text-xs"
                 [(ngModel)]="itemsPerPage"
                 (ngModelChange)="onItemsPerPageChange($event)"
-              >
+                >
                 <option value="5" selected>5</option>
                 <option value="10">10</option>
                 <option value="20">20</option>
@@ -284,34 +296,35 @@
                 <option value="50">50</option>
                 <option value="100">100</option>
                 <option value="200">200</option>
-              </select>
+                </select>
             </div>
             <span>Page {{ currentPage }} of {{ totalPages }}</span>
-          </div>
+            </div>
 
-          <ul class="inline-flex -space-x-px rtl:space-x-reverse text-xs h-8">
+            <ul class="inline-flex -space-x-px rtl:space-x-reverse text-xs h-8">
             <li>
-              <a
+                <a
                 (click)="prevPage()"
                 [class.disabled]="currentPage === 1"
                 class="ng-wind-page-prev"
                 >Prev</a
-              >
+                >
             </li>
             <li>
-              <a
+                <a
                 (click)="nextPage()"
                 [class.disabled]="currentPage === totalPages"
                 class="ng-wind-page-next"
                 >Next</a
-              >
+                >
             </li>
-          </ul>
+            </ul>
         </nav>
-      </div>
+        </div>
     </div>
-  </div>
+    </div>
 </section>
+
 
 <!--Model for Delete -->
 <div
@@ -496,9 +509,7 @@
   </div>
 </div>
 
-
 <!--Model for Delete -->
-
 
 <div
   *ngIf="rejectOpen"
@@ -570,14 +581,36 @@
 <!--Ajouter ici le Model for Add user -->
 <!-- Model for Add User -->
 <!-- Model for Add User -->
-<div *ngIf="addModalOpen" class="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm"></div>
+<div
+  *ngIf="addModalOpen"
+  class="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm"
+></div>
 
-<div *ngIf="addModalOpen" class="fixed inset-0 flex items-center justify-center">
+<div
+  *ngIf="addModalOpen"
+  class="fixed inset-0 flex items-center justify-center"
+>
   <div class="p-4 w-full max-w-2xl h-full md:h-auto">
-    <div class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-      <button (click)="toggleAddModal()" type="button" class="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
-        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+    <div
+      class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5"
+    >
+      <button
+        (click)="toggleAddModal()"
+        type="button"
+        class="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+      >
+        <svg
+          aria-hidden="true"
+          class="w-5 h-5"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path>
         </svg>
         <span class="sr-only">Close</span>
       </button>
@@ -590,28 +623,60 @@
         <form (ngSubmit)="onAddSubmit(addForm)" #addForm="ngForm">
           <div class="grid grid-cols-6 gap-6">
             <div class="relative mb-4 col-span-6 sm:col-span-3">
-              <input [(ngModel)]="addFormData.username" name="username" type="text" id="username" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="Username" required />
+              <input
+                [(ngModel)]="addFormData.username"
+                name="username"
+                type="text"
+                id="username"
+                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
+                placeholder="Username"
+                required
+              />
               <span class="absolute -top-7 left-0 ps-3 text-gray-400">
                 <i class="bi bi-person"></i> Username
               </span>
             </div>
             <!-- Ajoutez les autres champs nécessaires pour l'ajout d'un utilisateur -->
             <div class="relative mb-4 col-span-6 sm:col-span-3">
-              <input [(ngModel)]="addFormData.firstName" name="firstName" type="text" id="firstName" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="First Name" required />
+              <input
+                [(ngModel)]="addFormData.firstName"
+                name="firstName"
+                type="text"
+                id="firstName"
+                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
+                placeholder="First Name"
+                required
+              />
               <span class="absolute -top-7 left-0 ps-3 text-gray-400">
                 <i class="bi bi-person"></i> First Name
               </span>
             </div>
             <!-- Ajoutez les autres champs nécessaires -->
             <div class="relative mb-4 col-span-6 sm:col-span-3">
-              <input [(ngModel)]="addFormData.lastName" name="lastName" type="text" id="lastName" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="Last Name" required />
+              <input
+                [(ngModel)]="addFormData.lastName"
+                name="lastName"
+                type="text"
+                id="lastName"
+                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
+                placeholder="Last Name"
+                required
+              />
               <span class="absolute -top-7 left-0 ps-3 text-gray-400">
                 <i class="bi bi-person"></i> Last Name
               </span>
             </div>
             <!-- Ajoutez les autres champs nécessaires -->
             <div class="relative mb-4 col-span-6 sm:col-span-3">
-              <input [(ngModel)]="addFormData.email" name="email" type="email" id="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="Email" required />
+              <input
+                [(ngModel)]="addFormData.email"
+                name="email"
+                type="email"
+                id="email"
+                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
+                placeholder="Email"
+                required
+              />
               <span class="absolute -top-7 left-0 ps-3 text-gray-400">
                 <i class="bi bi-envelope"></i> Email
               </span>
@@ -625,33 +690,61 @@
             </div>-->
             <!-- Ajoutez les autres champs nécessaires -->
             <div class="relative mb-4 col-span-6 sm:col-span-3">
-              <input [(ngModel)]="addFormData.profilLogoUrl" name="profilLogoUrl" type="text" id="profilLogoUrl" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="Profil Logo URL" required />
+              <input
+                [(ngModel)]="addFormData.profilLogoUrl"
+                name="profilLogoUrl"
+                type="text"
+                id="profilLogoUrl"
+                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
+                placeholder="Profil Logo URL"
+                required
+              />
               <span class="absolute -top-7 left-0 ps-3 text-gray-400">
                 <i class="bi bi-image"></i> Profil Logo URL
               </span>
             </div>
-          <div class="relative mb-4 col-span-6 sm:col-span-3">
-  <div class="flex flex-wrap">
-    <label *ngFor="let role of roles" class="inline-flex items-center mr-4 mb-2">
-      <input type="checkbox" [(ngModel)]="addFormData.roles[role.name]" name="roles" [value]="role.name" class="form-checkbox text-emerald-600">
-      <span class="ml-2 text-gray-700">{{ role.name }}</span>
-    </label>
-  </div>
-  <span class="absolute -top-7 left-0 ps-3 text-gray-400">
-    <i class="bi bi-shield-lock"></i> Roles
-  </span>
-</div>
+            <div class="relative mb-4 col-span-6 sm:col-span-3">
+              <div class="flex flex-wrap">
+                <label
+                  *ngFor="let role of roles"
+                  class="inline-flex items-center mr-4 mb-2"
+                >
+                  <input
+                    type="checkbox"
+                    [(ngModel)]="role.checked"
+                    name="roles[role.name]"
+                    [value]="role.name"
+                    class="form-checkbox text-emerald-600"
+                  />
+                  <span class="ml-2 text-gray-700">{{ role.name }}</span>
+                </label>
+              </div>
+              <span class="absolute -top-7 left-0 ps-3 text-gray-400">
+                <i class="bi bi-shield-lock"></i> Roles
+              </span>
+            </div>
 
             <!-- Ajoutez les autres champs nécessaires -->
           </div>
         </form>
       </div>
 
-    <div class="px-6 pt-6 border-t border-gray-200 rounded-b">
-        <button (click)="toggleAddModal()" type="button" class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+      <div class="px-6 pt-6 border-t border-gray-200 rounded-b">
+        <button
+          (click)="toggleAddModal()"
+          type="button"
+          class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+        >
           Cancel
         </button>
-        <button (click)="onAddSubmit(addForm)" type="button" class="ml-3 py-2 px-6 text-sm font-medium text-center text-white bg-yellow-500 rounded-lg hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:bg-yellow-500 dark:hover:bg-yellow-600 dark:focus:ring-yellow-900">
+        <button
+          (click)="onAddSubmit(addForm)"
+          type="button"
+          class="ml-3 py-2 px-6 text-sm font-medium text-center text-white bg-yellow-500 rounded-lg hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 dark:bg-yellow-500 dark:hover:bg-yellow-600 dark:focus:ring-yellow-900"
+        >
           Add
         </button>
       </div>
+    </div>
+  </div>
+</div>
