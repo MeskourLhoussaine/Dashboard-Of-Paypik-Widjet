@@ -30,10 +30,10 @@
               class="w-full object-cover"
             />
           </button>
-          <div class="text-left ml-3">
-            <p>{{ user?.username }}</p>
-            <p class="text-light text-xs">Marchand</p>
-          </div>
+            <div class="text-left ml-3">
+                        <p>{{ user?.firstName }} {{ user?.lastName }}</p>
+                        <p class="text-light text-xs">{{ user?.roles?.length !>= 2 ? 'Administrateur: "Marchand"' : 'Marchand' }}</p>
+                    </div>
         </div>
 
         <div class="profile-dropdown-list" aria-expanded="false">

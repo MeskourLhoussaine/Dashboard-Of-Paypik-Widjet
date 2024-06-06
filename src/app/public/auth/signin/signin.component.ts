@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DatetimeHelper } from 'src/app/_core/helpers/datetime.helper';
 import { CommonService } from 'src/app/_core/services/common.service';
 import { AdminRoutes } from 'src/app/admin/admin.routes';
-import { AppRoutes } from 'src/app/app.routes';
 import { pageTransition } from 'src/app/shared/utils/animations';
 import { Images } from 'src/assets/data/images';
 import { AlertType } from '../../../shared/components/alert/alert.type';
@@ -19,9 +18,9 @@ import { Signin } from './signin.model';
   styleUrls: ['./signin.component.css'],
   animations: [pageTransition],
 })
-export class SigninComponent implements OnInit {
+export class SigninComponent {
   readonly signinBannerImage: string = Images.bannerLogo;
-  merchantId!: number;
+  marchandId!: number;
   isLoading: boolean = false;
   readonly publicRoutes = PublicRoutes;
   readonly currentYear: number = DatetimeHelper.currentYear;
@@ -45,7 +44,7 @@ export class SigninComponent implements OnInit {
   ngOnInit(): void {
     // Récupérer les paramètres de la route
     this.route.params.subscribe(params => {
-      this.merchantId = +params['id'];
+      this.marchandId = +params['id'];
     });
   }
 
@@ -57,7 +56,7 @@ export class SigninComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.signInForm.value);
+    //console.log(this.signInForm.value);
   
     const username = this.signInForm.value.username;
     const password = this.signInForm.value.password;
@@ -67,25 +66,29 @@ export class SigninComponent implements OnInit {
   
       this.authService.signin(signinData).subscribe(
         (data) => {
-          console.log('Access Token:', data.accessToken);
-          console.log('User Roles:', data.roles);
+          //console.log('Access Token:', data.accessToken);
+          //console.log('User Roles:', data.roles);
           this.tokenService.saveToken(data.accessToken);
           
-          if (data.roles.includes('ROLE_ADMIN')) {
-            // Si l'utilisateur est administrateur, rediriger vers les deux pages sans appeler findMerchantIdByMerchantName
+
+          if(data.roles.includes('ROLE_ADMIN')) {
             this.redirectBasedOnRole(data.roles);
+
+          }else if (data.roles.includes('ROLE_COMMERCIAL')) {
+            this.redirectBasedOnRole(data.roles);
+
           } else if (data.roles.includes('ROLE_MARCHAND')) {
-            // Si l'utilisateur est marchand, appeler findMerchantIdByMerchantName avant de rediriger
+            // Si l'utilisateur est marchand, appeler findMarchandIdByMarchandName avant de rediriger
             this.authService.findMerchantIdByMerchantName(username).subscribe(
-              (merchantId) => {
-                this.merchantId = merchantId;
-                console.log('Merchant ID:', merchantId);
-                this.router.navigate(['/marchand/dashboard/' + this.merchantId]);
+              (marchandId) => {
+                this.marchandId = marchandId;
+                //console.log('Marchand ID:', marchandId);
+                this.router.navigate(['/marchand/dashboard/' + this.marchandId]);
               },
               (error) => {
-                console.error('Error fetching merchant ID:', error);
+                console.error('Error fetching marchand ID:', error);
                 // Gérer les erreurs ici...
-                alert('An error occurred while fetching the merchant ID. Please try again.');
+                alert('An error occurred while fetching the marchand ID. Please try again.');
               }
             );
           } else {
@@ -107,39 +110,39 @@ export class SigninComponent implements OnInit {
       console.log('Username or password is not defined');
     }
   }
-  
-  // Fonction pour rediriger l'utilisateur en fonction de son rôle
- // Fonction pour rediriger l'utilisateur en fonction de son rôle
-private redirectBasedOnRole(roles: string[]): void {
-  if (roles.includes('ROLE_ADMIN')) {
-    // Si l'utilisateur est administrateur, rediriger vers le tableau de bord admin
-    this.router.navigate(['/admin/dashboard']);
-    
-    if (this.merchantId) {
-      // Si l'ID du marchand est disponible, utiliser cet ID pour la redirection vers le tableau de bord du marchand
-      this.router.navigate(['/marchand/dashboard/' + this.merchantId]);
-    } else {
-      // Si l'ID du marchand n'est pas disponible, gérer cela comme nécessaire
-      console.error('Merchant ID is not available');
-      // Vous pouvez rediriger vers une page par défaut ou afficher un message d'erreur
-    }
-  } else if (roles.includes('ROLE_COMERCIAL') ) {
-    // Si l'utilisateur a les rôles "ROLE_COMERCIAL" ou "ROLE_MARCHAND", rediriger vers la page commerciale
-    this.router.navigate(['/commercial']);
-    
-    if (this.merchantId) {
-      // Si l'ID du marchand est disponible, utiliser cet ID pour la redirection vers le tableau de bord du marchand
-      this.router.navigate(['/marchand/dashboard/' + this.merchantId]);
-    } else {
-      // Si l'ID du marchand n'est pas disponible, gérer cela comme nécessaire
-      console.error('Merchant ID is not available');
-      // Vous pouvez rediriger vers une page par défaut ou afficher un message d'erreur
-    }
-  } else {
-    // Si aucun des rôles ci-dessus n'est présent, rediriger vers une page par défaut
-    this.router.navigate(['/default']);
-  }
-}
+
 
   
+  // Fonction pour rediriger l'utilisateur en fonction de son rôle
+  private redirectBasedOnRole(roles: string[]): void {
+    if (roles.includes('ROLE_ADMIN')) {
+      this.router.navigate(['/admin/dashboard']);
+    
+    } else if (roles.includes('ROLE_COMMERCIAL') ) {
+      this.router.navigate(['/commercial/validation']);
+      
+    } else {
+      this.router.navigate(['/signin']);
+    }
+  }
+
+  /// Forget password
+  modalOpen: boolean = false;
+  togglePassForget() {
+      this.modalOpen = !this.modalOpen;
+  }
+
+
+  // Aficher le mot de passe
+  @ViewChild('passwordInput') passwordInput!: ElementRef;
+  togglePasswordVisibility() {
+    const passwordInputEl = this.passwordInput.nativeElement;
+    if (passwordInputEl.type === 'password') {
+      passwordInputEl.type = 'text';
+    } else {
+      passwordInputEl.type = 'password';
+    }
+  }
+
+
 }

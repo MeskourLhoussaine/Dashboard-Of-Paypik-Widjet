@@ -5,7 +5,7 @@ export interface Transaction {
     transactionId?: any;
     paymentMethodId?: any;
     orderId?:string;
-    amount?:string;
+    amount?:number;
     currency?:string;
     status?:string;
     timestamp: string;

@@ -3,9 +3,9 @@
         <div class="   rounded-lg my-auto">
             
             <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-3">
+
                 <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-                    <div
-                        class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white shadow-emerald-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+                    <div class="hover:scale-110 duration-700 bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white shadow-emerald-500/40 shadow-lg absolute -mt-4 grid h-12 w-12 place-items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             aria-hidden="true" class="w-6 h-6 text-white">
                             <path d="M12 7.5a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z"></path>
@@ -18,22 +18,19 @@
                         </svg>
                     </div>
                     <div class="p-4 text-right">
+                        <br>
                         <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
-                            Today's Money</p>
-                        <h4
-                            class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                            53k (MAD)</h4>
+                            Montant total de l'année </p>
                     </div>
                     <div class="border-t border-blue-gray-50 p-4">
-                        <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-                            <strong class="text-green-500">+55%</strong>&nbsp;than last week
-                        </p>
+                        <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+                            {{this.totalYearAmountMAD.toFixed(3)}} <span class="text-sm text-gray-400">(MAD)</span>
+                        </h4>
                     </div>
                 </div>
 
                 <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md">
-                    <div
-                        class="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white shadow-emerald-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">
+                    <div class="hover:scale-110 duration-700 bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white shadow-emerald-500/40 shadow-lg absolute -mt-4 grid h-12 w-12 place-items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                             aria-hidden="true" class="w-6 h-6 text-white">
                             <path d="M12 7.5a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z"></path>
@@ -46,19 +43,19 @@
                         </svg>
                     </div>
                     <div class="p-4 text-right">
+                        <br>
                         <p class="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">
-                            Today's Money</p>
-                        <h4
-                            class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
-                            53k (MAD)</h4>
+                            Montant total du jour</p>
                     </div>
                     <div class="border-t border-blue-gray-50 p-4">
-                        <p class="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-                            <strong class="text-green-500">+55%</strong>&nbsp;than last week
-                        </p>
+                        <h4 class="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">
+                            {{this.totalDayAmountMAD.toFixed(3)}} <span class="text-sm text-gray-400">(MAD)</span>
+                        </h4>
                     </div>
                 </div>
+
             </section>
+
 
 
             <div class="bg-white rounded-xl shadow-md mt-14 ">

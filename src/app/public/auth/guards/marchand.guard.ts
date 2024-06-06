@@ -1,20 +1,29 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { SuperadminGuard } from './superadmin.guard';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class MarchandGuard implements CanActivate {
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private superadminGuard: SuperadminGuard
+  ) {}
 
   canActivate(): boolean {
-    if (this.authService.isMarchand()) {
-      return true; // Autoriser l'accès si l'utilisateur est un marchand
-    } else {
-      this.router.navigate(['/']); // Rediriger vers la page d'accueil si l'utilisateur n'est pas un marchand
-      return false;
+    // Check if the user has commercial access or is a superadmin
+    if (this.authService.isMarchand() || this.superadminGuard.canActivate()) {
+      return true;
     }
+
+    // Redirect if neither condition is met
+    this.router.navigate(['/signin']); // Redirect to the sign-in page if the user is not a marchand
+    return false;
   }
+  
 }

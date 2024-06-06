@@ -1,6 +1,7 @@
 export interface Role{
     id:number;
     name:string;
+    checked?: boolean; // Ajoutez la propriété checked
 }
 /*
 export enum ERole {

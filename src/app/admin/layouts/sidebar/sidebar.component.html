@@ -8,7 +8,7 @@
     </div>
     <ul class="menu-links">
         <li>
-            <a [routerLink]="commonServices.prepareRoute(appRoutes.Admin, adminRoutes.MarchandDashboard)"
+            <a [routerLink]="commonServices.prepareRoute(appRoutes.Admin, adminRoutes.Dashboard)"
                 routerLinkActive="active" class="menu-item" ariaCurrentWhenActive="page">
                 <i class="bi bi-columns-gap"></i>
                 <span>Tableau de bord
@@ -110,20 +110,18 @@
 
             </ul>
         </li>
-          
-       <li>
-    <a href="javascript:void(0)" class="menu-item" (click)="onLogout()">
-        <i class="bi bi-box-arrow-right"></i>
-        <span>Se déconnecter</span>
-    </a>
-</li>
-
-       <!-- <li>
-            <a href="#" class="menu-item">
+        <li>
+            <a href="/commercial/validation" class="menu-item" >
+                <i class="bi bi-mailbox2"></i>
+                <span>Demandes</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" class="menu-item" (click)="onLogout()">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Se déconnecter</span>
             </a>
-        </li>-->
+        </li>
     </ul>
 </aside>
 

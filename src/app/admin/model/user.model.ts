@@ -7,10 +7,11 @@ export interface User{
     firstName: string;
     lastName: string;
     password: string;
-    roles?: Role[];
+    roles?: any[];
+    //roles?: string[];
     status:string;
     profilLogoUrl:string;
   email: string;
-   
+ 
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TransactionService } from '../../services/transaction.service';
 import { Transaction } from '../../models/transaction.model';
 import { ActivatedRoute } from '@angular/router';
@@ -6,66 +6,39 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
-  styleUrl: './chart.component.css'
+  styleUrls: ['./chart.component.css'], // Correction du nom de la propriété
 })
-export class ChartComponent implements OnInit{
+export class ChartComponent implements OnInit {
+  @Input() merchantId!: number; // Define input property to receive merchantId
 
-  merchantId!: number;
-  transactions: Transaction[] = [];
-  ngOnInit(): void {
-  
-
-    this.route.params.subscribe((params) => {
-      this.merchantId = params['id'];
-      this.retrieveTransactions();
-    }); 
-
-  }
-  
-
- retrieveTransactions(): void {
-
-    this.transactionService.getTransactionsByMerchantId(this.merchantId).subscribe({
-      next: (data: Transaction[]) => {
-        this.transactions = data;
-        console.log("data",data)
-        this.processTransactions( this.transactions);
-      },
-      error: (error) => console.error(error)
-    });
-  }
-
-  chartData: number[] = [0,0,0,300];
-  labels: string[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep','Nov','Des'];
+  chartData: number[] = [];
+  labels: string[] = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
 
   tooltipContent: string = '';
   tooltipOpen: boolean = false;
   tooltipX: number = 0;
   tooltipY: number = 0;
 
-  constructor(private transactionService: TransactionService,
-    private route: ActivatedRoute,
-  ) { }
-  processTransactions(transactions: Transaction[]): void {
-    const monthlyData = new Array(13).fill(0);
-  
-    transactions.forEach(transaction => {
-      if (transaction.timestamp) {
-        const date = new Date(transaction.timestamp);
-        const month = date.getMonth()+1;
-        console.log(`Transaction Timestamp: ${transaction.timestamp}, Parsed Date: ${date}, Month: ${month}`);
-        if (!isNaN(month)) { // Vérifiez si month est un nombre valide hh
-          monthlyData[month]++;
-        
-        }
-      }
-    });
-  
-    this.chartData= [300,45,50,32,60,54,19,34,89,200,93];
-    console.log("Monthly Data: ", monthlyData);
+  transactions: Transaction[] = [];
+  maxBarHeight: number = 200; // Change this value as needed
+  scaleFactor: number = 1;
+
+  constructor(private transactionService: TransactionService, private route: ActivatedRoute,) {}
+
+  ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      this.merchantId = +params['id'];
+    console.log(`Merchant ID: ${this.merchantId}`);
+     // Log merchantId to the console
+    this.retrieveTransactions();
+  });
   }
-  
+
   showTooltip(e: MouseEvent) {
+    console.log(e);
     this.tooltipContent = (e.target as HTMLElement).textContent || '';
     this.tooltipX = (e.target as HTMLElement).offsetLeft - (e.target as HTMLElement).clientWidth;
     this.tooltipY = (e.target as HTMLElement).clientHeight + (e.target as HTMLElement).clientWidth;
@@ -79,5 +52,29 @@ export class ChartComponent implements OnInit{
     this.tooltipY = 0;
   }
 
+  retrieveTransactions(): void {
+    this.transactionService.getTransactionsByMerchantId(this.merchantId).subscribe({
+      next: (data: Transaction[]) => {
+        this.transactions = data;
+        this.calculateChartData();
+      },
+      error: (error) => console.error(error),
+    });
+  }
 
+  calculateChartData(): void {
+    this.chartData = Array(12).fill(0);
+
+    // Loop through transactions and increment the count for the respective month
+    this.transactions.forEach((transaction) => {
+      const month = new Date(transaction.timestamp).getMonth();
+      this.chartData[month]++;
+    });
+
+    // Find the maximum value in the chart data
+    const max = Math.max(...this.chartData);
+
+    // Calculate the scaling factor
+    this.scaleFactor = max > 0 ? this.maxBarHeight / max : 12;
+  }
 }
