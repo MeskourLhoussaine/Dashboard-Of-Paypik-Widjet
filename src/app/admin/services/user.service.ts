@@ -4,11 +4,15 @@ import { Observable, catchError } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { User } from '../model/user.model';
 import { Role } from '../model/role.model';
+import { ChangePasswordRequest } from 'src/app/marchand/models/change-password-request';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+  updatePassword(userId: number, changePasswordRequest: ChangePasswordRequest) {
+    throw new Error('Method not implemented.');
+  }
 
   constructor(private http:HttpClient) { }
   

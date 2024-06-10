@@ -237,9 +237,11 @@ export class UsertableComponent implements OnInit {
            roleNames.includes('ROLE_COMERCIAL');
   }
 
-  getSelectedRoles(): Role[] {
-    return this.roles.filter(role => role.checked);
+  getSelectedRoles(): string[] {
+    console.log("les roles",this.roles);
+    return this.roles.filter(role => role.checked).map(role => role.name);
   }
+  
   
   toggleAddModal() {
     this.addModalOpen = !this.addModalOpen;
@@ -252,14 +254,34 @@ export class UsertableComponent implements OnInit {
         // Fonction pour soumettre le formulaire d'ajout
         onAddSubmit(form: NgForm) {
           if (form.valid) {
+            const generatedPassword = this.generatePassword(8);
+
+            // Ajouter le mot de passe généré aux données avant de les soumettre
+            this.addFormData.password = generatedPassword;
+            console.log(" avant this.addFormData",this.addFormData);
+            // Supprimer tous les rôles existants de addFormData.roles
+            this.addFormData.roles = [];
             
-            this.addFormData.roles = this.getSelectedRoles();
-             // Récupérer les rôles sélectionnés
+            // Ajouter les rôles sélectionnés à addFormData.roles
+            this.addFormData.roles.push(...this.getSelectedRoles());
+        console.log("this.addFormData",this.addFormData);
+            // Ajouter l'utilisateur avec les rôles sélectionnés
             this.userService.addUser(this.addFormData).subscribe(() => {
               this.fetchUsers(); // Rafraîchir la liste des utilisateurs après l'ajout
               this.toggleAddModal(); // Fermer le modal d'ajout après l'ajout réussi
             });
           }
+        }
+
+
+        generatePassword(length: number): string {
+          const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; // Caractères possibles pour le mot de passe
+          let password = "";
+          for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * charset.length);
+            password += charset[randomIndex];
+          }
+          return password;
         }
         
         }
