@@ -13,6 +13,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class AuthService {
   private url = environment.apiUrl + "/api/auth/signin";
+  API_URL=environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -23,19 +24,19 @@ export class AuthService {
   }
 
   getUserById(id: number): Observable<User> {
-    return this.http.get<User>(`${environment.apiUrl}/api/auth/findbyid/${id}`).pipe(
+    return this.http.get<User>(`${this.API_URL}/api/auth/findbyid/${id}`).pipe(
       catchError(this.handleError)
     );
   }
 
   findMerchantIdByMerchantName(merchantName: string): Observable<number> {
-    return this.http.get<number>(`${environment.apiUrl}/api/merchants/merchandId/${merchantName}`).pipe(
+    return this.http.get<number>(`${this.API_URL}/api/merchants/merchandId/${merchantName}`).pipe(
       catchError(this.handleError)
     );
   }
 
   findMerchantById(id: number): Observable<Array<Merchant>> {
-    return this.http.get<Array<Merchant>>(`${environment.apiUrl}/api/merchants/findById/${id}`).pipe(
+    return this.http.get<Array<Merchant>>(`${this.API_URL}/api/merchants/findById/${id}`).pipe(
       catchError(this.handleError)
     );
   }

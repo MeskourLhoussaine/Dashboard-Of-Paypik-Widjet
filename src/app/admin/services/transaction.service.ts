@@ -10,15 +10,15 @@ import { Transaction } from '../model/transaction.model';
   providedIn: 'root',
 })
 export class TransactionService {
-
+  API_URL = environment.apiUrl
   constructor(private http:HttpClient){ }
 
   public getTransactions(): Observable<Array<Transaction>> {
-    return this.http.get<Array<Transaction>>(environment.apiUrl + "/api/Transaction/findAll")
+    return this.http.get<Array<Transaction>>(this.API_URL + "/api/Transaction/findAll")
   }
 
   public getTransactionsByMarchand(marchandId: number): Observable<Array<Transaction>> {
-    return this.http.get<Array<Transaction>>(environment.apiUrl + "/api/Transaction/findByMerchantId/" + marchandId)
+    return this.http.get<Array<Transaction>>(this.API_URL+ "/api/Transaction/findByMerchantId/" + marchandId)
   }
 
   // public searchTransactions(keyword: string): Observable<Array<Transaction>> {
@@ -26,14 +26,14 @@ export class TransactionService {
   // }
 
   public saveTransaction(transaction: Transaction): Observable<Transaction> {
-    return this.http.post<Transaction>(environment.apiUrl + "/api/Transaction/save", transaction)
+    return this.http.post<Transaction>(this.API_URL + "/api/Transaction/save", transaction)
   }
 
   public deleteTransaction(id: number): Observable<Transaction> {
-    return this.http.delete<Transaction>(environment.apiUrl + "/api/Transaction/delete/" + id)
+    return this.http.delete<Transaction>(this.API_URL + "/api/Transaction/delete/" + id)
   }
 
   public editTransaction(transaction: Transaction): Observable<Transaction> {
-    return this.http.put<Transaction>(environment.apiUrl + "/api/Transaction/" + transaction.transactionId, transaction);
+    return this.http.put<Transaction>(this.API_URL  + "/api/Transaction/" + transaction.transactionId, transaction);
   }
 }

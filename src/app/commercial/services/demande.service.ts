@@ -9,38 +9,38 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class DemandeService {
-
+  API_URL = environment.apiUrl;
   constructor(private http: HttpClient) { }
 
   saveNewDemande(demande: Demandedto): Observable<Demandedto> {
-    return this.http.post<Demandedto>(environment.apiUrl + "/api/demandes", demande);
+    return this.http.post<Demandedto>(this.API_URL + "/api/demandes", demande);
   }
 
   getAllDemandes(): Observable<Demandedto[]> {
-    return this.http.get<Demandedto[]>(environment.apiUrl + "/api/demandes");
+    return this.http.get<Demandedto[]>(this.API_URL + "/api/demandes");
   }
 
   getDemande(demandeId: number): Observable<Demandedto> {
-    return this.http.get<Demandedto>(environment.apiUrl + "/api/demandes/demande/" + demandeId);
+    return this.http.get<Demandedto>(this.API_URL + "/api/demandes/demande/" + demandeId);
   }
 
   getAllDemandesNotVerified(): Observable<Demandedto[]> {
-    return this.http.get<Demandedto[]>(environment.apiUrl +"/api/demandes/not-verified");
+    return this.http.get<Demandedto[]>(this.API_URL +"/api/demandes/not-verified");
   }
 
   updateDemandeRejected(demandeId: number): Observable<Demandedto> {
-    return this.http.put<Demandedto>(environment.apiUrl +"/api/demandes/"+ demandeId +"/rejected" , null);
+    return this.http.put<Demandedto>(this.API_URL +"/api/demandes/"+ demandeId +"/rejected" , null);
   }
 
   updateDemandeAccepted(demandeId: number): Observable<Demandedto> {
-    return this.http.put<Demandedto>(environment.apiUrl + "/api/demandes/" + demandeId +"/accepted", null);
+    return this.http.put<Demandedto>(this.API_URL + "/api/demandes/" + demandeId +"/accepted", null);
 
   }
   updateDemandeUpdateAndAccepted(demandeId: number,demande: Demandedto): Observable<Demandedto> {
-    return this.http.put<Demandedto>(environment.apiUrl + "/api/demandes/" + demandeId +"/update/accepted", demande);
+    return this.http.put<Demandedto>(this.API_URL + "/api/demandes/" + demandeId +"/update/accepted", demande);
   }
 
   updateDemandeUpdate(demandeId: number,demande: Demandedto): Observable<Demandedto> {
-    return this.http.put<Demandedto>(environment.apiUrl + "/api/demandes/" + demandeId +"/update", demande);
+    return this.http.put<Demandedto>(this.API_URL + "/api/demandes/" + demandeId +"/update", demande);
   }
 }

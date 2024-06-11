@@ -9,35 +9,35 @@ import { Merchant } from '../model/merchant.model';
   providedIn: 'root'
 })
 export class MarchandService {
-
+  API_URL = environment.apiUrl
   constructor(private http:HttpClient){ }
 
   public getMarchands(): Observable<Array<Merchant>> {
-    return this.http.get<Array<Merchant>>(environment.apiUrl + "/api/merchants/findAll")
+    return this.http.get<Array<Merchant>>(this.API_URL + "/api/merchants/findAll")
   }
 
   public getMarchandById(id: number): Observable<Array<Merchant>> {
-    return this.http.get<Array<Merchant>>(environment.apiUrl + "/api/merchants/findById/" + id)
+    return this.http.get<Array<Merchant>>(this.API_URL + "/api/merchants/findById/" + id)
   }
 
   // public searchMarchands(keyword: string): Observable<Array<Marchand>> {
-  //   return this.http.get<Array<Marchand>>(environment.apiUrl + "/marchands/search?keyword=" + keyword)
+  //   return this.http.get<Array<Marchand>>(this.API_URL + "/marchands/search?keyword=" + keyword)
   // }
 
   public saveMarchand(marchand: Merchant): Observable<Merchant> {
-    return this.http.post<Merchant>(environment.apiUrl + "/api/merchants/save", marchand)
+    return this.http.post<Merchant>(this.API_URL + "/api/merchants/save", marchand)
   }
 
   public deleteMarchand(id: number): Observable<Merchant> {
-    return this.http.delete<Merchant>(environment.apiUrl + "/api/merchants/delete/" + id)
+    return this.http.delete<Merchant>(this.API_URL+ "/api/merchants/delete/" + id)
   }
 
   public editMarchand(marchand: Merchant): Observable<Merchant> {
-    return this.http.put<Merchant>(environment.apiUrl + "/api/merchants/update"   ,marchand);
+    return this.http.put<Merchant>(this.API_URL + "/api/merchants/update"   ,marchand);
   }
 
   findStatusMarchandPayment(marchandId: number, paymentMethodId: number): Observable<boolean> {
-    return this.http.get<boolean>(environment.apiUrl + '/api/merchant_methods/status/' + marchandId + '/' + paymentMethodId)
+    return this.http.get<boolean>(this.API_URL + '/api/merchant_methods/status/' + marchandId + '/' + paymentMethodId)
   }
 
 }

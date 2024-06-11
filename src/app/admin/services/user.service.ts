@@ -10,27 +10,28 @@ import { ChangePasswordRequest } from 'src/app/marchand/models/change-password-r
   providedIn: 'root'
 })
 export class UserService {
-  updatePassword(userId: number, changePasswordRequest: ChangePasswordRequest) {
+  API_URL = environment.apiUrl
+  /*updatePassword(userId: number, changePasswordRequest: ChangePasswordRequest) {
     throw new Error('Method not implemented.');
   }
-
+*/
   constructor(private http:HttpClient) { }
   
 
 
   public getUseres():Observable<Array<User>>{
-    return this.http.get<Array<User>>(environment.apiUrl + "/api/auth/users");
+    return this.http.get<Array<User>>(this.API_URL + "/api/auth/users");
   }
 
   public updateUser(user: User): Observable<User> {
     // Utiliser l'identifiant de l'utilisateur pour former l'URL de mise à jour
-    const url = `${environment.apiUrl}/api/auth/updateprofile/${user.id}`;
+    const url = `${this.API_URL}/api/auth/updateprofile/${user.id}`;
     // Envoyer une requête PUT avec les données de l'utilisateur
     return this.http.put<User>(url, user);
   }
 
   findRoles(username: string): Observable<Role[]> {
-    const url = `${environment.apiUrl} /api/auth/users/roles/${username}`;
+    const url = `${this.API_URL} /api/auth/users/roles/${username}`;
     return this.http.get<Role[]>(url);
      
   }
@@ -39,12 +40,12 @@ export class UserService {
   deleteUser(id: number): Observable<void> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.delete<void>(`${environment.apiUrl}/api/auth/delete/${id}`, { headers });
+    return this.http.delete<void>(`${this.API_URL}/api/auth/delete/${id}`, { headers });
   }
   /*Add*/
    // Ajoutez ici la méthode pour ajouter un utilisateur
    public addUser(user: User): Observable<User> {
-    const url = `${environment.apiUrl}/api/auth/signup`;
+    const url = `${this.API_URL}/api/auth/signup`;
     console.log("service data",user)
     return this.http.post<User>(url, user);
   }
@@ -53,5 +54,14 @@ export class UserService {
     return this.http.get<Array<User>>(environment.apiUrl + "/api/auth/users");
   }
 */
-
+public updatePassword(
+  userId: number,
+  changePasswordRequest: ChangePasswordRequest
+): Observable<any> {
+  return this.http
+    .put<any>(
+      this.API_URL+`/api/auth/users/${userId}/password`,
+      changePasswordRequest
+    );
+}
 }

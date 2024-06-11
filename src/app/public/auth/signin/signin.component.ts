@@ -38,12 +38,12 @@ export class SigninComponent {
     private router: Router,
     private authService: AuthService,
     private tokenService: TokenService,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     // Récupérer les paramètres de la route
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       this.marchandId = +params['id'];
     });
   }
@@ -57,38 +57,39 @@ export class SigninComponent {
 
   onSubmit(): void {
     //console.log(this.signInForm.value);
-  
+
     const username = this.signInForm.value.username;
     const password = this.signInForm.value.password;
-  
+
     if (username && password) {
       const signinData: Signin = { username, password };
-  
+
       this.authService.signin(signinData).subscribe(
         (data) => {
           //console.log('Access Token:', data.accessToken);
-          //console.log('User Roles:', data.roles);
+          console.log('User Roles:', data.roles);
           this.tokenService.saveToken(data.accessToken);
-          
 
-          if(data.roles.includes('ROLE_ADMIN')) {
+          if (data.roles.includes('ROLE_ADMIN')) {
             this.redirectBasedOnRole(data.roles);
-
-          }else if (data.roles.includes('ROLE_COMMERCIAL')) {
+          } else if (data.roles.includes('ROLE_COMERCIAL')) {
             this.redirectBasedOnRole(data.roles);
-
           } else if (data.roles.includes('ROLE_MARCHAND')) {
             // Si l'utilisateur est marchand, appeler findMarchandIdByMarchandName avant de rediriger
             this.authService.findMerchantIdByMerchantName(username).subscribe(
               (marchandId) => {
                 this.marchandId = marchandId;
                 //console.log('Marchand ID:', marchandId);
-                this.router.navigate(['/marchand/dashboard/' + this.marchandId]);
+                this.router.navigate([
+                  '/marchand/dashboard/' + this.marchandId,
+                ]);
               },
               (error) => {
                 console.error('Error fetching marchand ID:', error);
                 // Gérer les erreurs ici...
-                alert('An error occurred while fetching the marchand ID. Please try again.');
+                alert(
+                  'An error occurred while fetching the marchand ID. Please try again.'
+                );
               }
             );
           } else {
@@ -111,16 +112,12 @@ export class SigninComponent {
     }
   }
 
-
-  
   // Fonction pour rediriger l'utilisateur en fonction de son rôle
   private redirectBasedOnRole(roles: string[]): void {
     if (roles.includes('ROLE_ADMIN')) {
       this.router.navigate(['/admin/dashboard']);
-    
-    } else if (roles.includes('ROLE_COMMERCIAL') ) {
+    } else if (roles.includes('ROLE_COMERCIAL')) {
       this.router.navigate(['/commercial/validation']);
-      
     } else {
       this.router.navigate(['/signin']);
     }
@@ -129,9 +126,8 @@ export class SigninComponent {
   /// Forget password
   modalOpen: boolean = false;
   togglePassForget() {
-      this.modalOpen = !this.modalOpen;
+    this.modalOpen = !this.modalOpen;
   }
-
 
   // Aficher le mot de passe
   @ViewChild('passwordInput') passwordInput!: ElementRef;
@@ -143,6 +139,4 @@ export class SigninComponent {
       passwordInputEl.type = 'password';
     }
   }
-
-
 }

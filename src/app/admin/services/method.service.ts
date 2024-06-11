@@ -12,18 +12,18 @@ import { PaymentMethod } from 'src/app/admin/model/payment-method.model';
   providedIn: 'root',
 })
 export class MethodService {
-  private host:string="http://localhost:8080";
-
+  //private host:string="http://localhost:8080";
+  API_URL = environment.apiUrl
   constructor(private http:HttpClient){ }
 
   getAll(): Observable<PaymentMethod[]> {
-    return this.http.get<PaymentMethod[]>(environment.apiUrl + '/api/merchant_methods/findAll')
+    return this.http.get<PaymentMethod[]>(this.API_URL + '/api/merchant_methods/findAll')
   }
 
   getPaymentMethodeById(id: number): Observable<PaymentMethod> {
-    return this.http.get<PaymentMethod>(environment.apiUrl + '/api/merchant_methods/findById/' + id)
+    return this.http.get<PaymentMethod>(this.API_URL + '/api/merchant_methods/findById/' + id)
   }
 
   updateMarchandMethodStatus(paymentMethodId: number, marchandId: number): Observable<any> {
-    return this.http.put<any>(environment.apiUrl + '/api/merchant_methods/'+ marchandId + '/updatePayment-method/' + paymentMethodId ,{}) 
+    return this.http.put<any>(this.API_URL + '/api/merchant_methods/'+ marchandId + '/updatePayment-method/' + paymentMethodId ,{}) 
   }}

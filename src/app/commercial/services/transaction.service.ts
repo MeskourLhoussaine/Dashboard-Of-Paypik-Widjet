@@ -9,11 +9,11 @@ import { Transaction } from "src/app/admin/model/transaction.model";
   providedIn: 'root'
 })
 export class TransactionService {
-
+  API_URL = environment.apiUrl
   constructor(private http:HttpClient){ }
 
   public getTransactions(): Observable<Array<Transaction>> {
-    return this.http.get<Array<Transaction>>(environment.apiUrl + "/transaction/all")
+    return this.http.get<Array<Transaction>>(this.API_URL + "/transaction/all")
   }
 
   // public searchTransactions(keyword: string): Observable<Array<Transaction>> {
@@ -21,15 +21,15 @@ export class TransactionService {
   // }
 
   public saveTransaction(transaction: Transaction): Observable<Transaction> {
-    return this.http.post<Transaction>(environment.apiUrl + "/transaction/save", transaction)
+    return this.http.post<Transaction>(this.API_URL + "/transaction/save", transaction)
   }
 
   public deleteTransaction(id: number): Observable<Transaction> {
-    return this.http.delete<Transaction>(environment.apiUrl + "/transaction/delete/" + id)
+    return this.http.delete<Transaction>(this.API_URL + "/transaction/delete/" + id)
   }
 
   public editTransaction(transaction: Transaction): Observable<Transaction> {
-    return this.http.put<Transaction>(environment.apiUrl + "/transactions/" + transaction.transactionId, transaction);
+    return this.http.put<Transaction>(this.API_URL + "/transactions/" + transaction.transactionId, transaction);
   }
   
 }

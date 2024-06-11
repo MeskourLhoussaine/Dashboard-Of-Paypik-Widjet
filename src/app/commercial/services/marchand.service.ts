@@ -9,10 +9,11 @@ import { Merchant } from 'src/app/marchand/models/merchant.model';
   providedIn: 'root',
 })
 export class MarchandService {
+  API_URL = environment.apiUrl
   constructor(private http: HttpClient) {}
 
   public getMarchands(): Observable<Array<Merchant>> {
-    return this.http.get<Array<Merchant>>(environment.apiUrl + '/marchand/all');
+    return this.http.get<Array<Merchant>>(this.API_URL + '/marchand/all');
   }
 
   // public searchMarchands(keyword: string): Observable<Array<Marchand>> {
@@ -20,18 +21,18 @@ export class MarchandService {
   // }
 
   public saveMarchand(marchand: Merchant): Observable<Merchant> {
-    return this.http.post<Merchant>(environment.apiUrl + "/api/merchants/save", marchand)
+    return this.http.post<Merchant>(this.API_URL + "/api/merchants/save", marchand)
   }
 
   public deleteMarchand(id: number): Observable<Merchant> {
     return this.http.delete<Merchant>(
-      environment.apiUrl + '/marchand/delete/' + id
+      this.API_URL + '/marchand/delete/' + id
     );
   }
 
   public editMarchand(marchand: Merchant): Observable<Merchant> {
     return this.http.put<Merchant>(
-      environment.apiUrl + '/marchands/' + marchand.merchantId,
+      this.API_URL + '/marchands/' + marchand.merchantId,
       marchand
     );
   }
