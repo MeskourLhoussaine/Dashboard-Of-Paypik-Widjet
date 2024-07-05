@@ -24,6 +24,9 @@ export class SigninComponent {
   isLoading: boolean = false;
   readonly publicRoutes = PublicRoutes;
   readonly currentYear: number = DatetimeHelper.currentYear;
+  loginError: boolean = false;
+  isEmpty: boolean = false;
+  loginMarchandError: boolean = false;
 
   serverErrors: string[] = [];
 
@@ -38,12 +41,12 @@ export class SigninComponent {
     private router: Router,
     private authService: AuthService,
     private tokenService: TokenService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
     // Récupérer les paramètres de la route
-    this.route.params.subscribe((params) => {
+    this.route.params.subscribe(params => {
       this.marchandId = +params['id'];
     });
   }
@@ -56,68 +59,76 @@ export class SigninComponent {
   }
 
   onSubmit(): void {
-    //console.log(this.signInForm.value);
-
+  
     const username = this.signInForm.value.username;
     const password = this.signInForm.value.password;
+  
+    this.isLoading = true;
 
     if (username && password) {
       const signinData: Signin = { username, password };
-
+  
       this.authService.signin(signinData).subscribe(
         (data) => {
           //console.log('Access Token:', data.accessToken);
-          console.log('User Roles:', data.roles);
+          //console.log('User Roles:', data.roles);
           this.tokenService.saveToken(data.accessToken);
+          
 
-          if (data.roles.includes('ROLE_ADMIN')) {
+          if(data.roles.includes('ROLE_ADMIN')) {
             this.redirectBasedOnRole(data.roles);
-          } else if (data.roles.includes('ROLE_COMERCIAL')) {
+
+          }else if (data.roles.includes('ROLE_COMERCIAL')) {
             this.redirectBasedOnRole(data.roles);
+
           } else if (data.roles.includes('ROLE_MARCHAND')) {
             // Si l'utilisateur est marchand, appeler findMarchandIdByMarchandName avant de rediriger
             this.authService.findMerchantIdByMerchantName(username).subscribe(
               (marchandId) => {
                 this.marchandId = marchandId;
-                //console.log('Marchand ID:', marchandId);
-                this.router.navigate([
-                  '/marchand/dashboard/' + this.marchandId,
-                ]);
+                this.router.navigate(['/marchand/dashboard/' + this.marchandId]);
               },
               (error) => {
+                this.loginMarchandError = true;
+                setTimeout(() => {
+                  this.loginMarchandError = false;
+                }, 6000); 
                 console.error('Error fetching marchand ID:', error);
-                // Gérer les erreurs ici...
-                alert(
-                  'An error occurred while fetching the marchand ID. Please try again.'
-                );
               }
             );
           } else {
             // Pour les autres rôles, rediriger en fonction du rôle
             this.redirectBasedOnRole(data.roles);
+            this.isLoading = false;
           }
         },
         (err) => {
-          console.log('Login Error:', err);
-          if (err.status === 401) {
-            alert('Email or password is incorrect.');
-          } else {
-            alert('An error occurred during login. Please try again.');
-          }
+          this.isLoading = false;
+          this.loginError = true;
+          setTimeout(() => {
+            this.loginError = false;
+          }, 6000); 
         }
       );
     } else {
-      alert('Please enter both username and password.');
-      console.log('Username or password is not defined');
+      this.isLoading = false;
+      this.isEmpty = true;
+      setTimeout(() => {
+        this.isEmpty = false;
+      }, 6000); 
     }
   }
 
+
+  
   // Fonction pour rediriger l'utilisateur en fonction de son rôle
   private redirectBasedOnRole(roles: string[]): void {
     if (roles.includes('ROLE_ADMIN')) {
       this.router.navigate(['/admin/dashboard']);
-    } else if (roles.includes('ROLE_COMERCIAL')) {
+    
+    } else if (roles.includes('ROLE_COMMERCIAL') ) {
       this.router.navigate(['/commercial/validation']);
+      
     } else {
       this.router.navigate(['/signin']);
     }
@@ -126,8 +137,9 @@ export class SigninComponent {
   /// Forget password
   modalOpen: boolean = false;
   togglePassForget() {
-    this.modalOpen = !this.modalOpen;
+      this.modalOpen = !this.modalOpen;
   }
+
 
   // Aficher le mot de passe
   @ViewChild('passwordInput') passwordInput!: ElementRef;
@@ -139,4 +151,5 @@ export class SigninComponent {
       passwordInputEl.type = 'password';
     }
   }
+
 }
