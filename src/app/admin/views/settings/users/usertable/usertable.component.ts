@@ -16,6 +16,7 @@ import { of } from 'rxjs';
 })
 export class UsertableComponent implements OnInit {
   @ViewChild('statusInput') statusInputRef!: ElementRef;
+  @ViewChild('roleInput') roleInputRef!: ElementRef;
   id!: number;
   thisUser!: User;
   userId: number | null = null;
@@ -28,16 +29,19 @@ export class UsertableComponent implements OnInit {
   rejectOpen: boolean = false;
   marchandId!: number;
   selectedOption1: string = '';
+  selectedOption2: string = '';  // Ajoutez cette ligne
   editModalOpen: boolean = false;
   editFormData: User = this.initializeUser();
   roles: Role[] = [
-    { id: 1, name: 'ROLE_COMERCIAL'},
-    { id: 2, name: 'ROLE_ADMIN'},
-    { id: 3, name: 'ROLE_MARCHAND'},
+    { id: 1, name: 'ROLE_COMERCIAL' },
+    { id: 2, name: 'ROLE_ADMIN' },
+    { id: 3, name: 'ROLE_MARCHAND' },
   ];
   addModalOpen: boolean = false;
   addFormData: User = this.initializeUser();
-
+  //errorMessage: string = ''; // Ajoutez cette ligne
+  errorMessage: string = ''; // Propriété existante
+  errorMessageType: string = ''; // Nouvelle propriété
   constructor(
     private route: ActivatedRoute,
     private marchandService: MarchandService,
@@ -94,26 +98,31 @@ export class UsertableComponent implements OnInit {
       const username = user.username.toLowerCase();
       return username.includes(searchTerm);
     });
-
+  
     if (this.selectedOption1 !== '') {
       filteredData = filteredData.filter((user) => user.status === this.selectedOption1);
     }
-
+  
+    if (this.selectedOption2 !== '') {
+      filteredData = filteredData.filter((user) =>
+        user.roles && user.roles.some((role) => role.name === this.selectedOption2)
+      );
+    }
+  
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     return filteredData.slice(startIndex, startIndex + this.itemsPerPage);
   }
-
-  get totalPages() {
-    return Math.ceil(this.users.length / this.itemsPerPage);
-  }
-
+  
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
       this.itemsPerPage = this.selectedItemsPerPage();
     }
   }
-
+  get totalPages() {
+    const filteredData = this.filteredUsers;
+    return Math.ceil(filteredData.length / this.itemsPerPage);
+  }
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
@@ -136,6 +145,10 @@ export class UsertableComponent implements OnInit {
     this.selectedOption1 = event.target.value;
   }
 
+  handleChange2(event: any) {
+    this.selectedOption2 = event.target.value;
+  }
+
   deleteMarchand(marchandId: number) {
     // Logique de suppression du marchand
   }
@@ -143,8 +156,12 @@ export class UsertableComponent implements OnInit {
   resetFilters(): void {
     this.searchTerm = '';
     this.selectedOption1 = '';
+    this.selectedOption2 = '';  // Ajoutez cette ligne
     if (this.statusInputRef) {
       (this.statusInputRef.nativeElement as HTMLSelectElement).value = '';
+    }
+    if (this.roleInputRef) {
+      (this.roleInputRef.nativeElement as HTMLSelectElement).value = '';  // Ajoutez cette ligne
     }
   }
 
@@ -225,8 +242,6 @@ export class UsertableComponent implements OnInit {
     }
   }
 
-  
-
   hasAllRoles(userId: number): boolean {
     const user = this.users.find((u) => u.id === userId);
     if (!user || !user.roles) return false;
@@ -238,53 +253,62 @@ export class UsertableComponent implements OnInit {
   }
 
   getSelectedRoles(): string[] {
-    console.log("les roles",this.roles);
+    console.log("les roles", this.roles);
     return this.roles.filter(role => role.checked).map(role => role.name);
   }
-  
-  
+
   toggleAddModal() {
     this.addModalOpen = !this.addModalOpen;
-    if (!this.addModalOpen)
-      {
-        this.addFormData = this.initializeUser(); // Réinitialiser le formulaire d'ajout lorsque le modal est fermé
-        }
-        }
-        
-        // Fonction pour soumettre le formulaire d'ajout
-        onAddSubmit(form: NgForm) {
-          if (form.valid) {
-            const generatedPassword = this.generatePassword(8);
+    if (!this.addModalOpen) {
+      this.addFormData = this.initializeUser(); // Réinitialiser le formulaire d'ajout lorsque le modal est fermé
+      this.errorMessage = ''; // Réinitialiser le message d'erreur lorsque le modal est fermé
+    }
+  }
 
-            // Ajouter le mot de passe généré aux données avant de les soumettre
-            this.addFormData.password = generatedPassword;
-            console.log(" avant this.addFormData",this.addFormData);
-            // Supprimer tous les rôles existants de addFormData.roles
-            this.addFormData.roles = [];
-            
-            // Ajouter les rôles sélectionnés à addFormData.roles
-            this.addFormData.roles.push(...this.getSelectedRoles());
-        console.log("this.addFormData",this.addFormData);
-            // Ajouter l'utilisateur avec les rôles sélectionnés
-            this.userService.addUser(this.addFormData).subscribe(() => {
-              this.fetchUsers(); // Rafraîchir la liste des utilisateurs après l'ajout
-              this.toggleAddModal(); // Fermer le modal d'ajout après l'ajout réussi
-            });
+  // Fonction pour soumettre le formulaire d'ajout
+  onAddSubmit(form: NgForm) {
+    if (form.valid) {
+      const generatedPassword = this.generatePassword(8);
+  
+      // Ajouter le mot de passe généré aux données avant de les soumettre
+      this.addFormData.password = generatedPassword;
+      console.log(" avant this.addFormData", this.addFormData);
+  
+      // Supprimer tous les rôles existants de addFormData.roles
+      this.addFormData.roles = [];
+  
+      // Ajouter les rôles sélectionnés à addFormData.roles
+      this.addFormData.roles.push(...this.getSelectedRoles());
+      console.log("this.addFormData", this.addFormData);
+  
+      // Ajouter l'utilisateur avec les rôles sélectionnés
+      this.userService.addUser(this.addFormData).subscribe({
+        next: () => {
+          this.fetchUsers(); // Rafraîchir la liste des utilisateurs après l'ajout
+          this.toggleAddModal(); // Fermer le modal d'ajout après l'ajout réussi
+          this.errorMessage = "Utilisateur enregistré avec succès"; // Message de succès
+          this.errorMessageType = 'success'; // Type de message de succès
+        },
+        error: (error) => {
+          // Vérifiez si le message d'erreur contient "Email is already taken"
+          if (error.message.includes("Email is already taken")) {
+            this.errorMessage = "L'email est déjà pris. Veuillez en utiliser un autre.";
+          } else {
+            this.errorMessage = "L'email est déjà pris. Veuillez en utiliser un autre.";
           }
+          this.errorMessageType = 'error'; // Type de message d'erreur
         }
-
-
-        generatePassword(length: number): string {
-          const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; // Caractères possibles pour le mot de passe
-          let password = "";
-          for (let i = 0; i < length; i++) {
-            const randomIndex = Math.floor(Math.random() * charset.length);
-            password += charset[randomIndex];
-          }
-          return password;
-        }
-        
-        }
-
-
-
+      });
+    }
+  }
+  
+  generatePassword(length: number): string {
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; // Caractères possibles pour le mot de passe
+    let password = "";
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charset.length);
+      password += charset[randomIndex];
+    }
+    return password;
+  }
+}
