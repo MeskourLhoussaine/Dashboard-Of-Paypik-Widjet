@@ -126,7 +126,7 @@ export class SigninComponent {
     if (roles.includes('ROLE_ADMIN')) {
       this.router.navigate(['/admin/dashboard']);
     
-    } else if (roles.includes('ROLE_COMMERCIAL') ) {
+    } else if (roles.includes('ROLE_COMERCIAL') ) {
       this.router.navigate(['/commercial/validation']);
       
     } else {
