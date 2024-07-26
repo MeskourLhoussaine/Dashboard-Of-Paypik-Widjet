@@ -20,8 +20,10 @@ export class UserService {
   ): Observable<any> {
     return this.http
       .put<any>(
+
         this.API_URL+`/api/auth/users/${userId}/password`,
         changePasswordRequest
+        
       )
       .pipe(catchError(this.handleError));
   }
