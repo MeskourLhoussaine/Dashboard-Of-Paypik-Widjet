@@ -84,13 +84,13 @@ export class DashboardComponent implements OnInit {
   }
 
   private mapPaymentMethodLabels(paymentMethodIds: string[]): string[] {
-    return paymentMethodIds.map(id => {
-      switch (id) {
-        case '1': return 'Token';
-        case '2': return 'Card';
-        case '3': return 'Amanty';
-        case '4': return 'Paiement direct';
-        case '5': return 'paypal';
+     return paymentMethodIds.map(id => {
+     switch (id) {
+        case '2': return 'Token';
+        case '3': return 'Card';
+        case '4': return 'Amanty';
+        case '5': return 'Paiement direct';
+        case '6': return 'paypal';
         default: return '';
       }
     });
