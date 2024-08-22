@@ -24,7 +24,7 @@ export class TableComponent implements OnInit{
   marchands: Merchant[] = [];
   searchTerm: string = '';
 
-  currentPage: number = 1;
+  currentPage: number = 1 ;
   itemsPerPage: number = 5;
 
   sortingUp() {
