@@ -55,6 +55,7 @@ export class DashboardComponent implements OnInit {
     this.transactionService.getTransactionsByMerchantId(this.marchantId).subscribe({
       next: (data: Transaction[]) => {
         this.transactions = data;
+        console.log(data);
         this.paymentMethodCounts = this.countPaymentMethods(this.transactions);
         this.data = {
           labels: this.mapPaymentMethodLabels(Object.keys(this.paymentMethodCounts)),
@@ -84,16 +85,19 @@ export class DashboardComponent implements OnInit {
   }
 
   private mapPaymentMethodLabels(paymentMethodIds: string[]): string[] {
+
      return paymentMethodIds.map(id => {
+      
      switch (id) {
-        case '2': return 'Token';
-        case '3': return 'Card';
-        case '4': return 'Amanty';
-        case '5': return 'Paiement direct';
+        case '3': return 'Token';
+        case '2': return 'Credit Card';
+        case '5': return 'Amanty';
+        case '4': return 'Payment direct';
         case '6': return 'paypal';
         default: return '';
       }
     });
+   
   }
 
   private calculateTotalYearAmountMAD(): void {
