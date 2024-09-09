@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Transaction } from '../models/transaction.model';
@@ -48,7 +48,19 @@ getNumberOfTransactionsByClientAndMerchant(merchantId: number, clientName: strin
   }
 //###########
  
+// Méthode pour générer un PDF pour une transaction donnée
+generatePdf(transactionId: number): Observable<Blob> {
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Accept': 'application/pdf'
+  });
 
+  // Appel à l'API pour générer le PDF
+  return this.http.get(`${this.API_URL}/api/Transaction/${transactionId}/pdf`, {
+    headers: headers,
+    responseType: 'blob'  // On s'attend à recevoir un fichier binaire (Blob)
+  });
+}
  
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

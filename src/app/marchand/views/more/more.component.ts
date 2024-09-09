@@ -10,6 +10,8 @@ import { PaymentMethod } from '../../models/payment-method.model';
 import { pageTransition } from 'src/app/shared/utils/animations';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 Chart.register(...registerables);
 
@@ -26,11 +28,14 @@ export class MoreComponent implements OnInit {
   merchantId!: number;
   transactionId!: number;
   clientName!: string;
+ 
   // Ajoutez une nouvelle variable pour stocker le nombre de transactions
   numberOfTransactions: number = 0;
   //PDF
   loading: boolean = false;
   @ViewChild('content', { static: false }) content!: ElementRef;
+  API_URL: any;
+  http: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -107,62 +112,44 @@ export class MoreComponent implements OnInit {
       });
   }
  // Pdf downloading
-
+/*
  startLoading() {
   // Set loading to true after a delay of 500 milliseconds
   setTimeout(() => {
     this.loading = true;
     this.downloadPdf();
   });
+}*/
+
+// Méthode pour consommer l'API et télécharger le PDF
+
+
+downloadPdf(transactionId: number): void {
+  this.loading = true;  // Activer l'indicateur de chargement
+
+  this.transactionService.generatePdf(transactionId).subscribe({
+    next: (pdfBlob: Blob) => {
+      // Créer une URL pour le fichier PDF
+      const blobUrl = URL.createObjectURL(pdfBlob);
+
+      // Ouvrir le PDF dans un nouvel onglet
+      window.open(blobUrl, '_blank');
+
+      // Révoquer l'URL après un certain temps pour éviter les fuites de mémoire
+      setTimeout(() => {
+        URL.revokeObjectURL(blobUrl);
+      }, 100);
+
+      this.loading = false;  // Désactiver l'indicateur de chargement
+    },
+    error: (error) => {
+      console.error('Erreur lors de la génération du PDF:', error);
+      this.loading = false;  // Désactiver l'indicateur de chargement
+    }
+  });
 }
 
-downloadPdf() {
-  const content = this.content.nativeElement;
+// Méthode pour générer un PDF à partir de l'API
 
-  // Increase DPI for better quality
-  const dpi = 300; // Adjust as needed
 
-  html2canvas(
-    content, 
-    { 
-      allowTaint: true, 
-      useCORS: true,
-      scale: dpi / 96 // 96 is the default DPI
-    }
-  ).then((canvas) => {
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF();
-    const imgWidth = 210;
-    const imgHeight = canvas.height * imgWidth / canvas.width;
-
-    // Define padding
-    const paddingTop = 70; // Adjust as needed
-
-    // Add header image
-    const headerImg = new Image();
-    headerImg.src = 'assets/images/logo/header.png'; // Replace with the path to your header image
-    headerImg.onload = () => {
-      const headerWidth = imgWidth; // Use the full width of the page for the header
-      const headerHeight = (headerImg.height * headerWidth) / headerImg.width;
-      pdf.addImage(headerImg, 'PNG', 0, 0, headerWidth, headerHeight);
-
-      // Add footer image
-      const footerImg = new Image();
-      footerImg.src = 'assets/images/logo/footer.png'; // Replace with the path to your footer image
-      footerImg.onload = () => {
-        const footerWidth = imgWidth; // Use the full width of the page for the footer
-        const footerHeight = (footerImg.height * footerWidth) / footerImg.width;
-        const footerY = pdf.internal.pageSize.height - footerHeight; // Position the footer at the bottom of the page
-        pdf.addImage(footerImg, 'PNG', 0, footerY, footerWidth, footerHeight);
-
-        // Add content image with padding
-        pdf.addImage(imgData, 'PNG', 0, paddingTop, imgWidth, imgHeight);
-
-        pdf.save('content.pdf');
-
-        this.loading = false; // Set loading to false after PDF generation is complete
-      };
-    };
-  });
-}  
 }
